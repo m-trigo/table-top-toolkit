@@ -1,0 +1,27 @@
+﻿<Window x:Class="TableTopToolKit.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TableTopToolKit"
+        mc:Ignorable="d"
+        Title="MainWindow" Width="800" Height="600" WindowState="Maximized">
+
+    <Window.Resources>
+        <ResourceDictionary Source="ResourceDictionary.xaml" />
+    </Window.Resources>
+
+    <DockPanel LastChildFill="True" KeyDown="OnKeyDown">
+        <TextBlock x:Name="Console" DockPanel.Dock="Bottom" Height="20">
+        </TextBlock>
+        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+            <Canvas Background="LightGray"
+                    x:Name="Canvas" Width="1754" Height="1240"
+                    MouseMove="OnCanvasMouseMove">
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="CanvasScaleTransform" />
+                </Canvas.RenderTransform>
+            </Canvas>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
