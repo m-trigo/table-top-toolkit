@@ -17,7 +17,8 @@
         <ScrollViewer HorizontalScrollBarVisibility="Visible">
             <Canvas Background="LightGray"
                     x:Name="Canvas" Width="1754" Height="1240"
-                    MouseMove="OnCanvasMouseMove">
+                    MouseMove="OnCanvasMouseMove"
+                    MouseUp="OnCanvasMouseUp">
                 <Canvas.RenderTransform>
                     <ScaleTransform x:Name="CanvasScaleTransform" />
                 </Canvas.RenderTransform>
