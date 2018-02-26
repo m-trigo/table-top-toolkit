@@ -23,6 +23,12 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+TableTopToolKit/bin/
+TableTopToolKit/bin/Debug/
+TableTopToolKit/obj/
+TableTopToolKit/obj/Debug/
+*.exe
+*.pdb
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
