@@ -11,10 +11,10 @@ namespace TableTopToolKit
         public int StartIndex { get; set; }
         public int EndIndex { get; set; }
 
-        public Drawing(int startIndex)
+        public Drawing(int startIndex, int endIndex = -1)
         {
             StartIndex = startIndex;
-            EndIndex = -1;
+            EndIndex = endIndex;
         }
 
         public bool IsComplete()

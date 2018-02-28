@@ -12,10 +12,12 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-        public enum Controls { SelectNext, SelectPrevious };
+        public enum Controls { SelectNext, SelectPrevious, ToggleGrid };
 
         private CanvasDrawings cd;
-        private DrawingTool currentTool;
+        private Grid grid;
+
+        internal DrawingTool CurrentTool { private set; get; }
 
         public App()
         {
@@ -26,12 +28,10 @@ namespace TableTopToolKit
         public void InitializeCanvasDrawing(Canvas canvas)
         {
             cd = new CanvasDrawings(canvas);
-            currentTool = new FreeHandTool(cd);
-        }
-
-        public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
-        {
-            currentTool.MouseMove(mousePosition, mouseEvent);
+            grid = new Grid(cd.Width, cd.Height, 30);
+            grid.GridLines.ForEach(shape => cd.AddBackground(shape));
+            //CurrentTool = new FreeHandTool(cd);
+            CurrentTool = new SnapLineTool(cd, grid);
         }
 
         public void Command(Controls control)
@@ -44,6 +44,10 @@ namespace TableTopToolKit
 
                 case Controls.SelectPrevious:
                     cd.SelectDrawing(false);
+                    break;
+
+                case Controls.ToggleGrid:
+                    grid.ToggleVisibility();
                     break;
             }
         }

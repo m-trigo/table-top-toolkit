@@ -5,24 +5,27 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    public class Grid
+    internal class Grid
     {
         private int canvasWidth;
         private int canvasHeight;
         private int step;
+        private bool isVisible;
 
-        public List<Line> gridLines;
+        public List<Line> GridLines { private set; get; }
 
         public Grid(int width, int height, int step)
         {
             canvasWidth = width;
             canvasHeight = height;
             this.step = step;
+            isVisible = true;
+            InitializeGridLines();
         }
 
         public void InitializeGridLines()
         {
-            gridLines = new List<Line>();
+            GridLines = new List<Line>();
 
             for (int xPos = 0; xPos < canvasWidth; xPos += step)
             {
@@ -33,9 +36,7 @@ namespace TableTopToolKit
                 line.X2 = xPos;
                 line.Y2 = canvasWidth;
 
-                line.Stroke = Brushes.Gray;
-
-                gridLines.Add(line);
+                GridLines.Add(line);
             }
 
             for (int yPos = 0; yPos < canvasHeight; yPos += step)
@@ -47,15 +48,13 @@ namespace TableTopToolKit
                 line.Y2 = yPos;
                 line.X2 = canvasWidth;
 
-                line.Stroke = Brushes.Gray;
-
-                gridLines.Add(line);
+                GridLines.Add(line);
             }
         }
 
         public Point SnapToGrid(double x, double y)
         {
-            return new Point( SnapCoordToClosest(x), SnapCoordToClosest(y) );
+            return new Point(SnapCoordToClosest(x), SnapCoordToClosest(y));
         }
 
         private int SnapCoordToClosest(double coordToSnap)
@@ -71,5 +70,15 @@ namespace TableTopToolKit
             }
         }
 
+        public void ToggleVisibility()
+        {
+            foreach (Line line in GridLines)
+            {
+                //line.Stroke = isVisible ? Brushes.Transparent : Brushes.Gray; //TODO: Change to Visibility?
+                line.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
+            }
+
+            isVisible = !isVisible;
+        }
     }
 }

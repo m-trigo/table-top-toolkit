@@ -65,6 +65,7 @@
     <Compile Include="CanvasDrawings.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingTool.cs" />
+    <Compile Include="SnapLineTool.cs" />
     <Compile Include="FreeHandTool.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="MainWindow.xaml.cs">

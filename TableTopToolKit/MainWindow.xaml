@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
-        mc:Ignorable="d"
-        Title="MainWindow" Width="800" Height="600" WindowState="Maximized">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Table Top Toolkit" Width="800" Height="600">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
@@ -15,8 +15,8 @@
         <TextBlock x:Name="Console" DockPanel.Dock="Bottom" Height="20">
         </TextBlock>
         <ScrollViewer HorizontalScrollBarVisibility="Visible">
-            <Canvas Background="LightGray"
-                    x:Name="Canvas" Width="1754" Height="1240"
+            <Canvas x:Name="Canvas" Width="1754" Height="1240"
+                    Background="White"
                     MouseMove="OnCanvasMouseMove"
                     MouseUp="OnCanvasMouseUp">
                 <Canvas.RenderTransform>

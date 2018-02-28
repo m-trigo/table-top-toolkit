@@ -11,5 +11,7 @@ namespace TableTopToolKit
     internal interface DrawingTool
     {
         void MouseMove(Point position, MouseEventArgs mouseEvent);
+
+        void MouseUp(Point mousePosition, MouseEventArgs mouseEvent);
     }
 }

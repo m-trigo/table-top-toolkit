@@ -21,32 +21,62 @@ namespace TableTopToolKit
         private List<Drawing> drawings;
         private int selectedDrawingIndex;
 
-        public Brush defaultBrush;
+        public Brush backgroundBrush;
+        public Brush foregroundBrush;
         public Brush highlightBrush;
+
+        private double backgroundThickness;
+        private double foregroundThickness;
+
+        public int Width => (int)canvas.Width;
+        public int Height => (int)canvas.Height;
 
         public CanvasDrawings(Canvas source)
         {
             canvas = source;
             drawings = new List<Drawing>();
             selectedDrawingIndex = -1;
-            defaultBrush = Brushes.Black;
-            highlightBrush = Brushes.White;
+            backgroundBrush = Brushes.Black;
+            foregroundBrush = Brushes.Black;
+            highlightBrush = Brushes.Blue;
+            backgroundThickness = 1;
+            foregroundThickness = 2;
         }
 
-        public void StartDrawing(UIElement element)
+        public void AddBackground(Shape element)
+        {
+            element.StrokeThickness = backgroundThickness;
+            element.Stroke = backgroundBrush;
+            canvas.Children.Add(element);
+        }
+
+        public void AddForeGround(Shape element)
+        {
+            element.StrokeThickness = foregroundThickness;
+            element.Stroke = foregroundBrush;
+            canvas.Children.Add(element);
+        }
+
+        public void AddSimpleDrawing(Shape element)
+        {
+            drawings.Add(new Drawing(canvas.Children.Count, canvas.Children.Count));
+            AddForeGround(element);
+        }
+
+        public void StartDrawing(Shape element)
         {
             drawings.Add(new Drawing(canvas.Children.Count));
-            canvas.Children.Add(element);
+            AddForeGround(element);
         }
 
-        public void ContinueDrawing(UIElement element)
+        public void ContinueDrawing(Shape element)
         {
-            canvas.Children.Add(element);
+            AddForeGround(element);
         }
 
-        public void EndDrawing(UIElement element)
+        public void EndDrawing(Shape element)
         {
-            canvas.Children.Add(element);
+            AddForeGround(element);
             drawings[drawings.Count - 1].EndIndex = canvas.Children.Count;
         }
 
@@ -82,16 +112,26 @@ namespace TableTopToolKit
 
         public void UnhightLightDrawing(Drawing d)
         {
-            for (int i = d.StartIndex; i < d.EndIndex; i++)
+            int end = d.EndIndex;
+            if (d.IsComplete() && d.StartIndex == d.EndIndex)
+            {
+                end++;
+            }
+            for (int i = d.StartIndex; i < end; i++)
             {
                 Line l = canvas.Children[i] as Line;
-                l.Stroke = defaultBrush;
+                l.Stroke = foregroundBrush;
             }
         }
 
         public void HightlightDrawing(Drawing d)
         {
-            for (int i = d.StartIndex; i < d.EndIndex; i++)
+            int end = d.EndIndex;
+            if (d.IsComplete() && d.StartIndex == d.EndIndex)
+            {
+                end++;
+            }
+            for (int i = d.StartIndex; i < end; i++)
             {
                 Line l = canvas.Children[i] as Line;
                 l.Stroke = highlightBrush;

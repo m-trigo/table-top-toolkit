@@ -31,7 +31,6 @@ namespace TableTopToolKit
                 if (startDrawing && !mousePosition.Equals(lastKnownMouseDown))
                 {
                     Line lineSegment = new Line();
-                    lineSegment.Stroke = source.defaultBrush;
                     lineSegment.X1 = lastKnownMouseDown.X;
                     lineSegment.Y1 = lastKnownMouseDown.Y;
                     lineSegment.X2 = mousePosition.X;
@@ -62,7 +61,6 @@ namespace TableTopToolKit
                     startDrawing = false;
                     continueDrawning = false;
                     Line lineSegment = new Line();
-                    lineSegment.Stroke = source.defaultBrush;
                     lineSegment.X1 = lastKnownMouseDown.X;
                     lineSegment.Y1 = lastKnownMouseDown.Y;
                     lineSegment.X2 = mousePosition.X;
@@ -70,6 +68,10 @@ namespace TableTopToolKit
                     source.EndDrawing(lineSegment);
                 }
             }
+        }
+
+        public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
+        {
         }
     }
 }
