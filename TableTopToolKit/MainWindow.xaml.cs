@@ -10,6 +10,8 @@ namespace TableTopToolKit
     {
         private App main;
 
+        private Point lastKnownMouseDown;
+        private bool mouseDown;
         private bool gridVisible;
         private Grid grid;
 
@@ -75,7 +77,6 @@ namespace TableTopToolKit
                         currentLine.X2 = snapped.X;
                         currentLine.Y2 = snapped.Y;
                     }
-
                     else
                     {
                         Line d = new Line();
@@ -137,6 +138,7 @@ namespace TableTopToolKit
                         main.Command(App.Controls.SelectNext);
                     }
                     break;
+
                 case Key.Space:
                     ToggleGrid();
                     break;
@@ -148,7 +150,7 @@ namespace TableTopToolKit
             grid = new Grid((int)Canvas.Width, (int)Canvas.Height, 30);
             grid.InitializeGridLines();
 
-            foreach(Line line in grid.gridLines)
+            foreach (Line line in grid.gridLines)
             {
                 Canvas.Children.Add(line);
             }
@@ -158,7 +160,7 @@ namespace TableTopToolKit
 
         private void ToggleGrid()
         {
-            foreach(Line line in grid.gridLines)
+            foreach (Line line in grid.gridLines)
             {
                 line.Stroke = gridVisible ? Brushes.Transparent : Brushes.Gray;
             }
