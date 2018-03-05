@@ -13,6 +13,8 @@ namespace TableTopToolKit
 {
     public static class ConvertToImage
     {
+        public const string DATA_PATH = "./";
+
         public static void createPNG(Canvas canvas)
         {
             try
@@ -36,14 +38,12 @@ namespace TableTopToolKit
                 png.Frames.Add(BitmapFrame.Create(target));
                 png.Save(memStream);
                 memStream.Close();
-                File.WriteAllBytes("image.png", memStream.ToArray());
-
+                File.WriteAllBytes($"{DATA_PATH}image.png", memStream.ToArray());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
         public static void printPreview(Canvas canvas)

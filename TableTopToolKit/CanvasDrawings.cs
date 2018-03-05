@@ -137,5 +137,10 @@ namespace TableTopToolKit
                 l.Stroke = highlightBrush;
             }
         }
+
+        public void SaveAsPNG(string filename)
+        {
+            ConvertToImage.createPNG(canvas);
+        }
     }
 }

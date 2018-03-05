@@ -12,7 +12,7 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-        public enum Controls { SelectNext, SelectPrevious, ToggleGrid };
+        public enum Controls { SelectNext, SelectPrevious, ToggleGrid, SavePNG };
 
         private CanvasDrawings cd;
         private Grid grid;
@@ -48,6 +48,10 @@ namespace TableTopToolKit
 
                 case Controls.ToggleGrid:
                     grid.ToggleVisibility();
+                    break;
+
+                case Controls.SavePNG:
+                    cd.SaveAsPNG("replace this later");
                     break;
             }
         }

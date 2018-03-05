@@ -50,6 +50,10 @@ namespace TableTopToolKit
         {
             switch (e.Key)
             {
+                case Key.F1:
+                    main.Command(App.Controls.SavePNG);
+                    break;
+
                 case Key.Back:
                     ClearCanvas();
                     break;
