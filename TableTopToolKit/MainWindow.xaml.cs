@@ -72,7 +72,18 @@ namespace TableTopToolKit
                         main.Command(App.Controls.SelectNext);
                     }
                     break;
-
+                case Key.Z:
+                    if(Keyboard.IsKeyDown(Key.LeftCtrl)||Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.Undo);
+                    }
+                    break;
+                case Key.Y:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.Redo);
+                    }
+                    break;
                 case Key.Space:
                     main.Command(App.Controls.ToggleGrid);
                     break;
