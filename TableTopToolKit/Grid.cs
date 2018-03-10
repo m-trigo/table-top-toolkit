@@ -95,7 +95,7 @@ namespace TableTopToolKit
         {
             foreach (Line line in GridLines)
             {
-                line.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
+                line.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
             }
 
             isVisible = !isVisible;
