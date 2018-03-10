@@ -49,13 +49,13 @@ namespace TableTopToolKit
                         {
                             drawingCornerSnappinLine = true;
                         }
-                        
+
                         currentLine = new Line();
                         Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
                         currentLine.X1 = beginning.X;
                         currentLine.Y1 = beginning.Y;
 
-                        source.AddSimpleDrawing(currentLine);
+                        source.StartDrawing(currentLine);
                     }
 
                     if (Keyboard.IsKeyDown(Key.LeftShift))

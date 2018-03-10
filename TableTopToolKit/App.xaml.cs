@@ -12,8 +12,8 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-        
         public enum Controls { SelectNext, SelectPrevious, ToggleGrid, SavePNG, Undo, Redo };
+
         private CanvasDrawings cd;
         private Grid grid;
 
@@ -38,14 +38,6 @@ namespace TableTopToolKit
         {
             switch (control)
             {
-                case Controls.SelectNext:
-                    cd.SelectDrawing();
-                    break;
-
-                case Controls.SelectPrevious:
-                    cd.SelectDrawing(false);
-                    break;
-
                 case Controls.ToggleGrid:
                     grid.ToggleVisibility();
                     break;
@@ -53,9 +45,11 @@ namespace TableTopToolKit
                 case Controls.SavePNG:
                     cd.SaveAsPNG("replace this later");
                     break;
+
                 case Controls.Undo:
                     cd.UndoDrawing();
                     break;
+
                 case Controls.Redo:
                     cd.RedoDrawing();
                     break;

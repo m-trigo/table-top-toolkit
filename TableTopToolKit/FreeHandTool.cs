@@ -60,12 +60,6 @@ namespace TableTopToolKit
                 {
                     startDrawing = false;
                     continueDrawning = false;
-                    Line lineSegment = new Line();
-                    lineSegment.X1 = lastKnownMouseDown.X;
-                    lineSegment.Y1 = lastKnownMouseDown.Y;
-                    lineSegment.X2 = mousePosition.X;
-                    lineSegment.Y2 = mousePosition.Y;
-                    source.EndDrawing(lineSegment);
                 }
             }
         }

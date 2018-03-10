@@ -19,7 +19,7 @@ namespace TableTopToolKit
         {
             try
             {
-                double dpi = 96;;
+                double dpi = 96;
                 RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, dpi, dpi, PixelFormats.Default);
                 canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
                 canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
@@ -28,7 +28,7 @@ namespace TableTopToolKit
                 MemoryStream memStream = new MemoryStream();
 
                 PngBitmapEncoder png = new PngBitmapEncoder();
-                
+
                 png.Frames.Add(BitmapFrame.Create(target));
                 png.Save(memStream);
                 memStream.Close();

@@ -19,12 +19,10 @@ namespace TableTopToolKit
     {
         private Canvas canvas;
         private List<Drawing> drawings;
-        private List<Shape> undoDrawings;
-        private int selectedDrawingIndex;
+        private List<Drawing> undoDrawings;
 
         public Brush backgroundBrush;
         public Brush foregroundBrush;
-        public Brush highlightBrush;
 
         private double backgroundThickness;
         private double foregroundThickness;
@@ -36,11 +34,9 @@ namespace TableTopToolKit
         {
             canvas = source;
             drawings = new List<Drawing>();
-            undoDrawings = new List<Shape>();
-            selectedDrawingIndex = -1;
+            undoDrawings = new List<Drawing>();
             backgroundBrush = Brushes.LightGray;
             foregroundBrush = Brushes.Black;
-            highlightBrush = Brushes.Blue;
             backgroundThickness = 1;
             foregroundThickness = 3;
         }
@@ -59,29 +55,43 @@ namespace TableTopToolKit
             canvas.Children.Add(element);
         }
 
-        public void AddSimpleDrawing(Shape element)
+        public void StartDrawing(Shape element)
         {
             undoDrawings.Clear();
-            drawings.Add(new Drawing(canvas.Children.Count, canvas.Children.Count));
+            drawings.Add(new Drawing(element));
             AddForeGround(element);
         }
 
-        public void StartDrawing(Shape element)
+        public void ContinueDrawing(Shape element)
         {
-
-            drawings.Add(new Drawing(canvas.Children.Count));
+            drawings[drawings.Count - 1].AddToDrawing(element);
             AddForeGround(element);
+        }
+
+        public void UndrawFromCanvas(Drawing drawing)
+        {
+            foreach (Shape shape in drawing.Shapes)
+            {
+                canvas.Children.Remove(shape);
+            }
+        }
+
+        public void DrawToCanvas(Drawing drawing)
+        {
+            foreach (Shape shape in drawing.Shapes)
+            {
+                canvas.Children.Add(shape);
+            }
         }
 
         public void UndoDrawing()
         {
             if (drawings.Count > 0)
             {
-                Shape s = canvas.Children[canvas.Children.Count - 1] as Shape;
-                undoDrawings.Add(s);
-                drawings.RemoveAt(drawings.Count - 1);
-
-                canvas.Children.RemoveAt(canvas.Children.Count - 1);
+                Drawing drawing = drawings[drawings.Count - 1];
+                undoDrawings.Add(drawing);
+                drawings.Remove(drawing);
+                UndrawFromCanvas(drawing);
             }
         }
 
@@ -89,78 +99,10 @@ namespace TableTopToolKit
         {
             if (undoDrawings.Count > 0)
             {
-                drawings.Add(new Drawing(canvas.Children.Count));
-                canvas.Children.Add(undoDrawings[undoDrawings.Count - 1]);
-                undoDrawings.RemoveAt(undoDrawings.Count - 1);
-            }
-        }
-
-        public void ContinueDrawing(Shape element)
-        {
-            AddForeGround(element);
-        }
-
-        public void EndDrawing(Shape element)
-        {
-            AddForeGround(element);
-            drawings[drawings.Count - 1].EndIndex = canvas.Children.Count;
-        }
-
-        public void SelectDrawing(bool reverse = false)
-        {
-            if (drawings.Count > 0)
-            {
-                if (selectedDrawingIndex >= 0)
-                {
-                    UnhightLightDrawing(drawings[selectedDrawingIndex]);
-                }
-
-                if (reverse)
-                {
-                    selectedDrawingIndex--;
-                    if (selectedDrawingIndex < 0)
-                    {
-                        selectedDrawingIndex = drawings.Count - 1;
-                    }
-                }
-                else
-                {
-                    selectedDrawingIndex++;
-                    if (selectedDrawingIndex >= drawings.Count)
-                    {
-                        selectedDrawingIndex = 0;
-                    }
-                }
-
-                HightlightDrawing(drawings[selectedDrawingIndex]);
-            }
-        }
-
-        public void UnhightLightDrawing(Drawing d)
-        {
-            int end = d.EndIndex;
-            if (d.IsComplete() && d.StartIndex == d.EndIndex)
-            {
-                end++;
-            }
-            for (int i = d.StartIndex; i < end; i++)
-            {
-                Line l = canvas.Children[i] as Line;
-                l.Stroke = foregroundBrush;
-            }
-        }
-
-        public void HightlightDrawing(Drawing d)
-        {
-            int end = d.EndIndex;
-            if (d.IsComplete() && d.StartIndex == d.EndIndex)
-            {
-                end++;
-            }
-            for (int i = d.StartIndex; i < end; i++)
-            {
-                Line l = canvas.Children[i] as Line;
-                l.Stroke = highlightBrush;
+                Drawing drawing = undoDrawings[undoDrawings.Count - 1];
+                undoDrawings.Remove(drawing);
+                drawings.Add(drawing);
+                DrawToCanvas(drawing);
             }
         }
 

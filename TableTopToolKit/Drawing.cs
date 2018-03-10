@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
     internal class Drawing
     {
-        public int StartIndex { get; set; }
-        public int EndIndex { get; set; }
+        private List<Shape> shapes;
 
-        public Drawing(int startIndex, int endIndex = -1)
+        public IEnumerable<Shape> Shapes { get => shapes; }
+
+        public Drawing(Shape shape)
         {
-            StartIndex = startIndex;
-            EndIndex = endIndex;
+            shapes = new List<Shape>();
+            shapes.Add(shape);
         }
 
-        public bool IsComplete()
+        public void AddToDrawing(Shape shape)
         {
-            return EndIndex != -1;
+            shapes.Add(shape);
         }
     }
 }
