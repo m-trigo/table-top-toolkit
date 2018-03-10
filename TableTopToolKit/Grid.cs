@@ -90,7 +90,6 @@ namespace TableTopToolKit
         {
             foreach (Line line in GridLines)
             {
-                //line.Stroke = isVisible ? Brushes.Transparent : Brushes.Gray; //TODO: Change to Visibility?
                 line.Visibility = isVisible ? Visibility.Visible : Visibility.Hidden;
             }
 

@@ -39,43 +39,33 @@ namespace TableTopToolKit
             {
                 if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftShift))
+                    if (!drawingGridSnappingLine && !drawingCornerSnappinLine)
                     {
-                        //drawingCornerSnappinLine = false;
-                        if (!drawingGridSnappingLine && !drawingCornerSnappinLine)
+                        if (Keyboard.IsKeyDown(Key.LeftShift))
                         {
                             drawingGridSnappingLine = true;
-
-                            currentLine = new Line();
-                            currentLine.Stroke = Brushes.Red;
-                            Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-                            currentLine.X1 = beginning.X;
-                            currentLine.Y1 = beginning.Y;
-
-                            source.AddSimpleDrawing(currentLine);
                         }
+                        else
+                        {
+                            drawingCornerSnappinLine = true;
+                        }
+                        
+                        currentLine = new Line();
+                        Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+                        currentLine.X1 = beginning.X;
+                        currentLine.Y1 = beginning.Y;
 
-                        currentLine.Stroke = Brushes.Red;
+                        source.AddSimpleDrawing(currentLine);
+                    }
+
+                    if (Keyboard.IsKeyDown(Key.LeftShift))
+                    {
                         Point snapped = grid.SnapToGridLines(new Point(currentLine.X1, currentLine.Y1), new Point(mousePosition.X, mousePosition.Y));
                         currentLine.X2 = snapped.X;
                         currentLine.Y2 = snapped.Y;
                     }
                     else
                     {
-                        if (!drawingCornerSnappinLine && !drawingGridSnappingLine) {
-                            drawingCornerSnappinLine = true;
-
-                            currentLine = new Line();
-
-                            currentLine.Stroke = Brushes.Blue;
-                            Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-                            currentLine.X1 = beginning.X;
-                            currentLine.Y1 = beginning.Y;
-
-                            source.AddSimpleDrawing(currentLine);
-                        }
-
-                        currentLine.Stroke = Brushes.Blue;
                         Point snapped = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
                         currentLine.X2 = snapped.X;
                         currentLine.Y2 = snapped.Y;
