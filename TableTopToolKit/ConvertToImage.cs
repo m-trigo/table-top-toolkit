@@ -19,18 +19,11 @@ namespace TableTopToolKit
         {
             try
             {
-                double dpi = 96d;
-                Rect rect = VisualTreeHelper.GetDescendantBounds(canvas);
+                double dpi = 96;;
                 RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, dpi, dpi, PixelFormats.Default);
+                canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
+                canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
                 target.Render(canvas);
-                DrawingVisual drawing = new DrawingVisual();
-
-                //retrieve drawing context to create a new drawing
-
-                DrawingContext drawingContext = drawing.RenderOpen();
-                VisualBrush brush = new VisualBrush(canvas);
-
-                drawingContext.DrawRectangle(brush, null, new Rect(new Point(), rect.Size));
 
                 MemoryStream memStream = new MemoryStream();
 
