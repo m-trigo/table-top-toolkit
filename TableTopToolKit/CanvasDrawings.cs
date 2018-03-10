@@ -38,11 +38,11 @@ namespace TableTopToolKit
             drawings = new List<Drawing>();
             undoDrawings = new List<Shape>();
             selectedDrawingIndex = -1;
-            backgroundBrush = Brushes.Black;
+            backgroundBrush = Brushes.LightGray;
             foregroundBrush = Brushes.Black;
             highlightBrush = Brushes.Blue;
             backgroundThickness = 1;
-            foregroundThickness = 2;
+            foregroundThickness = 3;
         }
 
         public void AddBackground(Shape element)
@@ -78,7 +78,7 @@ namespace TableTopToolKit
                 Shape s = canvas.Children[canvas.Children.Count - 1] as Shape;
                 undoDrawings.Add(s);
                 drawings.RemoveAt(drawings.Count - 1);
-                
+
                 canvas.Children.RemoveAt(canvas.Children.Count - 1);
             }
         }
@@ -90,7 +90,6 @@ namespace TableTopToolKit
                 drawings.Add(new Drawing(canvas.Children.Count));
                 canvas.Children.Add(undoDrawings[undoDrawings.Count - 1]);
                 undoDrawings.RemoveAt(undoDrawings.Count - 1);
-                
             }
         }
 
