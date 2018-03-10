@@ -18,7 +18,9 @@ namespace TableTopToolKit
         private bool mouseDown;
 
         private Line currentLine;
-        private bool drawingStraightLine;
+
+        private bool drawingCornerSnappinLine;
+        private bool drawingGridSnappingLine;
 
         private Grid grid;
 
@@ -27,7 +29,8 @@ namespace TableTopToolKit
             source = canvasDrawings;
             this.grid = grid;
             mouseDown = false;
-            drawingStraightLine = false;
+            drawingCornerSnappinLine = false;
+            drawingGridSnappingLine = false;
         }
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
@@ -36,21 +39,34 @@ namespace TableTopToolKit
             {
                 if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
                 {
+                    if (!drawingGridSnappingLine && !drawingCornerSnappinLine)
+                    {
+                        if (Keyboard.IsKeyDown(Key.LeftShift))
+                        {
+                            drawingGridSnappingLine = true;
+                        }
+                        else
+                        {
+                            drawingCornerSnappinLine = true;
+                        }
+                        
+                        currentLine = new Line();
+                        Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+                        currentLine.X1 = beginning.X;
+                        currentLine.Y1 = beginning.Y;
+
+                        source.AddSimpleDrawing(currentLine);
+                    }
+
                     if (Keyboard.IsKeyDown(Key.LeftShift))
                     {
-                        if (!drawingStraightLine)
-                        {
-                            drawingStraightLine = true;
-
-                            currentLine = new Line();
-                            Point beginning = grid.SnapToGrid(mousePosition.X, mousePosition.Y);
-                            currentLine.X1 = beginning.X;
-                            currentLine.Y1 = beginning.Y;
-
-                            source.AddSimpleDrawing(currentLine);
-                        }
-
-                        Point snapped = grid.SnapToGrid(mousePosition.X, mousePosition.Y);
+                        Point snapped = grid.SnapToGridLines(new Point(currentLine.X1, currentLine.Y1), new Point(mousePosition.X, mousePosition.Y));
+                        currentLine.X2 = snapped.X;
+                        currentLine.Y2 = snapped.Y;
+                    }
+                    else
+                    {
+                        Point snapped = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
                         currentLine.X2 = snapped.X;
                         currentLine.Y2 = snapped.Y;
                     }
@@ -71,9 +87,13 @@ namespace TableTopToolKit
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (drawingStraightLine)
+            if (drawingCornerSnappinLine)
             {
-                drawingStraightLine = false;
+                drawingCornerSnappinLine = false;
+            }
+            if (drawingGridSnappingLine)
+            {
+                drawingGridSnappingLine = false;
             }
         }
     }
