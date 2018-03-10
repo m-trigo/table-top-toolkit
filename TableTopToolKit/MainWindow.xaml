@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Table Top Toolkit" Width="800" MinWidth="800"  Height="600" MinHeight="600">    
+        Title="Table Top Toolkit" MinWidth="800"  MinHeight="600" MaxHeight="1240" MaxWidth="1754">    
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
