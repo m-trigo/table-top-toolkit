@@ -27,6 +27,11 @@ namespace TableTopToolKit
         public void InitializeGridLines()
         {
             GridLines = new List<Line>();
+            int numberOfHorizonalLines = canvasHeight / step;
+            int numberOfVerticalLines = canvasWidth / step;
+
+            int gridBottom = numberOfHorizonalLines * step;
+            int gridRight = numberOfVerticalLines * step;
 
             for (int xPos = 0; xPos < canvasWidth; xPos += step)
             {
@@ -35,7 +40,7 @@ namespace TableTopToolKit
                 line.Y1 = 0;
 
                 line.X2 = xPos;
-                line.Y2 = canvasWidth;
+                line.Y2 = gridBottom;
 
                 GridLines.Add(line);
             }
@@ -47,7 +52,7 @@ namespace TableTopToolKit
                 line.X1 = 0;
 
                 line.Y2 = yPos;
-                line.X2 = canvasWidth;
+                line.X2 = gridRight;
 
                 GridLines.Add(line);
             }
