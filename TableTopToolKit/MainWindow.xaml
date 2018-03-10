@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Table Top Toolkit" Width="800" MinWidth="800" MaxWidth="800" Height="600"  MaxHeight="600"  MinHeight="600">
+        Title="Table Top Toolkit" Width="800" MinWidth="800"  Height="600" MinHeight="600">    
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
@@ -25,7 +25,7 @@
         </Menu>
         <TextBlock x:Name="Console" DockPanel.Dock="Bottom" Height="20">
         </TextBlock>
-        <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" Width="780" Margin="0,2,0,7">
+        <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" MinWidth="780"  Margin="0,2,0,7">
 
 
             <TabItem Header="Map" Margin="-1,-1,-37,0">
