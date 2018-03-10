@@ -55,7 +55,7 @@ namespace TableTopToolKit
         public void AddForeGround(Shape element)
         {
             element.StrokeThickness = foregroundThickness;
-            element.Stroke = foregroundBrush;
+            //element.Stroke = foregroundBrush;
             canvas.Children.Add(element);
         }
 

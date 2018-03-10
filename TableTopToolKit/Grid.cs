@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -52,9 +53,24 @@ namespace TableTopToolKit
             }
         }
 
-        public Point SnapToGrid(double x, double y)
+        public Point SnapToGridCorners(double x, double y)
         {
             return new Point(SnapCoordToClosest(x), SnapCoordToClosest(y));
+        }
+
+        public Point SnapToGridLines(Point start, Point end)
+        {
+            double dx = end.X - start.X;
+            double dy = end.Y - start.Y;
+
+            if (Math.Abs(dx) < Math.Abs(dy))
+            {
+                return new Point(start.X, SnapCoordToClosest(end.Y));
+            }
+            else
+            {
+                return new Point(SnapCoordToClosest(end.X), start.Y);
+            }
         }
 
         private int SnapCoordToClosest(double coordToSnap)
