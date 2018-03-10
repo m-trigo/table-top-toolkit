@@ -21,7 +21,7 @@ namespace TableTopToolKit
             {
                 double dpi = 96d;
                 Rect rect = VisualTreeHelper.GetDescendantBounds(canvas);
-                RenderTargetBitmap target = new RenderTargetBitmap((int)rect.Width, (int)rect.Height, dpi, dpi, PixelFormats.Default);
+                RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, dpi, dpi, PixelFormats.Default);
                 target.Render(canvas);
                 DrawingVisual drawing = new DrawingVisual();
 
@@ -35,6 +35,7 @@ namespace TableTopToolKit
                 MemoryStream memStream = new MemoryStream();
 
                 PngBitmapEncoder png = new PngBitmapEncoder();
+                
                 png.Frames.Add(BitmapFrame.Create(target));
                 png.Save(memStream);
                 memStream.Close();

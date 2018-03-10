@@ -5,24 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Table Top Toolkit" Width="800" Height="600">
+        Title="Table Top Toolkit" Width="800" MinWidth="800" MaxWidth="800" Height="600"  MaxHeight="600"  MinHeight="600">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
     </Window.Resources>
 
     <DockPanel LastChildFill="True" KeyDown="OnKeyDown">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+
+                <MenuItem Header="_Open"></MenuItem>
+                <MenuItem Header="_New Map"></MenuItem>
+                <MenuItem Header="_Save"></MenuItem>
+                <MenuItem Header="_Save As"></MenuItem>
+                <MenuItem Header="_Print"></MenuItem>
+
+            </MenuItem>
+        </Menu>
         <TextBlock x:Name="Console" DockPanel.Dock="Bottom" Height="20">
         </TextBlock>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible">
-            <Canvas x:Name="Canvas" Width="1754" Height="1240"
+        <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" Width="780" Margin="0,2,0,7">
+
+
+            <TabItem Header="Map" Margin="-1,-1,-37,0">
+                <Grid Background="#FFE5E5E5" Margin="0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Visible" Margin="0,23,0,-2">
+                        <Canvas x:Name="Canvas" Width="1754" Height="1240"
                     Background="White"
                     MouseMove="OnCanvasMouseMove"
                     MouseUp="OnCanvasMouseUp">
-                <Canvas.RenderTransform>
-                    <ScaleTransform x:Name="CanvasScaleTransform" />
-                </Canvas.RenderTransform>
-            </Canvas>
-        </ScrollViewer>
+                            <Canvas.RenderTransform>
+                                <ScaleTransform x:Name="CanvasScaleTransform" />
+                            </Canvas.RenderTransform>
+                        </Canvas>
+                    </ScrollViewer>
+                    <StackPanel HorizontalAlignment="Left" Height="21" Margin="0" VerticalAlignment="Top" Width="774" >
+                        <Button x:Name="button" Content="Toggle Grid" Margin="0,0,704,0" Click="GridToggleBtn_Click"/>
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Print Preview" Margin="40,-1,-78,0">
+                <Grid Background="#FFE5E5E5" Margin="0,-2,0,0"/>
+            </TabItem>
+        </TabControl>
+
+
     </DockPanel>
 </Window>

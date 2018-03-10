@@ -96,5 +96,10 @@ namespace TableTopToolKit
                     break;
             }
         }
+
+        private void GridToggleBtn_Click(object sender, RoutedEventArgs e)
+        {
+            main.Command(App.Controls.ToggleGrid);
+        }
     }
 }
