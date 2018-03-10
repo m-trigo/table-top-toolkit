@@ -20,6 +20,8 @@ namespace TableTopToolKit
         private Canvas canvas;
         private List<Drawing> drawings;
         private List<Shape> undoDrawings;
+        private List<Shape> newDrawings;
+        private List<List<Shape>> allUndos;
         private int selectedDrawingIndex;
 
         public Brush backgroundBrush;
@@ -37,6 +39,8 @@ namespace TableTopToolKit
             canvas = source;
             drawings = new List<Drawing>();
             undoDrawings = new List<Shape>();
+            newDrawings = new List<Shape>();
+            allUndos = new List<List<Shape>>();
             selectedDrawingIndex = -1;
             backgroundBrush = Brushes.LightGray;
             foregroundBrush = Brushes.Black;
@@ -61,19 +65,58 @@ namespace TableTopToolKit
 
         public void AddSimpleDrawing(Shape element)
         {
+            if (undoDrawings.Count > 0)
+                addToAllUndoDrawings();
+            undoDrawings.Clear();
             drawings.Add(new Drawing(canvas.Children.Count, canvas.Children.Count));
             AddForeGround(element);
+            newDrawings.Add(element);
         }
 
         public void StartDrawing(Shape element)
         {
+            if (undoDrawings.Count > 0)
+                addToAllUndoDrawings();
+            undoDrawings.Clear();
             drawings.Add(new Drawing(canvas.Children.Count));
             AddForeGround(element);
+            newDrawings.Add(element);
+        }
+
+        private void addToAllUndoDrawings()
+        {
+            List<Shape> list = new List<Shape>();
+            foreach (Shape item in undoDrawings)
+            {
+                list.Add(item);
+            }
+            allUndos.Add(list);
+            newDrawings.Clear();
         }
 
         public void UndoDrawing()
         {
-            if (drawings.Count > 0)
+            
+            if (newDrawings.Count > 0)
+            {
+                if (drawings.Count > 0)
+                {
+                    Shape s = canvas.Children[canvas.Children.Count - 1] as Shape;
+                    undoDrawings.Add(s);
+                    drawings.RemoveAt(drawings.Count - 1);
+                    canvas.Children.RemoveAt(canvas.Children.Count - 1);
+                    newDrawings.RemoveAt(newDrawings.Count - 1);
+                }
+            }
+            else if (allUndos.Count > 0 && allUndos[allUndos.Count - 1].Count > 0)
+            {
+                int x = allUndos[allUndos.Count - 1].Count - 1;
+                canvas.Children.Add(allUndos[allUndos.Count - 1][x]);
+                drawings.Add(new Drawing(canvas.Children.Count));
+                allUndos[allUndos.Count - 1].RemoveAt(x);
+                
+            }
+            else if (drawings.Count > 0)
             {
                 Shape s = canvas.Children[canvas.Children.Count - 1] as Shape;
                 undoDrawings.Add(s);
@@ -81,16 +124,30 @@ namespace TableTopToolKit
 
                 canvas.Children.RemoveAt(canvas.Children.Count - 1);
             }
+
         }
 
         public void RedoDrawing()
         {
-            if (undoDrawings.Count > 0)
+            if (newDrawings.Count != 0)
             {
-                drawings.Add(new Drawing(canvas.Children.Count));
-                canvas.Children.Add(undoDrawings[undoDrawings.Count - 1]);
-                undoDrawings.RemoveAt(undoDrawings.Count - 1);
+                if (undoDrawings.Count > 0)
+                {
+                    drawings.Add(new Drawing(canvas.Children.Count));
+                    canvas.Children.Add(undoDrawings[undoDrawings.Count - 1]);
+                    undoDrawings.RemoveAt(undoDrawings.Count - 1);
+                }
+                else if (allUndos.Count > 0 && allUndos[allUndos.Count - 1].Count > 0)
+                {
+                    int x = allUndos[allUndos.Count - 1].Count - 1;
+
+                    drawings.Add(new Drawing(canvas.Children.Count));
+                    canvas.Children.Add(allUndos[allUndos.Count - 1][x]);
+                    allUndos[allUndos.Count - 1].RemoveAt(x);
+
+                }
             }
+            
         }
 
         public void ContinueDrawing(Shape element)
@@ -102,6 +159,7 @@ namespace TableTopToolKit
         {
             AddForeGround(element);
             drawings[drawings.Count - 1].EndIndex = canvas.Children.Count;
+            
         }
 
         public void SelectDrawing(bool reverse = false)
