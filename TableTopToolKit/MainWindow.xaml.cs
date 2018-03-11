@@ -87,6 +87,26 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.PrintPreview);
             }
+            else if(button.Equals(ToggleUndoButton))
+            {
+                main.Command(App.Controls.Undo);
+
+            }
+            else if (button.Equals(ToggleRedoButton))
+            {
+                main.Command(App.Controls.Redo);
+
+            }
+            else if (button.Equals(ToggleDrawPencilButton))
+            {
+                main.Command(App.Controls.SelectPencilTool);
+
+            }
+            else if (button.Equals(ToggleDrawLineButton))
+            {
+                main.Command(App.Controls.SelectLineTool);
+
+            }
         }
     }
 }

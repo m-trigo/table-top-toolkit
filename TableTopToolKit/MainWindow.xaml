@@ -32,6 +32,10 @@
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="LightGray">
                         <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
                         <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="ToggleDrawPencilButton" Content="Pencil Draw Tool" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
                     </StackPanel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
