@@ -64,6 +64,10 @@ namespace TableTopToolKit
                 case Controls.Print:
                     cd.Print();
                     break;
+
+                case Controls.PrintPreview:
+                    cd.PrintPreview();
+                    break;
             }
         }
     }

@@ -115,5 +115,10 @@ namespace TableTopToolKit
         {
             ConvertToImage.Print(canvas);
         }
+
+        public void PrintPreview()
+        {
+            ConvertToImage.Preview(canvas);
+        }
     }
 }

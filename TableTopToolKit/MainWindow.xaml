@@ -41,9 +41,9 @@
                     </ScrollViewer>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Print Preview" Margin="40,-1,-78,0">
+            <!--<TabItem Header="Print Preview" Margin="40,-1,-78,0">
                 <Grid Background="#FFE5E5E5" Margin="0,-2,0,0" />
-            </TabItem>
+            </TabItem>-->
         </TabControl>
     </DockPanel>
 </Window>
