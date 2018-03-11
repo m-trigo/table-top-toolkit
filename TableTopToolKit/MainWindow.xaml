@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Table Top Toolkit" MinWidth="800"  MinHeight="600" MaxHeight="1240" MaxWidth="1754">    
+        Title="Table Top Toolkit"
+        Width="800" MinWidth="800" Height="600" MinHeight="600" MaxWidth="1754">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
@@ -19,38 +20,30 @@
                 <MenuItem Header="_New Map"></MenuItem>
                 <MenuItem Header="_Save"></MenuItem>
                 <MenuItem Header="_Save As"></MenuItem>
-                <MenuItem Header="_Print"></MenuItem>
-
+                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
         </Menu>
-        <TextBlock x:Name="Console" DockPanel.Dock="Bottom" Height="20">
-        </TextBlock>
-        <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" MinWidth="780"  Margin="0,2,0,7">
 
+        <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" MinWidth="780">
 
             <TabItem Header="Map" Margin="-1,-1,-37,0">
-                <Grid Background="#FFE5E5E5" Margin="0">
-                    <ScrollViewer HorizontalScrollBarVisibility="Visible" Margin="0,23,0,-2">
+                <DockPanel LastChildFill="True">
+
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="LightGray">
+                        <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
+                    </StackPanel>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
                         <Canvas x:Name="Canvas" Width="1754" Height="1240"
-                    Background="White"
-                    MouseMove="OnCanvasMouseMove"
-                    MouseUp="OnCanvasMouseUp">
-                            <Canvas.RenderTransform>
-                                <ScaleTransform x:Name="CanvasScaleTransform" />
-                            </Canvas.RenderTransform>
+                                    Background="White" MouseMove="OnCanvasMouseMove" MouseUp="OnCanvasMouseUp">
                         </Canvas>
                     </ScrollViewer>
-                    <StackPanel HorizontalAlignment="Left" Height="21" Margin="0" VerticalAlignment="Top" Width="774" >
-                        <Button x:Name="button" Content="Toggle Grid" Margin="0,0,704,0" Click="GridToggleBtn_Click"/>
-                    </StackPanel>
-                </Grid>
-
+                </DockPanel>
             </TabItem>
             <TabItem Header="Print Preview" Margin="40,-1,-78,0">
-                <Grid Background="#FFE5E5E5" Margin="0,-2,0,0"/>
+                <Grid Background="#FFE5E5E5" Margin="0,-2,0,0" />
             </TabItem>
         </TabControl>
-
-
     </DockPanel>
 </Window>

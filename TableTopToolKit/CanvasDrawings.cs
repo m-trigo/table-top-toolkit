@@ -106,9 +106,14 @@ namespace TableTopToolKit
             }
         }
 
-        public void SaveAsPNG(string filename)
+        public void SaveToPNG(string filename)
         {
-            ConvertToImage.createPNG(canvas);
+            ConvertToImage.SaveToPng(canvas);
+        }
+
+        public void Print()
+        {
+            ConvertToImage.Print(canvas);
         }
     }
 }

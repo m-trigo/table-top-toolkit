@@ -12,7 +12,7 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-        public enum Controls { SelectNext, SelectPrevious, ToggleGrid, SavePNG, Undo, Redo };
+        public enum Controls { ToggleGrid, SaveToPng, Undo, Redo, SelectPencilTool, SelectLineTool, Print, PrintPreview };
 
         private CanvasDrawings cd;
         private Grid grid;
@@ -30,7 +30,6 @@ namespace TableTopToolKit
             cd = new CanvasDrawings(canvas);
             grid = new Grid(cd.Width, cd.Height, 30);
             grid.GridLines.ForEach(shape => cd.AddBackground(shape));
-            //CurrentTool = new FreeHandTool(cd);
             CurrentTool = new SnapLineTool(cd, grid);
         }
 
@@ -42,8 +41,8 @@ namespace TableTopToolKit
                     grid.ToggleVisibility();
                     break;
 
-                case Controls.SavePNG:
-                    cd.SaveAsPNG("replace this later");
+                case Controls.SaveToPng:
+                    cd.SaveToPNG("replace this later");
                     break;
 
                 case Controls.Undo:
@@ -52,6 +51,18 @@ namespace TableTopToolKit
 
                 case Controls.Redo:
                     cd.RedoDrawing();
+                    break;
+
+                case Controls.SelectPencilTool:
+                    CurrentTool = new FreeHandTool(cd);
+                    break;
+
+                case Controls.SelectLineTool:
+                    CurrentTool = new SnapLineTool(cd, grid);
+                    break;
+
+                case Controls.Print:
+                    cd.Print();
                     break;
             }
         }

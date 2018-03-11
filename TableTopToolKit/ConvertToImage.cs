@@ -15,7 +15,7 @@ namespace TableTopToolKit
     {
         public const string DATA_PATH = "./";
 
-        public static void createPNG(Canvas canvas)
+        public static void SaveToPng(Canvas canvas)
         {
             try
             {
@@ -40,11 +40,12 @@ namespace TableTopToolKit
             }
         }
 
-        public static void printPreview(Canvas canvas)
+        public static void Print(Canvas canvas)
         {
             PrintDialog pDialog = new PrintDialog();
+            canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
+            canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
             pDialog.ShowDialog();
-
             pDialog.PrintVisual(canvas, "Canvas");
         }
     }
