@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="Print Preview"  Width="877" Height="620">
+         Title="Print Preview" KeyDown="OnKeyDown">
     <Grid>
-        <Image Stretch="Fill" x:Name="ImagePreview" />
+        <Image Width="877" Height="620" x:Name="ImagePreview" Margin="0, 0, 5, 5" />
     </Grid>
 </Window>

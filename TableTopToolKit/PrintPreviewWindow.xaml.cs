@@ -19,7 +19,16 @@ namespace TableTopToolKit
         public PrintPreviewWindow(ImageSource previewImage)
         {
             InitializeComponent();
-            this.ImagePreview.Source = previewImage;
+            ImagePreview.Source = previewImage;
+            SizeToContent = SizeToContent.WidthAndHeight;
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
     }
 }
