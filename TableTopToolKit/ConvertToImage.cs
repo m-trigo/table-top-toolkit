@@ -14,13 +14,13 @@ namespace TableTopToolKit
     public static class ConvertToImage
     {
         public const string DATA_PATH = "./";
+        private const int DPI = 96;
 
         public static void SaveToPng(Canvas canvas)
         {
             try
             {
-                double dpi = 96;
-                RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, dpi, dpi, PixelFormats.Default);
+                RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, DPI, DPI, PixelFormats.Default);
                 canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
                 canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
                 target.Render(canvas);
@@ -40,8 +40,7 @@ namespace TableTopToolKit
 
         public static void Preview(Canvas canvas)
         {
-            double dpi = 96;
-            RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, dpi, dpi, PixelFormats.Default);
+            RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, DPI, DPI, PixelFormats.Default);
             canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
             canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
             target.Render(canvas);
@@ -50,11 +49,17 @@ namespace TableTopToolKit
 
         public static void Print(Canvas canvas)
         {
-            PrintDialog pDialog = new PrintDialog();
+            RenderTargetBitmap target = new RenderTargetBitmap((int)canvas.Width, (int)canvas.Height, DPI, DPI, PixelFormats.Default);
             canvas.Measure(new Size((int)canvas.Width, (int)canvas.Height));
             canvas.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
-            pDialog.ShowDialog();
-            pDialog.PrintVisual(canvas, "Canvas");
+            target.Render(canvas);
+
+            Image image = new Image();
+            image.Measure(new Size((int)canvas.Width, (int)canvas.Height));
+            image.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
+            image.Source = target;
+
+            new PrintDialog().PrintVisual(image, "Canvas");
         }
     }
 }

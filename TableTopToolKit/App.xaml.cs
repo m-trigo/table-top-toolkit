@@ -29,9 +29,8 @@ namespace TableTopToolKit
         {
             cd = new CanvasDrawings(canvas);
             grid = new Grid(cd.Width, cd.Height, 30);
-            grid.ToggleVisibility();
             grid.GridLines.ForEach(shape => cd.AddBackground(shape));
-            CurrentTool = new FreeHandTool(cd);
+            CurrentTool = new SnapLineTool(cd, grid);
         }
 
         public void Command(Controls control)
