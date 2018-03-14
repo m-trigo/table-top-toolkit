@@ -64,11 +64,12 @@ namespace TableTopToolKit
         {
             if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
             {
-                Point startingPoint = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
                 Point endPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
 
-                double dx = endPoint.X - startingPoint.X;
-                double dy = endPoint.Y - startingPoint.Y;
+                if (startVertical != null && Keyboard.IsKeyDown(Key.LeftCtrl))
+                {
+                    endPoint.Y = startVertical.Y1 + Math.Abs(endPoint.X - startVertical.X1);
+                }
 
                 if (continueDrawing)
                 {
@@ -83,6 +84,7 @@ namespace TableTopToolKit
                 }
                 else
                 {
+                    Point startingPoint = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
                     startVertical = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y }; // left
                     startHorizontal = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y }; // top
                     endVertical = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y }; // right
