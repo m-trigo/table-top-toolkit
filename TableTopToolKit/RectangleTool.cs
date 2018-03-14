@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -17,28 +13,30 @@ namespace TableTopToolKit
 
         private Point lastKnownMouseDown;
         private bool mouseDown;
-        private bool continueDrawing;
 
-        private Line startVertical;
-        private Line startHorizontal;
-        private Line endVertical;
-        private Line endHorizontal;
+        private bool keepDrawing;
+
+        private Line left;
+        private Line top;
+        private Line right;
+        private Line bottom;
 
         public RectangleTool(CanvasDrawings canvasDrawings, Grid grid)
         {
             source = canvasDrawings;
             this.grid = grid;
             mouseDown = false;
-            continueDrawing = false;
-            startHorizontal = null;
-            startVertical = null;
-            endHorizontal = null;
-            endVertical = null;
+
+            keepDrawing = false;
+
+            top = null;
+            left = null;
+            bottom = null;
+            right = null;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            lastKnownMouseDown = mousePosition;
             if (mouseEvent.LeftButton == MouseButtonState.Pressed)
             {
                 mouseDown = true;
@@ -47,54 +45,68 @@ namespace TableTopToolKit
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (mouseEvent.LeftButton == MouseButtonState.Released)
-            {
-                mouseDown = false;
-                continueDrawing = false;
-            }
+            keepDrawing = false;
         }
 
-        public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
-        {
-            mouseDown = false;
-            continueDrawing = false;
-        }
+        public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent) { }
+ 
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
+            if (mouseEvent.LeftButton == MouseButtonState.Pressed)
             {
-                Point startingPoint = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
-                Point endPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-
-                double dx = endPoint.X - startingPoint.X;
-                double dy = endPoint.Y - startingPoint.Y;
-
-                if (continueDrawing)
+                if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
                 {
-                    startVertical.Y2 = endPoint.Y;
-                    startHorizontal.X2 = endPoint.X;
-                    endVertical.X1 = endPoint.X;
-                    endVertical.Y1 = endPoint.Y;
-                    endVertical.X2 = endPoint.X;
-                    endHorizontal.X1 = endPoint.X;
-                    endHorizontal.Y1 = endPoint.Y;
-                    endHorizontal.Y2 = endPoint.Y;
+                    if (!keepDrawing)
+                    {
+                        keepDrawing = true;
+
+                        Point startingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+                        Point endPoint = startingPoint;
+
+                        left = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y };
+                        top = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y };
+                        right = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y };
+                        bottom = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y };
+
+                        source.StartDrawing(left);
+                        source.ContinueDrawing(top);
+                        source.ContinueDrawing(right);
+                        source.ContinueDrawing(bottom);
+                    }
+
+
+                    Point currentPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+
+                    double width = currentPoint.X - left.X2;
+                    double height = currentPoint.Y - top.Y2;
+
+                    if (Keyboard.IsKeyDown(Key.LeftShift))
+                    {
+                        if (Math.Abs(width) <= Math.Abs(height))
+                        {
+                            height = width;
+                        }
+                        else
+                        {
+                            width = height;
+                        }
+                    }
+
+                    top.X2 = right.X1 = right.X2 = bottom.X2 = top.X1 + width;
+                    left.Y2 = bottom.Y1 = right.Y2 = bottom.Y2 = top.Y1 + height;
                 }
-                else
-                {
-                    startVertical = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y }; // left
-                    startHorizontal = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y }; // top
-                    endVertical = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y }; // right
-                    endHorizontal = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y }; // bottom
 
-                    source.StartDrawing(startVertical);
-                    source.ContinueDrawing(startHorizontal);
-                    source.ContinueDrawing(endVertical);
-                    source.ContinueDrawing(endHorizontal);
-                    continueDrawing = true;
+                if (!mouseDown)
+                {
+                    mouseDown = true;
                 }
             }
+            else
+            {
+                mouseDown = false;
+            }
+
             lastKnownMouseDown = mousePosition;
         }
     }
