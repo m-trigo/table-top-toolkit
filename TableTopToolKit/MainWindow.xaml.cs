@@ -115,10 +115,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectLineTool);
             }
-            else if (button.Equals(ToggleDrawRectangleButton))
-            {
-                main.Command(App.Controls.SelectRectangleTool);
-            }
+            //else if (button.Equals(ToggleDrawRectangleButton))
+            //{
+            //    main.Command(App.Controls.SelectRectangleTool);
+            //}
         }
     }
 }
