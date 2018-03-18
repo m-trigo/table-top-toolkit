@@ -76,6 +76,10 @@ namespace TableTopToolKit
                 case Key.D2:
                     main.Command(App.Controls.SelectLineTool);
                     break;
+
+                case Key.D3:
+                    main.Command(App.Controls.SelectRectangleTool);
+                    break;
             }
         }
 
@@ -115,10 +119,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectLineTool);
             }
-            //else if (button.Equals(ToggleDrawRectangleButton))
-            //{
-            //    main.Command(App.Controls.SelectRectangleTool);
-            //}
+            else if (button.Equals(ToggleDrawRectangleButton))
+            {
+                main.Command(App.Controls.SelectRectangleTool);
+            }
         }
     }
 }
