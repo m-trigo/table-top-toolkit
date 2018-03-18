@@ -48,8 +48,9 @@ namespace TableTopToolKit
             keepDrawing = false;
         }
 
-        public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent) { }
- 
+        public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
+        {
+        }
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
@@ -75,7 +76,6 @@ namespace TableTopToolKit
                         source.ContinueDrawing(bottom);
                     }
 
-
                     Point currentPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
 
                     double width = currentPoint.X - left.X2;
@@ -91,6 +91,10 @@ namespace TableTopToolKit
                         {
                             width = height;
                         }
+                    }
+                    else if (Keyboard.IsKeyDown(Key.LeftCtrl))
+                    {
+                        height = Math.Abs(width);
                     }
 
                     top.X2 = right.X1 = right.X2 = bottom.X2 = top.X1 + width;
