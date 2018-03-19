@@ -119,6 +119,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectLineTool);
             }
+            else if(button.Equals(ToggleClearCanvas))
+            {
+                main.Command(App.Controls.ClearCanvas);
+            }
             //else if (button.Equals(ToggleDrawRectangleButton))
             //{
             //    main.Command(App.Controls.SelectRectangleTool);

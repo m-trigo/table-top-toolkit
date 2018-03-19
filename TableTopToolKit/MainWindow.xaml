@@ -37,6 +37,7 @@
                         <Button x:Name="ToggleDrawPencilButton" Content="Pencil Draw Tool" Click="ButtonClick" Margin="5" />
                         <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
                         <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle Draw Tool" Click="ButtonClick" Margin="5" />
+                        <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
                     </StackPanel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">

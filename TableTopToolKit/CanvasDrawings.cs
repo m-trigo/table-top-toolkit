@@ -106,6 +106,23 @@ namespace TableTopToolKit
             }
         }
 
+        public void ClearCanvas()
+        {
+
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+
+            if(result == MessageBoxResult.Yes)
+            {
+                foreach (Drawing drawing in drawings)
+                {
+                    UndrawFromCanvas(drawing);
+                    undoDrawings.Clear();
+                }
+                drawings.Clear();
+            }
+            
+        }
+
         public void SaveToPNG(string filename)
         {
             ConvertToImage.SaveToPng(canvas);
