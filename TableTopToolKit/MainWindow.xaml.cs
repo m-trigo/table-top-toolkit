@@ -123,6 +123,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectRectangleTool);
             }
+            else if (button.Equals(ToggleClearCanvas))
+            {
+                main.Command(App.Controls.ClearCanvas);
+            }
         }
     }
 }
