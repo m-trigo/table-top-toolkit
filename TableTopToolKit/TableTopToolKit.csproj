@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CanvasDrawings.cs" />
+    <Compile Include="CanvasState.cs" />
     <Compile Include="ConvertToImage.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingTool.cs" />

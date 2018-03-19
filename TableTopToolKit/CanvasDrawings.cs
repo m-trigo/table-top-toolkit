@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
 namespace TableTopToolKit
 {
     internal class CanvasDrawings
     {
+        private const string AUTO_SAVE_FILE_PATH = "autosave.xml";
+
         private Canvas canvas;
         private List<Drawing> drawings;
         private List<Drawing> undoDrawings;
@@ -121,6 +116,15 @@ namespace TableTopToolKit
             }
         }
 
+        public void RestoreCanvas()
+        {
+            undoDrawings.Clear();
+            foreach (Drawing drawing in drawings)
+            {
+                DrawToCanvas(drawing);
+            }
+        }
+
         public void SaveToPNG(string filename)
         {
             ConvertToImage.SaveToPng(canvas);
@@ -134,6 +138,28 @@ namespace TableTopToolKit
         public void PrintPreview()
         {
             ConvertToImage.Preview(canvas);
+        }
+
+        public void SaveState()
+        {
+            CanvasState canvasState = new CanvasState() { Drawings = drawings };
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
+            using (FileStream file = File.Create(AUTO_SAVE_FILE_PATH))
+            {
+                xmlSerializer.Serialize(file, canvasState);
+            }
+        }
+
+        public void LoadState()
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
+            using (StreamReader file = new StreamReader(AUTO_SAVE_FILE_PATH))
+            {
+                CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
+                drawings = canvasState.Drawings;
+            }
+
+            RestoreCanvas();
         }
     }
 }

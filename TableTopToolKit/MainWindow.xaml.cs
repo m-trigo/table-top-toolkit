@@ -48,7 +48,11 @@ namespace TableTopToolKit
             switch (e.Key)
             {
                 case Key.F1:
-                    main.Command(App.Controls.SaveToPng);
+                    main.Command(App.Controls.AutoSave);
+                    break;
+
+                case Key.F2:
+                    main.Command(App.Controls.LoadPreviousAutoSave);
                     break;
 
                 case Key.Z:

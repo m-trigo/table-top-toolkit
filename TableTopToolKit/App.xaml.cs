@@ -12,7 +12,13 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-        public enum Controls { ToggleGrid, SaveToPng, Undo, Redo, SelectPencilTool, SelectLineTool, SelectRectangleTool, Print, PrintPreview, ClearCanvas };
+        public enum Controls
+        {
+            ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
+            SelectPencilTool, SelectLineTool, SelectRectangleTool,
+            Print, PrintPreview,
+            AutoSave, LoadPreviousAutoSave
+        };
 
         private CanvasDrawings cd;
         private Grid grid;
@@ -72,8 +78,17 @@ namespace TableTopToolKit
                 case Controls.PrintPreview:
                     cd.PrintPreview();
                     break;
+
                 case Controls.ClearCanvas:
                     cd.ClearCanvas();
+                    break;
+
+                case Controls.AutoSave:
+                    cd.SaveState();
+                    break;
+
+                case Controls.LoadPreviousAutoSave:
+                    cd.LoadState();
                     break;
             }
         }
