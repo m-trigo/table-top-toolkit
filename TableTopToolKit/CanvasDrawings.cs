@@ -36,6 +36,11 @@ namespace TableTopToolKit
             foregroundThickness = 3;
         }
 
+        public List<Drawing> Drawings()
+        {
+            return drawings;
+        }
+
         public void AddBackground(Shape element)
         {
             element.StrokeThickness = backgroundThickness;
@@ -107,41 +112,27 @@ namespace TableTopToolKit
             }
         }
 
-        public void Erase(Line eraserRedLine)
+        public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
         {
-            foreach(Drawing drawing in drawings)
-            {
-                foreach(Shape shape in drawing.Shapes)
-                {
-                    Line line = shape as Line;
-                    if(line != null)
-                    {
-                        if ((line.X1 <= eraserRedLine.X1 && eraserRedLine.X2 <= line.X2 && line.Y1 == eraserRedLine.Y1 && line.Y2 == eraserRedLine.Y2) ||
-                           (line.Y1 <= eraserRedLine.Y1 && eraserRedLine.Y2 <= line.Y2 && line.X1 == eraserRedLine.X1 && line.X2 == eraserRedLine.X2))
-                        {
-                            UndoDrawing();
-                            UndrawPartOfDrawingFromCanvas(drawing, line);
+            UndoDrawing();
+            UndrawPartOfDrawingFromCanvas(drawing, original);
 
-                            Line temp1 = new Line();
-                            temp1.X1 = line.X1;
-                            temp1.Y1 = line.Y1;
-                            temp1.X2 = eraserRedLine.X1;
-                            temp1.Y2 = eraserRedLine.Y1;
-                            StartDrawing(temp1);
+            Line temp1 = new Line();
+            temp1.X1 = original.X1;
+            temp1.Y1 = original.Y1;
+            temp1.X2 = eraser.X1;
+            temp1.Y2 = eraser.Y1;
+            StartDrawing(temp1);
 
-                            Line temp2 = new Line();
-                            temp2.X1 = eraserRedLine.X2;
-                            temp2.Y1 = eraserRedLine.Y2;
-                            temp2.X2 = line.X2;
-                            temp2.Y2 = line.Y2;
-                            StartDrawing(temp2);
-                            return;
-                        }
-                    }
-                }
-            }
+            Line temp2 = new Line();
+            temp2.X1 = eraser.X2;
+            temp2.Y1 = eraser.Y2;
+            temp2.X2 = original.X2;
+            temp2.Y2 = original.Y2;
+            StartDrawing(temp2);
+            return;
         }
-
+        
         public void ClearCanvas()
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
