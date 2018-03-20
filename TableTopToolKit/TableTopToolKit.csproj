@@ -67,6 +67,7 @@
     <Compile Include="ConvertToImage.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingTool.cs" />
+    <Compile Include="EraserTool.cs" />
     <Compile Include="PrintPreviewWindow.xaml.cs">
       <DependentUpon>PrintPreviewWindow.xaml</DependentUpon>
     </Compile>

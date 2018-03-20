@@ -71,6 +71,12 @@ namespace TableTopToolKit
             }
         }
 
+        public void UndrawPartOfDrawingFromCanvas(Drawing drawing, Shape shapeToUndraw)
+        {
+            drawing.Shapes.Remove(shapeToUndraw);
+            canvas.Children.Remove(shapeToUndraw);
+        }
+
         public void DrawToCanvas(Drawing drawing)
         {
             foreach (Shape shape in drawing.Shapes)
@@ -98,6 +104,41 @@ namespace TableTopToolKit
                 undoDrawings.Remove(drawing);
                 drawings.Add(drawing);
                 DrawToCanvas(drawing);
+            }
+        }
+
+        public void Erase(Line eraserRedLine)
+        {
+            foreach(Drawing drawing in drawings)
+            {
+                foreach(Shape shape in drawing.Shapes)
+                {
+                    Line line = shape as Line;
+                    if(line != null)
+                    {
+                        if ((line.X1 <= eraserRedLine.X1 && eraserRedLine.X2 <= line.X2 && line.Y1 == eraserRedLine.Y1 && line.Y2 == eraserRedLine.Y2) ||
+                           (line.Y1 <= eraserRedLine.Y1 && eraserRedLine.Y2 <= line.Y2 && line.X1 == eraserRedLine.X1 && line.X2 == eraserRedLine.X2))
+                        {
+                            UndoDrawing();
+                            UndrawPartOfDrawingFromCanvas(drawing, line);
+
+                            Line temp1 = new Line();
+                            temp1.X1 = line.X1;
+                            temp1.Y1 = line.Y1;
+                            temp1.X2 = eraserRedLine.X1;
+                            temp1.Y2 = eraserRedLine.Y1;
+                            StartDrawing(temp1);
+
+                            Line temp2 = new Line();
+                            temp2.X1 = eraserRedLine.X2;
+                            temp2.Y1 = eraserRedLine.Y2;
+                            temp2.X2 = line.X2;
+                            temp2.Y2 = line.Y2;
+                            StartDrawing(temp2);
+                            return;
+                        }
+                    }
+                }
             }
         }
 

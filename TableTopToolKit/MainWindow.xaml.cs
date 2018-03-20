@@ -84,6 +84,11 @@ namespace TableTopToolKit
                 case Key.D3:
                     main.Command(App.Controls.SelectRectangleTool);
                     break;
+
+                case Key.D4:  // maybe come up with a better key?
+                    main.Command(App.Controls.SelectEraserTool);
+                    break;
+
             }
         }
 
