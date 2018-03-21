@@ -74,6 +74,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.Print);
             }
+            if(item.Equals(IconToggleMenuItemButton))
+            {
+                main.Command(App.Controls.ToggleIconView);
+            }
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)
