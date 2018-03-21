@@ -102,9 +102,19 @@ namespace TableTopToolKit
 
                             return true;
                         }
-                        else if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2) // line going like this: /
+                        else if (line.X2 <= x && x <= line.X1 && line.Y1 <= y && y <= line.Y2) // line going like this: /
                         {
+                            double deltaY = line.Y2 - line.Y1;
+                            double deltaX = line.X1 - line.X2;
+                            double angleX = Math.Atan(deltaY / deltaX);
+                            double angleY = Math.Atan(deltaX / deltaY);
 
+                            slopeX = deltaX == 0 ? -1 : Math.Tan(angleX) * -1;
+                            slopeY = deltaY == 0 ? -1 : Math.Tan(angleY) * -1;
+                            lineBeingErased = line;
+                            containingDrawing = drawing;
+
+                            return true;
                         }
                     }
                 }
