@@ -114,12 +114,16 @@ namespace TableTopToolKit
 
         public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
         {
-            string log = "";
-            log += "original: X1:" + original.X1 + " Y1: " + original.Y1 + ", X2: " + original.X2 + ", Y2: " + original.Y2 + "\n";
-            log += "eraser: X1:" + eraser.X1 + " Y1: " + eraser.Y1 + ", X2: " + eraser.X2 + ", Y2: " + eraser.Y2 + "\n";
+            if (eraser.X1 == eraser.X2 && eraser.Y1 == eraser.Y2)
+            {
+                return;
+            }
+
             UndoDrawing();
             UndrawPartOfDrawingFromCanvas(drawing, original);
-            
+
+            bool drawingPartOne = false;
+
             if (original.Y1 < eraser.Y1 || original.Y1 == eraser.Y1 && original.X1 < eraser.X1)
             {
                 Line part1 = new Line();
@@ -130,7 +134,7 @@ namespace TableTopToolKit
                 drawing.Shapes.Add(part1);
                 StartDrawing(part1);
 
-                log += "\npart1: X1:" + part1.X1 + " Y1: " + part1.Y1 + ", X2: " + part1.X2 + ", Y2: " + part1.Y2 + "\n";
+                drawingPartOne = true;
             }
 
             if (eraser.Y2 < original.Y2 || eraser.Y2 == original.Y2 && eraser.X2 < original.X2)
@@ -141,12 +145,16 @@ namespace TableTopToolKit
                 part2.X2 = original.X2;
                 part2.Y2 = original.Y2;
                 drawing.Shapes.Add(part2);
-                ContinueDrawing(part2);
 
-                log += "part1: X1:" + part2.X1 + " Y1: " + part2.Y1 + ", X2: " + part2.X2 + ", Y2: " + part2.Y2 + "\n";
+                if (drawingPartOne)
+                {
+                    ContinueDrawing(part2);
+                }
+                else
+                {
+                    StartDrawing(part2);
+                }
             }
-
-            //MessageBox.Show(log);
         }
         
         public void ClearCanvas()
