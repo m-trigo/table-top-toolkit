@@ -85,12 +85,30 @@ namespace TableTopToolKit
             lastKnownMouseDown = mousePosition;
         }
 
+        public static void StandardizeLineDirection(Line line)
+        {
+            // make the lines go top to bottom
+            if (line.X1 >= line.X2 && line.Y1 >= line.Y2 || line.X1 <= line.X2 && line.Y1 > line.Y2)
+            {
+                double temp = line.X1;
+                line.X1 = line.X2;
+                line.X2 = temp;
+
+                temp = line.Y1;
+                line.Y1 = line.Y2;
+                line.Y2 = temp;
+            }
+        }
+
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
+            StandardizeLineDirection(currentLine);
+
             if (drawingCornerSnappinLine)
             {
                 drawingCornerSnappinLine = false;
             }
+
             if (drawingGridSnappingLine)
             {
                 drawingGridSnappingLine = false;

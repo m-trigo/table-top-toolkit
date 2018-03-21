@@ -88,7 +88,7 @@ namespace TableTopToolKit
                     Line line = shape as Line;  
                     if (line != null)   // if single straight line or part of rectangle
                     {
-                        if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2)
+                        if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2) // line going like this: \
                         {
                             double deltaY = line.Y2 - line.Y1;
                             double deltaX = line.X2 - line.X1;
@@ -101,6 +101,10 @@ namespace TableTopToolKit
                             containingDrawing = drawing;
 
                             return true;
+                        }
+                        else if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2) // line going like this: /
+                        {
+
                         }
                     }
                 }
@@ -131,10 +135,12 @@ namespace TableTopToolKit
         {
             if (placeholderRedLine != null && containingDrawing != null && lineBeingErased != null)
             {
+                SnapLineTool.StandardizeLineDirection(placeholderRedLine);
                 source.EraseLineFromDrawing(containingDrawing, lineBeingErased, placeholderRedLine);
             }
             keepDrawing = false;
             placeholderRedLine = null;
+            lineBeingErased = null;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
