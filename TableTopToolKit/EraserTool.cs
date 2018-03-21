@@ -61,6 +61,11 @@ namespace TableTopToolKit
                     }
 
                     Point snappedContinuingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+                    if (!CanKeepSnapping(snappedContinuingPoint.X, snappedContinuingPoint.Y))
+                    {
+                        return;
+                    }
+
                     snappedContinuingPoint = SnapToLine(lineBeingErased, snappedContinuingPoint.X, snappedContinuingPoint.Y);
                     placeholderRedLine.X2 = snappedContinuingPoint.X;
                     placeholderRedLine.Y2 = snappedContinuingPoint.Y;
@@ -77,6 +82,20 @@ namespace TableTopToolKit
             }
 
             lastKnownMouseDown = mousePosition;
+        }
+
+        public bool CanKeepSnapping(double x, double y)
+        {
+            if (lineBeingErased.X1 <= x && x <= lineBeingErased.X2 && lineBeingErased.Y1 <= y && y <= lineBeingErased.Y2) // line going like this: \
+            {
+                return true;
+            }
+            else if (lineBeingErased.X2 <= x && x <= lineBeingErased.X1 && lineBeingErased.Y1 <= y && y <= lineBeingErased.Y2) // line going like this: /
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool CanSnapToLine(double x, double y)
@@ -145,7 +164,11 @@ namespace TableTopToolKit
         {
             if (placeholderRedLine != null && containingDrawing != null && lineBeingErased != null)
             {
+                log += "line: X1:" + lineBeingErased.X1 + " Y1: " + lineBeingErased.Y1 + ", X2: " + lineBeingErased.X2 + ", Y2: " + lineBeingErased.Y2 + "\n";
+                log += "eraser before: " + placeholderRedLine.X1 + " Y1: " + placeholderRedLine.Y1 + ", X2: " + placeholderRedLine.X2 + ", Y2: " + placeholderRedLine.Y2 + "\n";
                 SnapLineTool.StandardizeLineDirection(placeholderRedLine);
+                log += "eraser after: " + placeholderRedLine.X1 + " Y1: " + placeholderRedLine.Y1 + ", X2: " + placeholderRedLine.X2 + ", Y2: " + placeholderRedLine.Y2 + "\n";
+                //MessageBox.Show(log);
                 source.EraseLineFromDrawing(containingDrawing, lineBeingErased, placeholderRedLine);
             }
             keepDrawing = false;
