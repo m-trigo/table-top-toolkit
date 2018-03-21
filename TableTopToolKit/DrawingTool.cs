@@ -13,5 +13,9 @@ namespace TableTopToolKit
         void MouseMove(Point position, MouseEventArgs mouseEvent);
 
         void MouseUp(Point mousePosition, MouseEventArgs mouseEvent);
+
+        void MouseDown(Point mousePosition, MouseEventArgs mouseEvent);
+
+        void MouseExit(Point mousePosition, MouseEventArgs mouseEvent);
     }
 }

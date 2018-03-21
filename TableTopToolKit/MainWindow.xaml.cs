@@ -31,12 +31,28 @@ namespace TableTopToolKit
             main.CurrentTool.MouseUp(currentPoint, e);
         }
 
+        private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Point currentPoint = e.GetPosition(Canvas);
+            main.CurrentTool.MouseDown(currentPoint, e);
+        }
+
+        private void OnCanvasMouseLeave(object sender, MouseEventArgs e)
+        {
+            Point currentPoint = e.GetPosition(Canvas);
+            main.CurrentTool.MouseExit(currentPoint, e);
+        }
+
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.F1:
-                    main.Command(App.Controls.SaveToPng);
+                    main.Command(App.Controls.AutoSave);
+                    break;
+
+                case Key.F2:
+                    main.Command(App.Controls.LoadPreviousAutoSave);
                     break;
 
                 case Key.Z:
@@ -63,6 +79,10 @@ namespace TableTopToolKit
 
                 case Key.D2:
                     main.Command(App.Controls.SelectLineTool);
+                    break;
+
+                case Key.D3:
+                    main.Command(App.Controls.SelectRectangleTool);
                     break;
             }
         }
@@ -91,25 +111,29 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.PrintPreview);
             }
-            else if(button.Equals(ToggleUndoButton))
+            else if (button.Equals(ToggleUndoButton))
             {
                 main.Command(App.Controls.Undo);
-
             }
             else if (button.Equals(ToggleRedoButton))
             {
                 main.Command(App.Controls.Redo);
-
             }
             else if (button.Equals(ToggleDrawPencilButton))
             {
                 main.Command(App.Controls.SelectPencilTool);
-
             }
             else if (button.Equals(ToggleDrawLineButton))
             {
                 main.Command(App.Controls.SelectLineTool);
-
+            }
+            else if (button.Equals(ToggleDrawRectangleButton))
+            {
+                main.Command(App.Controls.SelectRectangleTool);
+            }
+            else if (button.Equals(ToggleClearCanvas))
+            {
+                main.Command(App.Controls.ClearCanvas);
             }
         }
     }

@@ -63,14 +63,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CanvasDrawings.cs" />
+    <Compile Include="CanvasState.cs" />
     <Compile Include="ConvertToImage.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingTool.cs" />
     <Compile Include="PrintPreviewWindow.xaml.cs">
       <DependentUpon>PrintPreviewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RectangleTool.cs" />
     <Compile Include="SnapLineTool.cs" />
-    <Compile Include="FreeHandTool.cs" />
+    <Compile Include="PencilTool.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

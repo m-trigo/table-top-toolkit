@@ -96,5 +96,13 @@ namespace TableTopToolKit
                 drawingGridSnappingLine = false;
             }
         }
+
+        public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
+        {
+        }
+
+        public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
+        {
+        }
     }
 }
