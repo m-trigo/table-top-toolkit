@@ -16,11 +16,14 @@ namespace TableTopToolKit
 
         private Line lineBeingErased;
         private Drawing containingDrawing;
-        private double slope;
+        private double slopeX;
+        private double slopeY;
 
         private bool keepDrawing;
 
         private Grid grid;
+
+        string log = "";
 
         public EraserTool(CanvasDrawings canvasDrawings, Grid grid)
         {
@@ -38,26 +41,29 @@ namespace TableTopToolKit
                 {
                     if (!keepDrawing)
                     {
-                        keepDrawing = true;
+                        Point snappedStartingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
 
                         placeholderRedLine = new Line();
                         placeholderRedLine.Stroke = Brushes.Red;
 
-                        object beginningObject = SnapToLine(mousePosition.X, mousePosition.Y);
-                        if (beginningObject == null)
+                        if (!CanSnapToLine(snappedStartingPoint.X, snappedStartingPoint.Y))
                         {
                             return;
                         }
-                        Point beginning = (Point)beginningObject;
-                        placeholderRedLine.X1 = beginning.X;
-                        placeholderRedLine.Y1 = beginning.Y;
+
+                        snappedStartingPoint = SnapToLine(lineBeingErased, snappedStartingPoint.X, snappedStartingPoint.Y);
+
+                        placeholderRedLine.X1 = placeholderRedLine.X2 = snappedStartingPoint.X;
+                        placeholderRedLine.Y1 = placeholderRedLine.Y2 = snappedStartingPoint.Y;
 
                         source.StartDrawing(placeholderRedLine);
+                        keepDrawing = true;
                     }
 
-                    Point snapped = SnapToCurrentLine(mousePosition.X, mousePosition.Y);
-                    placeholderRedLine.X2 = snapped.X;
-                    placeholderRedLine.Y2 = snapped.Y;
+                    Point snappedContinuingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
+                    snappedContinuingPoint = SnapToLine(lineBeingErased, snappedContinuingPoint.X, snappedContinuingPoint.Y);
+                    placeholderRedLine.X2 = snappedContinuingPoint.X;
+                    placeholderRedLine.Y2 = snappedContinuingPoint.Y;
                 }
 
                 if (!mouseDown)
@@ -73,7 +79,7 @@ namespace TableTopToolKit
             lastKnownMouseDown = mousePosition;
         }
 
-        public object PointOfLine(double x, double y)
+        public bool CanSnapToLine(double x, double y)
         {
             foreach (Drawing drawing in source.Drawings())
             {
@@ -82,50 +88,53 @@ namespace TableTopToolKit
                     Line line = shape as Line;  
                     if (line != null)   // if single straight line or part of rectangle
                     {
-                        if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && placeholderRedLine.Y2 <= y)
+                        if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2)
                         {
                             double deltaY = line.Y2 - line.Y1;
                             double deltaX = line.X2 - line.X1;
-                            double angle = Math.Atan(deltaY / deltaX);
+                            double angleX = Math.Atan(deltaY / deltaX);
+                            double angleY = Math.Atan(deltaX / deltaY);
 
-                            slope = Math.Tan(angle);
+                            slopeX = deltaX == 0 ? 1 : Math.Tan(angleX);
+                            slopeY = deltaY == 0 ? 1 : Math.Tan(angleY);
                             lineBeingErased = line;
                             containingDrawing = drawing;
 
-                            return SnapToCurrentLine(x, y);
+                            return true;
                         }
                     }
                 }
             }
 
-            return null;
+            return false;
         }
         
-        public Point SnapToCurrentLine(double x, double y)
+        public Point SnapToLine(Line line, double x, double y)
         {
-            Point snappedToGrid = grid.SnapToGridCorners(x, y);
-            // dy = slope*(x - line.X1) 
-            // y = line.Y1 + dy;
-            double dy = slope * (snappedToGrid.X - lineBeingErased.X1);
-            double goodY = lineBeingErased.Y1 + dy;
+            Point snappedToGrid = new Point(x, y);
+            double dy = slopeX * (snappedToGrid.X - line.X1);
+            double dx = slopeY * (snappedToGrid.Y - line.Y1);
 
-            return new Point(snappedToGrid.X, goodY);
-        }
+            if (dx > dy)
+            {
+                snappedToGrid.Y = line.Y1 + dy;
+            }
+            else if (dy > dx)
+            {
+                snappedToGrid.X = line.X1 + dx;
+            }
 
-        public object SnapToLine(double x, double y)
-        {
-            Point snappedToGrid = grid.SnapToGridCorners(x, y);
-            return PointOfLine(snappedToGrid.X, snappedToGrid.Y);
+            return new Point(snappedToGrid.X, snappedToGrid.Y);
         }
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            keepDrawing = false;
-
-            if (placeholderRedLine != null)
+            if (placeholderRedLine != null && containingDrawing != null && lineBeingErased != null)
             {
                 source.EraseLineFromDrawing(containingDrawing, lineBeingErased, placeholderRedLine);
             }
+            keepDrawing = false;
+            placeholderRedLine = null;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)

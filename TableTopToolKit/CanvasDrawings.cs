@@ -116,21 +116,22 @@ namespace TableTopToolKit
         {
             UndoDrawing();
             UndrawPartOfDrawingFromCanvas(drawing, original);
+            
+            Line part1 = new Line();
+            part1.X1 = original.X1;
+            part1.Y1 = original.Y1;
+            part1.X2 = eraser.X1;
+            part1.Y2 = eraser.Y1;
+            drawing.Shapes.Add(part1);
+            StartDrawing(part1);
 
-            Line temp1 = new Line();
-            temp1.X1 = original.X1;
-            temp1.Y1 = original.Y1;
-            temp1.X2 = eraser.X1;
-            temp1.Y2 = eraser.Y1;
-            StartDrawing(temp1);
-
-            Line temp2 = new Line();
-            temp2.X1 = eraser.X2;
-            temp2.Y1 = eraser.Y2;
-            temp2.X2 = original.X2;
-            temp2.Y2 = original.Y2;
-            StartDrawing(temp2);
-            return;
+            Line part2 = new Line();
+            part2.X1 = eraser.X2;
+            part2.Y1 = eraser.Y2;
+            part2.X2 = original.X2;
+            part2.Y2 = original.Y2;
+            drawing.Shapes.Add(part2);
+            ContinueDrawing(part2);
         }
         
         public void ClearCanvas()
