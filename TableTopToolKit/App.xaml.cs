@@ -12,12 +12,14 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
+
+
         public enum Controls
         {
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave
+            AutoSave, LoadPreviousAutoSave, ToggleIconView
         };
 
         private CanvasDrawings cd;
