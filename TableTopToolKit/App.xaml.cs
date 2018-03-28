@@ -19,7 +19,8 @@ namespace TableTopToolKit
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave, ToggleIconView
+            AutoSave, LoadPreviousAutoSave, ToggleIconView,
+            SelectIcon
         };
 
         private CanvasDrawings cd;
@@ -91,6 +92,18 @@ namespace TableTopToolKit
 
                 case Controls.LoadPreviousAutoSave:
                     cd.LoadState();
+                    break;
+                
+            }
+        }
+
+        //second param is for the selected icon
+        public void CommandWithButton(Controls control, Button button)
+        {
+            switch (control)
+            {
+                case Controls.SelectIcon:
+                    CurrentTool = new IconTool(cd, grid, button);
                     break;
             }
         }

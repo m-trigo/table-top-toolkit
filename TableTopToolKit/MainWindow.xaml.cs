@@ -135,6 +135,12 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.ClearCanvas);
             }
+            else if (button.Equals(TestIcon))
+            {
+                main.CommandWithButton(App.Controls.SelectIcon,button);
+                
+            }
         }
+                
     }
 }

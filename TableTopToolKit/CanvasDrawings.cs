@@ -79,6 +79,19 @@ namespace TableTopToolKit
             }
         }
 
+        public void DrawToCanvas(Image image,double x,double y)
+        {
+            Image newImage = new Image();
+            newImage.Source = image.Source;
+            newImage.Width = image.Width;
+            newImage.Height = image.Height;
+
+            Canvas.SetLeft(newImage, x);
+            Canvas.SetTop(newImage, y);
+            canvas.Children.Add(newImage);
+            
+        }
+
         public void UndoDrawing()
         {
             if (drawings.Count > 0)

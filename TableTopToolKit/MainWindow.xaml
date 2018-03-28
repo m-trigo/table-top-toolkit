@@ -32,17 +32,34 @@
 
             <TabItem Header="Map" Margin="-1,-1,-37,0">
                 <DockPanel LastChildFill="True">
-
-                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="LightGray">
-                        <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleDrawPencilButton" Content="Pencil Draw Tool" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle Draw Tool" Click="ButtonClick" Margin="5" />
-                        <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
-                    </StackPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray">
+                            <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil Draw Tool" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle Draw Tool" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
+                        </StackPanel>
+                        <Border Name="Icons" Grid.Row="1"
+                            CornerRadius="6"
+                                BorderBrush="Gray"
+                                BorderThickness="2"
+                                Padding="8">
+                            <StackPanel Orientation="Horizontal"  >
+                                <Button x:Name="TestIcon"  Click="ButtonClick">
+                                    <Image Height="20" Width="20" Name="TestIconImage" Stretch="Fill"  Source="TTTK_Test_Icon.png" IsHitTestVisible="False" />
+                                </Button>
+                                
+                            </StackPanel>
+                        </Border>
+                    </Grid>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
                         <Canvas x:Name="Canvas" Width="1754" Height="1240" Margin="10, 10, 0, 0" Background="White"
