@@ -81,13 +81,18 @@ namespace TableTopToolKit
 
         public void DrawToCanvas(Image image,double x,double y)
         {
-            Image newImage = new Image();
-            newImage.Source = image.Source;
+
+            Rectangle newImage = new Rectangle();
+
             newImage.Width = image.Width;
             newImage.Height = image.Height;
 
             Canvas.SetLeft(newImage, x);
             Canvas.SetTop(newImage, y);
+
+            ImageBrush brush = new ImageBrush(image.Source);
+            newImage.Fill = brush;
+            drawings.Add(new Drawing(newImage));
             canvas.Children.Add(newImage);
             
         }
