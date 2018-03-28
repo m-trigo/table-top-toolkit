@@ -103,7 +103,11 @@ namespace TableTopToolKit
 
         public void ClearCanvas()
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBoxResult.Yes;
+            if (drawings.Count > 0)
+            {
+                result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+            }
 
             if (result == MessageBoxResult.Yes)
             {
@@ -118,11 +122,11 @@ namespace TableTopToolKit
 
         public void RestoreCanvas()
         {
-            undoDrawings.Clear();
             foreach (Drawing drawing in drawings)
             {
                 DrawToCanvas(drawing);
             }
+            undoDrawings.Clear();
         }
 
         public void SaveToPNG(string filename)
@@ -142,6 +146,11 @@ namespace TableTopToolKit
 
         public void SaveState()
         {
+            if (drawings.Count == 0)
+            {
+                return;
+            }
+
             CanvasState canvasState = new CanvasState() { Drawings = drawings };
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
             using (FileStream file = File.Create(AUTO_SAVE_FILE_PATH))
@@ -152,6 +161,7 @@ namespace TableTopToolKit
 
         public void LoadState()
         {
+            ClearCanvas();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
             using (StreamReader file = new StreamReader(AUTO_SAVE_FILE_PATH))
             {

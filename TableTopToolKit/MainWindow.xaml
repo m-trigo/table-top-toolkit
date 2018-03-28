@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Table Top Toolkit"
+        Title="Table Top Toolkit" Closed="Window_Closed"
         Width="800" MinWidth="800" Height="600" MinHeight="600" MaxWidth="1754">
 
     <Window.Resources>
@@ -15,15 +15,14 @@
     <DockPanel LastChildFill="True" KeyDown="OnKeyDown">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-
                 <MenuItem Header="_Open"></MenuItem>
                 <MenuItem Header="_New Map"></MenuItem>
                 <MenuItem Header="_Save"></MenuItem>
                 <MenuItem Header="_Save As"></MenuItem>
                 <MenuItem Header="_Print" x:Name="PrintMenuItemButton"></MenuItem>
+                <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
             <MenuItem Header="_View">
-
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleMenuItemButton"></MenuItem>
             </MenuItem>
         </Menu>

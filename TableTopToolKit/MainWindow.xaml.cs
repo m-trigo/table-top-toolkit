@@ -94,9 +94,13 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.Print);
             }
-            if(item.Equals(IconToggleMenuItemButton))
+            else if (item.Equals(IconToggleMenuItemButton))
             {
                 main.Command(App.Controls.ToggleIconView);
+            }
+            else if (item.Equals(RestoreLastSessionButton))
+            {
+                main.Command(App.Controls.LoadPreviousAutoSave);
             }
         }
 
@@ -135,6 +139,11 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.ClearCanvas);
             }
+        }
+
+        private void Window_Closed(object sender, System.EventArgs e)
+        {
+            main.Command(App.Controls.AutoSave);
         }
     }
 }
