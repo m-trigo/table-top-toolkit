@@ -102,6 +102,14 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.LoadPreviousAutoSave);
             }
+            else if (item.Equals(SaveAs))
+            {
+                main.Command(App.Controls.SaveAs);
+            }
+            else if (item.Equals(LoadFile))
+            {
+                main.Command(App.Controls.LoadFile);
+            }
         }
 
         private void ButtonClick(object sender, RoutedEventArgs e)

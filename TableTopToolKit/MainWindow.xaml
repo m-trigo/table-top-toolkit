@@ -15,12 +15,13 @@
     <DockPanel LastChildFill="True" KeyDown="OnKeyDown">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open"></MenuItem>
+                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="_New Map"></MenuItem>
                 <MenuItem Header="_Save"></MenuItem>
-                <MenuItem Header="_Save As"></MenuItem>
+                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="_Print" x:Name="PrintMenuItemButton"></MenuItem>
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick"></MenuItem>
+                
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleMenuItemButton"></MenuItem>

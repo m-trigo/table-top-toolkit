@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -170,6 +172,40 @@ namespace TableTopToolKit
             }
 
             RestoreCanvas();
+        }
+
+        public void SaveAs()
+        {
+
+            XmlSerializer writer = new XmlSerializer(typeof(CanvasState));
+            CanvasState canvasState = new CanvasState() { Drawings = drawings };
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            saveDialog.ShowDialog();
+            if (saveDialog.FileName != "")
+            {
+                using (FileStream file = System.IO.File.Create(saveDialog.FileName))
+                {
+                    writer.Serialize(file, canvasState);
+                }
+            }
+        }
+
+        public void LoadFile()
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            openFile.ShowDialog();
+            XmlSerializer reader = new XmlSerializer(typeof(CanvasState));
+            if (openFile.FileName != "")
+            {
+                using (StreamReader file = new StreamReader(openFile.FileName))
+                {
+                    CanvasState cs = (CanvasState)reader.Deserialize(file);
+                    drawings = cs.Drawings;
+                    file.Close();
+                }
+            }
         }
     }
 }

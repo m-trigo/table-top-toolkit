@@ -19,7 +19,7 @@ namespace TableTopToolKit
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave, ToggleIconView
+            AutoSave, LoadPreviousAutoSave, ToggleIconView, SaveAs, LoadFile
         };
 
         private CanvasDrawings cd;
@@ -91,6 +91,12 @@ namespace TableTopToolKit
 
                 case Controls.LoadPreviousAutoSave:
                     cd.LoadState();
+                    break;
+                case Controls.SaveAs:
+                    cd.SaveAs();
+                    break;
+                case Controls.LoadFile:
+                    cd.LoadFile();
                     break;
             }
         }
