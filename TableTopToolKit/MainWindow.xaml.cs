@@ -16,6 +16,7 @@ namespace TableTopToolKit
         private App main;
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         public ObservableCollection<Image> Icons { get; private set; }
+        private Point startDragMousePosition;
 
         public MainWindow()
         {
@@ -198,6 +199,37 @@ namespace TableTopToolKit
         private void Window_Closed(object sender, System.EventArgs e)
         {
             main.Command(App.Controls.AutoSave);
+        }
+
+        private void OnIconListPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            startDragMousePosition = e.GetPosition(null); // absolute
+        }
+
+        private void OnIconListMouseMove(object sender, MouseEventArgs e)
+        {
+            Point mousePosition = e.GetPosition(null); // absolute
+            Vector mouseDragDistance = mousePosition - startDragMousePosition;
+            double adx = Math.Abs(mouseDragDistance.X);
+            double ady = Math.Abs(mouseDragDistance.Y);
+            if (e.LeftButton == MouseButtonState.Pressed
+            && (adx > SystemParameters.MinimumHorizontalDragDistance || ady > SystemParameters.MinimumVerticalDragDistance))
+            {
+                ListBox iconList = sender as ListBox;
+                object selectedItem = iconList.SelectedItem;
+                DataObject target = new DataObject(typeof(Image), selectedItem);
+                DragDrop.DoDragDrop(iconList, target, DragDropEffects.Copy);
+            }
+        }
+
+        private void OnIconDragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(typeof(Image)))
+            {
+                Image icon = e.Data.GetData(typeof(Image)) as Image;
+                Point dropPosition = e.GetPosition(Canvas);
+                main.PlaceIcon(dropPosition, icon);
+            }
         }
     }
 }
