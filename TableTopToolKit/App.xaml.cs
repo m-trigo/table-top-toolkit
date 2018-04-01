@@ -102,6 +102,16 @@ namespace TableTopToolKit
             }
         }
 
+        public void PlaceIcon(Point position, Image icon)
+        {
+            Image iconCopy = new Image();
+            iconCopy.Source = icon.Source;
+            iconCopy.Height = grid.SquareSize;
+            iconCopy.Width = grid.SquareSize;
+            Point snapped = grid.SnapToGridCorners(position.X - grid.SquareSize / 2, position.Y - grid.SquareSize / 2);
+            cd.DrawToCanvas(iconCopy, snapped.X, snapped.Y);
+        }
+
         //second param is for the selected icon
         public void CommandWithButton(Controls control, Image icon)
         {
