@@ -81,6 +81,11 @@ namespace TableTopToolKit
 
         public static void StandardizeLineDirection(Line line)
         {
+            if (line == null)
+            {
+                return;
+            }
+
             // make the lines go top to bottom
             if (line.X1 >= line.X2 && line.Y1 >= line.Y2 || line.X1 <= line.X2 && line.Y1 > line.Y2)
             {
