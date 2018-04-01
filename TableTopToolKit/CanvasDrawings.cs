@@ -81,9 +81,8 @@ namespace TableTopToolKit
             }
         }
 
-        public void DrawToCanvas(Image image,double x,double y)
+        public void DrawToCanvas(Image image, double x, double y)
         {
-
             Rectangle newImage = new Rectangle();
 
             newImage.Width = image.Width;
@@ -96,7 +95,6 @@ namespace TableTopToolKit
             newImage.Fill = brush;
             drawings.Add(new Drawing(newImage));
             canvas.Children.Add(newImage);
-            
         }
 
         public void UndoDrawing()
@@ -164,7 +162,7 @@ namespace TableTopToolKit
             ConvertToImage.Preview(canvas);
         }
 
-        public void SaveState()
+        public void SaveState(string filePath = AUTO_SAVE_FILE_PATH)
         {
             if (drawings.Count == 0)
             {
@@ -173,17 +171,23 @@ namespace TableTopToolKit
 
             CanvasState canvasState = new CanvasState() { Drawings = drawings };
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (FileStream file = File.Create(AUTO_SAVE_FILE_PATH))
+            using (FileStream file = File.Create(filePath))
             {
                 xmlSerializer.Serialize(file, canvasState);
             }
         }
 
-        public void LoadState()
+        public void LoadState(string filePath = AUTO_SAVE_FILE_PATH)
         {
             ClearCanvas();
+
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (StreamReader file = new StreamReader(AUTO_SAVE_FILE_PATH))
+            using (StreamReader file = new StreamReader(filePath))
             {
                 CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
                 drawings = canvasState.Drawings;
@@ -194,18 +198,14 @@ namespace TableTopToolKit
 
         public void SaveAs()
         {
-
-            XmlSerializer writer = new XmlSerializer(typeof(CanvasState));
-            CanvasState canvasState = new CanvasState() { Drawings = drawings };
             SaveFileDialog saveDialog = new SaveFileDialog();
             saveDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            saveDialog.ShowDialog();
-            if (saveDialog.FileName != "")
+            saveDialog.AddExtension = true;
+            saveDialog.DefaultExt = ".xml";
+            saveDialog.Filter = "XML File|*.xml";
+            if (saveDialog.ShowDialog() == true)
             {
-                using (FileStream file = System.IO.File.Create(saveDialog.FileName))
-                {
-                    writer.Serialize(file, canvasState);
-                }
+                SaveState(saveDialog.SafeFileName);
             }
         }
 
@@ -213,16 +213,10 @@ namespace TableTopToolKit
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            openFile.ShowDialog();
-            XmlSerializer reader = new XmlSerializer(typeof(CanvasState));
-            if (openFile.FileName != "")
+            openFile.Filter = "XML File|*xml";
+            if (openFile.ShowDialog() == true)
             {
-                using (StreamReader file = new StreamReader(openFile.FileName))
-                {
-                    CanvasState cs = (CanvasState)reader.Deserialize(file);
-                    drawings = cs.Drawings;
-                    file.Close();
-                }
+                LoadState(openFile.SafeFileName);
             }
         }
     }
