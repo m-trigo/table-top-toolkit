@@ -12,14 +12,13 @@ namespace TableTopToolKit
 {
     public partial class App : Application
     {
-
-
         public enum Controls
         {
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave, ToggleIconView, SaveAs, LoadFile
+            AutoSave, LoadPreviousAutoSave, ToggleIconView, SaveAs, LoadFile,
+            SelectIcon
         };
 
         private CanvasDrawings cd;
@@ -36,7 +35,7 @@ namespace TableTopToolKit
         public void InitializeCanvasDrawing(Canvas canvas)
         {
             cd = new CanvasDrawings(canvas);
-            grid = new Grid(cd.Width, cd.Height, 30);
+            grid = new Grid(cd.Width, cd.Height, 64);
             grid.GridLines.ForEach(shape => cd.AddBackground(shape));
             CurrentTool = new SnapLineTool(cd, grid);
         }
@@ -92,11 +91,24 @@ namespace TableTopToolKit
                 case Controls.LoadPreviousAutoSave:
                     cd.LoadState();
                     break;
+
                 case Controls.SaveAs:
                     cd.SaveAs();
                     break;
+
                 case Controls.LoadFile:
                     cd.LoadFile();
+                    break;
+            }
+        }
+
+        //second param is for the selected icon
+        public void CommandWithButton(Controls control, Image icon)
+        {
+            switch (control)
+            {
+                case Controls.SelectIcon:
+                    CurrentTool = new IconTool(cd, grid, icon);
                     break;
             }
         }
