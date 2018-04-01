@@ -74,6 +74,7 @@ namespace TableTopToolKit
 
                 case Controls.SelectEraserTool:
                     CurrentTool = new EraserTool(cd, grid);
+                    //CurrentTool = new AltEraserTool(cd, grid);
                     break;
 
                 case Controls.Print:

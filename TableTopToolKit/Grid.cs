@@ -15,6 +15,8 @@ namespace TableTopToolKit
 
         public int SquareSize { get => step; }
         public List<Line> GridLines { private set; get; }
+        private double MaxX { get => GridLines[GridLines.Count - 1].X2; }
+        private double MaxY { get => GridLines[GridLines.Count - 1].Y2; }
 
         public Grid(int width, int height, int step)
         {
@@ -100,6 +102,43 @@ namespace TableTopToolKit
             }
 
             isVisible = !isVisible;
+        }
+
+        public Line ClosestGridLine(double x, double y)
+        {
+            if (x > MaxX)
+            {
+                x = MaxX;
+            }
+
+            if (y > MaxY)
+            {
+                y = MaxY;
+            }
+
+            Point closePoint = SnapToGridCorners(x, y);
+            double dx = x - closePoint.X;
+            double dy = y - closePoint.Y;
+
+            double dxStep = dx == 0 ? step : (dx / Math.Abs(dx)) * step;
+            double dyStep = dy == 0 ? step : (dy / Math.Abs(dy)) * step;
+
+            if (dx == 0 && dy == 0)
+            {
+                return new Line();
+            }
+
+            Point farPoint = (Math.Abs(dx) < Math.Abs(dy))
+                ? new Point() { X = closePoint.X, Y = closePoint.Y + dyStep }
+                : new Point() { X = closePoint.X + dxStep, Y = closePoint.Y };
+
+            return new Line()
+            {
+                X1 = closePoint.X,
+                Y1 = closePoint.Y,
+                X2 = farPoint.X,
+                Y2 = farPoint.Y
+            };
         }
     }
 }

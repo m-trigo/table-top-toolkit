@@ -57,6 +57,16 @@ namespace TableTopToolKit
             canvas.Children.Add(element);
         }
 
+        public void RenderInCanvas(Shape element)
+        {
+            canvas.Children.Add(element);
+        }
+
+        public void UnRenderFromCanvas(Shape element)
+        {
+            canvas.Children.Remove(element);
+        }
+
         public void StartDrawing(Shape element)
         {
             undoDrawings.Clear();
@@ -174,7 +184,7 @@ namespace TableTopToolKit
                 }
             }
         }
-        
+
         public void ClearCanvas()
         {
             MessageBoxResult result = MessageBoxResult.Yes;
