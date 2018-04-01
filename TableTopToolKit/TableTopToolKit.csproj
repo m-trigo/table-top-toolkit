@@ -127,12 +127,14 @@
     <Resource Include="imgs\icons\stairs4.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="imgs\icons\doorway0.png" />
     <Resource Include="imgs\icons\doorway1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\doorway2.png" />
     <Resource Include="imgs\icons\doorway3.png" />
     <Resource Include="imgs\icons\doorway4.png" />
+    <Resource Include="imgs\icons\doorway5.png" />
+    <Resource Include="imgs\icons\doorway6.png" />
+    <Resource Include="imgs\icons\doorway7.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
