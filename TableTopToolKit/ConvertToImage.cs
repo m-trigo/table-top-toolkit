@@ -59,7 +59,11 @@ namespace TableTopToolKit
             image.Arrange(new Rect(new Size((int)canvas.Width, (int)canvas.Height)));
             image.Source = target;
 
-            new PrintDialog().PrintVisual(image, "Canvas");
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDialog.PrintVisual(image, "Canvas");
+            }
         }
     }
 }
