@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -90,6 +92,22 @@ namespace TableTopToolKit
             }
         }
 
+        public void DrawToCanvas(Image image, double x, double y)
+        {
+            Rectangle newImage = new Rectangle();
+
+            newImage.Width = image.Width;
+            newImage.Height = image.Height;
+
+            Canvas.SetLeft(newImage, x);
+            Canvas.SetTop(newImage, y);
+
+            ImageBrush brush = new ImageBrush(image.Source);
+            newImage.Fill = brush;
+            drawings.Add(new Drawing(newImage));
+            canvas.Children.Add(newImage);
+        }
+
         public void UndoDrawing()
         {
             if (drawings.Count > 0)
@@ -159,7 +177,11 @@ namespace TableTopToolKit
         
         public void ClearCanvas()
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBoxResult.Yes;
+            if (drawings.Count > 0)
+            {
+                result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+            }
 
             if (result == MessageBoxResult.Yes)
             {
@@ -174,11 +196,11 @@ namespace TableTopToolKit
 
         public void RestoreCanvas()
         {
-            undoDrawings.Clear();
             foreach (Drawing drawing in drawings)
             {
                 DrawToCanvas(drawing);
             }
+            undoDrawings.Clear();
         }
 
         public void SaveToPNG(string filename)
@@ -196,26 +218,62 @@ namespace TableTopToolKit
             ConvertToImage.Preview(canvas);
         }
 
-        public void SaveState()
+        public void SaveState(string filePath = AUTO_SAVE_FILE_PATH)
         {
+            if (drawings.Count == 0)
+            {
+                return;
+            }
+
             CanvasState canvasState = new CanvasState() { Drawings = drawings };
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (FileStream file = File.Create(AUTO_SAVE_FILE_PATH))
+            using (FileStream file = File.Create(filePath))
             {
                 xmlSerializer.Serialize(file, canvasState);
             }
         }
 
-        public void LoadState()
+        public void LoadState(string filePath = AUTO_SAVE_FILE_PATH)
         {
+            ClearCanvas();
+
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (StreamReader file = new StreamReader(AUTO_SAVE_FILE_PATH))
+            using (StreamReader file = new StreamReader(filePath))
             {
                 CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
                 drawings = canvasState.Drawings;
             }
 
             RestoreCanvas();
+        }
+
+        public void SaveAs()
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            saveDialog.AddExtension = true;
+            saveDialog.DefaultExt = ".xml";
+            saveDialog.Filter = "XML File|*.xml";
+            if (saveDialog.ShowDialog() == true)
+            {
+                SaveState(saveDialog.SafeFileName);
+            }
+        }
+
+        public void LoadFile()
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            openFile.Filter = "XML File|*xml";
+            if (openFile.ShowDialog() == true)
+            {
+                LoadState(openFile.SafeFileName);
+            }
         }
     }
 }
