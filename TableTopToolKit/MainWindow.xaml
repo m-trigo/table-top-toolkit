@@ -19,7 +19,7 @@
                 <MenuItem Header="_New Map"></MenuItem>
                 <MenuItem Header="_Save"></MenuItem>
                 <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick"></MenuItem>
-                <MenuItem Header="_Print" x:Name="PrintMenuItemButton"></MenuItem>
+                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
             </MenuItem>
             <MenuItem Header="_View">
