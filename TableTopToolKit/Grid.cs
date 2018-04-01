@@ -13,6 +13,7 @@ namespace TableTopToolKit
         private int step;
         private bool isVisible;
 
+        public int SquareSize { get => step; }
         public List<Line> GridLines { private set; get; }
 
         public Grid(int width, int height, int step)

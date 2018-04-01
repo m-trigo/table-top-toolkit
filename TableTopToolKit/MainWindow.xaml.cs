@@ -1,7 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace TableTopToolKit
@@ -9,14 +14,43 @@ namespace TableTopToolKit
     public partial class MainWindow : Window
     {
         private App main;
+        private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
+        public ObservableCollection<Image> Icons { get; private set; }
 
         public MainWindow()
         {
             InitializeComponent();
-            main = Application.Current as App;
-            main.InitializeCanvasDrawing(Canvas);
+            this.Loaded += MainWindow_Loaded;
+        }
 
+        private void LoadIconImages()
+        {
+            List<Image> iconImages = new List<Image>();
+            string[] imagePaths = Directory.GetFiles(ICON_IMAGES_DIRECTORY);
+            foreach (string imagePath in imagePaths)
+            {
+                BitmapImage bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(imagePath, UriKind.Relative);
+                bmp.EndInit();
+                Image image = new Image
+                {
+                    Source = bmp,
+                    Height = 32,
+                    Width = 32
+                };
+                iconImages.Add(image);
+            }
+            Icons = new ObservableCollection<Image>(iconImages);
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            main = Application.Current as App;
+            DataContext = this;
+            LoadIconImages();
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            main.InitializeCanvasDrawing(Canvas);
         }
 
         private void OnCanvasMouseMove(object sender, MouseEventArgs e)
@@ -139,10 +173,13 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.ClearCanvas);
             }
-            else if (button.Equals(TestIcon))
-            {
-                main.CommandWithButton(App.Controls.SelectIcon,button);
-            }
+        }
+
+        private void IconListButtonClick(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            Image icon = button.Content as Image;
+            main.CommandWithButton(App.Controls.SelectIcon, icon);
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
