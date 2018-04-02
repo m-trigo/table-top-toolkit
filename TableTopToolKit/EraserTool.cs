@@ -16,14 +16,21 @@ namespace TableTopToolKit
 
         private Point lastKnownMouseDown;
         private Line eraserLine;
-        private Line redLine;
         private bool drawing;
         
+        private Line redLine;
+        private Drawing erasedDrawing;
+        private Line erasedSegment;
+
         public EraserTool(CanvasDrawings canvasDrawings, Grid grid)
         {
             source = canvasDrawings;
             this.grid = grid;
+
             drawing = false;
+            erasedDrawing = null;
+            erasedSegment = null;
+            redLine = null;
         }
         
         public Point ClosetPointToCoordiante(double x, double y, Point a, Point b)
@@ -80,12 +87,14 @@ namespace TableTopToolKit
 
                         double slope = (end.Y - start.Y) / (end.X - start.X);
                         
-                        for(double lineX = start.X; lineX < end.X; lineX += grid.SquareSize)
+                        for(double lineX = start.X; lineX <= end.X; lineX += grid.SquareSize)
                         {
                             double lineY = start.Y + slope * (lineX - start.X);
+                            
                             Point point = new Point() { X = lineX, Y = lineY };
                             if (ClosetPointToCoordiante(x, y, point, closest).Equals(point))
                             {
+                                //point.Y = Math.Round(point.Y);
                                 closest = point;
                             }
                         }
@@ -105,12 +114,13 @@ namespace TableTopToolKit
 
                         slope = 1 / slope; // safe because of [1]
 
-                        for (double lineY = start.Y; lineY < end.Y; lineY += grid.SquareSize)
+                        for (double lineY = start.Y; lineY <= end.Y; lineY += grid.SquareSize)
                         {
                             double lineX = start.X + slope * (lineY - start.Y);
                             Point point = new Point() { X = lineX, Y = lineY };
                             if (ClosetPointToCoordiante(x, y, point, closest).Equals(point))
                             {
+                                //point.X = Math.Round(point.X);
                                 closest = point;
                             }
                         }
@@ -133,7 +143,7 @@ namespace TableTopToolKit
             double slope = (rhs.Y - lhs.Y) / (rhs.X - lhs.X);
             return Math.Abs(targetSlope - slope) < SLOPE_EPSILON;
         }
-
+        
         public Line SuperSection(Line a, Line b)
         {
             bool isAVertical = Math.Abs(a.X1 - a.X2) < Double.Epsilon;
@@ -152,8 +162,7 @@ namespace TableTopToolKit
                     };
 
                     points.Sort((lhs, rhs) => { return (int)(lhs.Y - rhs.Y); });
-
-
+                    
                     if (a.Y2 < a.Y1)
                     {
                         double temp = a.X1;
@@ -263,14 +272,27 @@ namespace TableTopToolKit
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
+            if (eraserLine != null)
+            {
+                source.UnRenderFromCanvas(eraserLine);
+            }
+
+            if (redLine != null)
+            {
+                source.UnRenderFromCanvas(redLine);
+            }
+
             Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
             double adx = Math.Abs(mouseDragDistance.X);
             double ady = Math.Abs(mouseDragDistance.Y);
             if (mouseEvent.LeftButton == MouseButtonState.Pressed
             && (adx > SystemParameters.MinimumHorizontalDragDistance || ady > SystemParameters.MinimumVerticalDragDistance))
             {
-                Point start = ClosestInterestPoint(lastKnownMouseDown.X, lastKnownMouseDown.Y);
-                Point end = ClosestInterestPoint(mousePosition.X, mousePosition.Y);
+                //Point start = ClosestInterestPoint(lastKnownMouseDown.X, lastKnownMouseDown.Y);
+                //Point end = ClosestInterestPoint(mousePosition.X, mousePosition.Y);
+
+                Point start = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
+                Point end = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
 
                 if (start.Equals(end))
                 {
@@ -286,9 +308,8 @@ namespace TableTopToolKit
                         X2 = end.X,
                         Y2 = end.Y,
                         Stroke = Brushes.LightPink,
-                        StrokeThickness = 4
+                        StrokeThickness = 5
                     };
-                    source.RenderInCanvas(eraserLine);
                     drawing = true;
                 }
                 else
@@ -298,10 +319,11 @@ namespace TableTopToolKit
                     eraserLine.X2 = end.X;
                     eraserLine.Y2 = end.Y;
                 }
-                
+
+                source.RenderInCanvas(eraserLine);
+
                 Line intersection = null;
-                Drawing erasedDrawing = null;
-                Shape erasedShape = null;
+
                 foreach (Drawing drawing in source.Drawings())
                 {
                     foreach (Shape shape in drawing.Shapes)
@@ -313,24 +335,25 @@ namespace TableTopToolKit
 
                         Line line = shape as Line;
                         Line inter = SuperSection(eraserLine, line);
+
+                        bool replaced = false;
                         if (intersection == null)
                         {
                             intersection = inter;
-                            erasedDrawing = drawing;
-                            erasedShape = shape;
+                            replaced = true;
                         }
                         else if (inter != null && LineLengthSquared(inter) > LineLengthSquared(intersection))
                         {
                             intersection = inter;
+                            replaced = true;
+                        }
+
+                        if (replaced)
+                        {
                             erasedDrawing = drawing;
-                            erasedShape = shape;
+                            erasedSegment = line;
                         }
                     }
-                }
-
-                if (redLine != null)
-                {
-                    source.UnRenderFromCanvas(redLine);
                 }
 
                 if (intersection != null)
@@ -340,19 +363,47 @@ namespace TableTopToolKit
                     redLine.Stroke = Brushes.Red;
                     source.RenderInCanvas(redLine);
                 }
+                else
+                {
+                    erasedDrawing = null;
+                    erasedSegment = null;
+                    redLine = null;
+                }
             }
         }
         
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
+            if (redLine != null && erasedDrawing != null && erasedSegment != null)
+            {
+                source.EraseLineFromDrawing(erasedDrawing, erasedSegment, redLine);
+            }
+
             drawing = false;
             source.UnRenderFromCanvas(eraserLine);
             source.UnRenderFromCanvas(redLine);
+            erasedDrawing = null;
+            erasedSegment = null;
+            redLine = null;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
             lastKnownMouseDown = mousePosition;
+            drawing = false;
+            erasedDrawing = null;
+            erasedSegment = null;
+
+            if (eraserLine != null)
+            {
+                source.UnRenderFromCanvas(eraserLine);
+            }
+
+            if (redLine != null)
+            {
+                source.UnRenderFromCanvas(redLine);
+            }
+            redLine = null;
         }
 
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)

@@ -81,6 +81,32 @@ namespace TableTopToolKit
             }
         }
 
+        public int RoundToClosestVerticalLineX(double value)
+        {
+            for(int x = 0; x <= MaxX; x++)
+            {
+                if (Math.Abs(value - x) < step/2)
+                {
+                    return x;
+                }
+            }
+
+            return (int)(Math.Round(value));
+        }
+
+        public int RoundToClosestHorizontalLineY(double value)
+        {
+            for (int y = 0; y <= MaxY; y++)
+            {
+                if (Math.Abs(value - y) < step / 2)
+                {
+                    return y;
+                }
+            }
+
+            return (int)(Math.Round(value));
+        }
+
         private int SnapCoordToClosest(double coordToSnap)
         {
             int cellIndex = (int)(coordToSnap / step);

@@ -142,47 +142,84 @@ namespace TableTopToolKit
 
         public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
         {
-            if (eraser.X1 == eraser.X2 && eraser.Y1 == eraser.Y2)
-            {
-                return;
-            }
-
-            UndoDrawing();
             UndrawPartOfDrawingFromCanvas(drawing, original);
 
-            bool drawingPartOne = false;
+            eraser.X1 = Math.Round(eraser.X1);
+            eraser.Y1 = Math.Round(eraser.Y1);
+            eraser.X2 = Math.Round(eraser.X2);
+            eraser.Y2 = Math.Round(eraser.Y2);
 
-            if (original.Y1 < eraser.Y1 || original.Y1 == eraser.Y1 && original.X1 < eraser.X1)
+            bool vertical = Math.Abs(original.X1 - original.X2) < Double.Epsilon;
+            if ((vertical && original.Y1 == eraser.Y1 && original.Y2 == eraser.Y2)
+            || (!vertical && original.X1 == eraser.X1 && original.X2 == eraser.X2))
             {
-                Line part1 = new Line();
-                part1.X1 = original.X1;
-                part1.Y1 = original.Y1;
-                part1.X2 = eraser.X1;
-                part1.Y2 = eraser.Y1;
-                drawing.Shapes.Add(part1);
-                StartDrawing(part1);
-
-                drawingPartOne = true;
+                return; // whole line is erased, no need to rebuild additional ones
             }
 
-            if (eraser.Y2 < original.Y2 || eraser.Y2 == original.Y2 && eraser.X2 < original.X2)
+            List<Point> points = new List<Point>()
             {
-                Line part2 = new Line();
-                part2.X1 = eraser.X2;
-                part2.Y1 = eraser.Y2;
-                part2.X2 = original.X2;
-                part2.Y2 = original.Y2;
-                drawing.Shapes.Add(part2);
+                new Point(){X = original.X1, Y = original.Y1},
+                new Point(){X = original.X2, Y = original.Y2},
+                new Point(){X = eraser.X1, Y = eraser.Y1},
+                new Point(){X = eraser.X2, Y = eraser.Y2}
+            };
 
-                if (drawingPartOne)
+            Line firstSegment;
+            Line secondSegment;
+
+            if (vertical)
+            {
+                points.Sort((lhs, rhs) => { return (int)(lhs.Y - rhs.Y); });
+
+                firstSegment = new Line()
                 {
-                    ContinueDrawing(part2);
-                }
-                else
+                    X1 = points[0].X,
+                    Y1 = points[0].Y,
+                    X2 = points[1].X,
+                    Y2 = points[1].Y,
+                    Stroke = foregroundBrush,
+                    StrokeThickness = foregroundThickness
+                };
+
+                secondSegment = new Line()
                 {
-                    StartDrawing(part2);
-                }
+                    X1 = points[2].X,
+                    Y1 = points[2].Y,
+                    X2 = points[3].X,
+                    Y2 = points[3].Y,
+                    Stroke = foregroundBrush,
+                    StrokeThickness = foregroundThickness
+                };
             }
+            else
+            {
+                points.Sort((lhs, rhs) => { return (int)(lhs.X - rhs.X); });
+
+                firstSegment = new Line()
+                {
+                    X1 = points[0].X,
+                    Y1 = points[0].Y,
+                    X2 = points[1].X,
+                    Y2 = points[1].Y,
+                    Stroke = foregroundBrush,
+                    StrokeThickness = foregroundThickness
+                };
+
+                secondSegment = new Line()
+                {
+                    X1 = points[2].X,
+                    Y1 = points[2].Y,
+                    X2 = points[3].X,
+                    Y2 = points[3].Y,
+                    Stroke = foregroundBrush,
+                    StrokeThickness = foregroundThickness
+                };
+            }
+
+            drawing.Shapes.Add(firstSegment);
+            drawing.Shapes.Add(secondSegment);
+            RenderInCanvas(firstSegment);
+            RenderInCanvas(secondSegment);
         }
 
         public void ClearCanvas()
