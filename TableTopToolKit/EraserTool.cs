@@ -17,7 +17,7 @@ namespace TableTopToolKit
         private Point lastKnownMouseDown;
         private Line eraserLine;
         private bool drawing;
-        
+        private bool mouseDown;
         private Line redLine;
         private Drawing erasedDrawing;
         private Line erasedSegment;
@@ -28,109 +28,12 @@ namespace TableTopToolKit
             this.grid = grid;
 
             drawing = false;
+            mouseDown = false;
             erasedDrawing = null;
             erasedSegment = null;
             redLine = null;
         }
-        
-        public Point ClosetPointToCoordiante(double x, double y, Point a, Point b)
-        {
-            Point o = new Point() { X = x, Y = y };
-            return (o - a).LengthSquared < (o - b).LengthSquared ? a : b;
-        }
 
-        public Point ClosestInterestPoint(double x, double y)
-        {
-            Point closest = grid.SnapToGridCorners(x, y); // default to a grid corner because it'll always exist
-            foreach (Drawing drawing in source.Drawings())
-            {
-                foreach(Shape shape in drawing.Shapes)
-                {
-                    if (!(shape is Line))
-                    {
-                        continue;
-                    }
-                    Line line = shape as Line;
-
-                    if (Math.Abs(line.X1 - line.X2) < Double.Epsilon) // vertical line
-                    {
-                        double startY = line.Y1;
-                        double endY = line.Y2;
-                        if (endY < startY)
-                        {
-                            double temp = startY;
-                            startY = endY;
-                            endY = temp;
-                        }
-
-                        for (double lineY = startY; lineY <= endY; lineY += grid.SquareSize)
-                        {
-                            Point point = new Point() { X = line.X1, Y = lineY };
-                            if (ClosetPointToCoordiante(x, y, point, closest).Equals(point))
-                            {
-                                closest = point;
-                            }
-                        }
-                    }
-                    else // non-vertical
-                    {
-                        Point start = new Point() { X = line.X1, Y = line.Y1 };
-                        Point end = new Point() { X = line.X2, Y = line.Y2 };
-
-                        // make start the left-most
-                        if (end.X < start.X) 
-                        {
-                            Point temp = start;
-                            start = end;
-                            end = temp;
-                        }
-
-                        double slope = (end.Y - start.Y) / (end.X - start.X);
-                        
-                        for(double lineX = start.X; lineX <= end.X; lineX += grid.SquareSize)
-                        {
-                            double lineY = start.Y + slope * (lineX - start.X);
-                            
-                            Point point = new Point() { X = lineX, Y = lineY };
-                            if (ClosetPointToCoordiante(x, y, point, closest).Equals(point))
-                            {
-                                //point.Y = Math.Round(point.Y);
-                                closest = point;
-                            }
-                        }
-
-                        if (Math.Abs(line.Y1 - line.Y2) < Double.Epsilon) // [1] slope can't be 0
-                        {
-                            continue; // horizontal line
-                        }
-
-                        // make start the top-most
-                        if (end.Y < start.Y)
-                        {
-                            Point temp = start;
-                            start = end;
-                            end = temp;
-                        }
-
-                        slope = 1 / slope; // safe because of [1]
-
-                        for (double lineY = start.Y; lineY <= end.Y; lineY += grid.SquareSize)
-                        {
-                            double lineX = start.X + slope * (lineY - start.Y);
-                            Point point = new Point() { X = lineX, Y = lineY };
-                            if (ClosetPointToCoordiante(x, y, point, closest).Equals(point))
-                            {
-                                //point.X = Math.Round(point.X);
-                                closest = point;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return closest;
-        }
-        
         private double LineLengthSquared(Line line)
         {
             Point a = new Point() { X = line.X1, Y = line.Y1 };
@@ -272,32 +175,17 @@ namespace TableTopToolKit
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (eraserLine != null)
-            {
-                source.UnRenderFromCanvas(eraserLine);
-            }
-
-            if (redLine != null)
-            {
-                source.UnRenderFromCanvas(redLine);
-            }
+            source.UnRenderFromCanvas(eraserLine);
+            source.UnRenderFromCanvas(redLine);
 
             Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
             double adx = Math.Abs(mouseDragDistance.X);
             double ady = Math.Abs(mouseDragDistance.Y);
-            if (mouseEvent.LeftButton == MouseButtonState.Pressed
+            if (mouseEvent.LeftButton == MouseButtonState.Pressed && mouseDown
             && (adx > SystemParameters.MinimumHorizontalDragDistance || ady > SystemParameters.MinimumVerticalDragDistance))
             {
-                //Point start = ClosestInterestPoint(lastKnownMouseDown.X, lastKnownMouseDown.Y);
-                //Point end = ClosestInterestPoint(mousePosition.X, mousePosition.Y);
-
                 Point start = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
                 Point end = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-
-                if (start.Equals(end))
-                {
-                    return;
-                }
 
                 if (!drawing)
                 {
@@ -378,18 +266,20 @@ namespace TableTopToolKit
             {
                 source.EraseLineFromDrawing(erasedDrawing, erasedSegment, redLine);
             }
-
-            drawing = false;
+            
             source.UnRenderFromCanvas(eraserLine);
             source.UnRenderFromCanvas(redLine);
+            drawing = false;
             erasedDrawing = null;
             erasedSegment = null;
             redLine = null;
+            mouseDown = false;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
             lastKnownMouseDown = mousePosition;
+            mouseDown = true;
             drawing = false;
             erasedDrawing = null;
             erasedSegment = null;
