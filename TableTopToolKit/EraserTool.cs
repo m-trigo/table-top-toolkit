@@ -136,7 +136,6 @@ namespace TableTopToolKit
 
         public Line SuperSection(Line a, Line b)
         {
-            
             bool isAVertical = Math.Abs(a.X1 - a.X2) < Double.Epsilon;
             bool isBVertical = Math.Abs(b.X1 - b.X2) < Double.Epsilon;
 
@@ -205,11 +204,6 @@ namespace TableTopToolKit
                     inlined &= Inlined(lhs, rhs, aSlope);
                 }
 
-
-                //bool inlined = Inlined(points[0], points[1], aSlope)
-                //    && Inlined(points[1], points[2], aSlope)
-                //    && Inlined(points[2], points[3], aSlope);
-
                 if (inlined)
                 {
                     return new Line()
@@ -265,9 +259,11 @@ namespace TableTopToolKit
                 }
                 
                 Line intersection = null;
+                Drawing erasedDrawing = null;
+                Shape erasedShape = null;
                 foreach (Drawing drawing in source.Drawings())
                 {
-                    foreach(Shape shape in drawing.Shapes)
+                    foreach (Shape shape in drawing.Shapes)
                     {
                         if (!(shape is Line))
                         {
@@ -279,10 +275,14 @@ namespace TableTopToolKit
                         if (intersection == null)
                         {
                             intersection = inter;
+                            erasedDrawing = drawing;
+                            erasedShape = shape;
                         }
                         else if (inter != null && LineLengthSquared(inter) > LineLengthSquared(intersection))
                         {
                             intersection = inter;
+                            erasedDrawing = drawing;
+                            erasedShape = shape;
                         }
                     }
                 }
@@ -306,6 +306,7 @@ namespace TableTopToolKit
         {
             drawing = false;
             source.UnRenderFromCanvas(eraserLine);
+            source.UnRenderFromCanvas(redLine);
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
