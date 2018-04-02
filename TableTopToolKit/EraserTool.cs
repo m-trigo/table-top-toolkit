@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -7,34 +8,19 @@ using System.Windows.Shapes;
 namespace TableTopToolKit
 {
     class EraserTool : DrawingTool {
+
         private CanvasDrawings source;
-
-        private Point lastKnownMouseDown;
-        private Line placeholderRedLine;
-        private bool drawing;
-
-
-
-        //private bool mouseDown;
-
-
-        //private Line lineBeingErased;
-        //private Drawing containingDrawing;
-        //private double slopeX;
-        //private double slopeY;
-
-        //private bool keepDrawing;
-
         private Grid grid;
 
-        //string log = "";
-
+        private Point lastKnownMouseDown;
+        private Line eraserLine;
+        private Line redLine;
+        private bool drawing;
+        
         public EraserTool(CanvasDrawings canvasDrawings, Grid grid)
         {
             source = canvasDrawings;
             this.grid = grid;
-            //mouseDown = false;
-            //keepDrawing = false;
             drawing = false;
         }
         
@@ -133,6 +119,60 @@ namespace TableTopToolKit
             return closest;
         }
         
+        private double LineLengthSquared(Line line)
+        {
+            Point a = new Point() { X = line.X1, Y = line.Y1 };
+            Point b = new Point() { X = line.X2, Y = line.Y2 };
+            return (a - b).LengthSquared;
+        }
+
+        public Line SuperSection(Line a, Line b)
+        {
+            const double SLOPE_EPSILON = 0.1;
+
+
+            bool isAVertical = Math.Abs(a.X1 - a.X2) < Double.Epsilon;
+            bool isBVertical = Math.Abs(b.X1 - b.X2) < Double.Epsilon;
+
+            if (isAVertical || isBVertical) // if either is vertical
+            {
+                if (isAVertical && isBVertical && a.X1 == b.X1) // if then both are vertical, there is a super-section
+                {
+                    List<Point> points = new List<Point>()
+                    {
+                        new Point(){X = a.X1, Y = a.Y1},
+                        new Point(){X = a.X2, Y = a.Y2},
+                        new Point(){X = b.X1, Y = b.Y1},
+                        new Point(){X = b.X2, Y = b.Y2}
+                    };
+
+                    points.Sort((lhs, rhs) => { return (int)(rhs.Y - lhs.Y); });
+                    
+                    return new Line()
+                    {
+                        X1 = points[1].X,
+                        Y1 = points[1].Y,
+
+                        X2 = points[2].X,
+                        Y2 = points[2].Y
+                    };
+                }
+
+                return null; // one is vertical while the other isn't
+            }
+
+            // Both have slopes from this point on, even if they might both be 0
+            double aSlope = (a.Y2 - a.Y1) / (a.X2 - a.X1);
+            double bSlope = (b.Y2 - b.Y1) / (b.X2 - b.X1);
+
+            if (Math.Abs(aSlope - bSlope) < SLOPE_EPSILON) // same slope
+            {
+                return null;
+            }
+            
+            return null;
+        }
+
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
             Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
@@ -151,7 +191,7 @@ namespace TableTopToolKit
 
                 if (!drawing)
                 {
-                    placeholderRedLine = new Line()
+                    eraserLine = new Line()
                     {
                         X1 = start.X,
                         Y1 = start.Y,
@@ -160,164 +200,59 @@ namespace TableTopToolKit
                         Stroke = Brushes.LightPink,
                         StrokeThickness = 4
                     };
-                    source.RenderInCanvas(placeholderRedLine);
+                    source.RenderInCanvas(eraserLine);
                     drawing = true;
                 }
                 else
                 {
-                    placeholderRedLine.X1 = start.X;
-                    placeholderRedLine.Y1 = start.Y;
-                    placeholderRedLine.X2 = end.X;
-                    placeholderRedLine.Y2 = end.Y;
+                    eraserLine.X1 = start.X;
+                    eraserLine.Y1 = start.Y;
+                    eraserLine.X2 = end.X;
+                    eraserLine.Y2 = end.Y;
+                }
+                
+                Line intersection = null;
+                foreach (Drawing drawing in source.Drawings())
+                {
+                    foreach(Shape shape in drawing.Shapes)
+                    {
+                        if (!(shape is Line))
+                        {
+                            continue;
+                        }
+
+                        Line line = shape as Line;
+                        Line inter = SuperSection(eraserLine, line);
+                        if (intersection == null)
+                        {
+                            intersection = inter;
+                        }
+                        else if (inter != null && LineLengthSquared(inter) > LineLengthSquared(intersection))
+                        {
+                            intersection = inter;
+                        }
+                    }
                 }
 
+                if (redLine != null)
+                {
+                    source.UnRenderFromCanvas(redLine);
+                }
+
+                if (intersection != null)
+                {
+                    redLine = intersection;
+                    redLine.StrokeThickness = 4;
+                    redLine.Stroke = Brushes.Red;
+                    source.RenderInCanvas(redLine);
+                }
             }
-
-
-
-
-
-            //if (mouseEvent.LeftButton == MouseButtonState.Pressed)
-            //{
-            //    if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
-            //    {
-            //        if (!keepDrawing)
-            //        {
-            //            Point snappedStartingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-
-            //            placeholderRedLine = new Line();
-            //            placeholderRedLine.Stroke = Brushes.Red;
-
-            //            if (!CanSnapToLine(snappedStartingPoint.X, snappedStartingPoint.Y))
-            //            {
-            //                return;
-            //            }
-
-            //            snappedStartingPoint = SnapToLine(lineBeingErased, snappedStartingPoint.X, snappedStartingPoint.Y);
-
-            //            placeholderRedLine.X1 = placeholderRedLine.X2 = snappedStartingPoint.X;
-            //            placeholderRedLine.Y1 = placeholderRedLine.Y2 = snappedStartingPoint.Y;
-
-            //            source.StartDrawing(placeholderRedLine);
-            //            keepDrawing = true;
-            //        }
-
-            //        Point snappedContinuingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
-            //        if (!CanKeepSnapping(snappedContinuingPoint.X, snappedContinuingPoint.Y))
-            //        {
-            //            return;
-            //        }
-
-            //        snappedContinuingPoint = SnapToLine(lineBeingErased, snappedContinuingPoint.X, snappedContinuingPoint.Y);
-            //        placeholderRedLine.X2 = snappedContinuingPoint.X;
-            //        placeholderRedLine.Y2 = snappedContinuingPoint.Y;
-            //    }
-
-            //    if (!mouseDown)
-            //    {
-            //        mouseDown = true;
-            //    }
-            //}
-            //else
-            //{
-            //    mouseDown = false;
-            //}
-
-            //lastKnownMouseDown = mousePosition;
         }
-
-        //public bool CanKeepSnapping(double x, double y)
-        //{
-        //    if (lineBeingErased.X1 <= x && x <= lineBeingErased.X2 && lineBeingErased.Y1 <= y && y <= lineBeingErased.Y2) // line going like this: \
-        //    {
-        //        return true;
-        //    }
-        //    else if (lineBeingErased.X2 <= x && x <= lineBeingErased.X1 && lineBeingErased.Y1 <= y && y <= lineBeingErased.Y2) // line going like this: /
-        //    {
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //public bool CanSnapToLine(double x, double y)
-        //{
-        //    foreach (Drawing drawing in source.Drawings())
-        //    {
-        //        foreach (Shape shape in drawing.Shapes)
-        //        {
-        //            Line line = shape as Line;  
-        //            if (line != null)   // if single straight line or part of rectangle
-        //            {
-        //                if (line.X1 <= x && x <= line.X2 && line.Y1 <= y && y <= line.Y2) // line going like this: \
-        //                {
-        //                    double deltaY = line.Y2 - line.Y1;
-        //                    double deltaX = line.X2 - line.X1;
-        //                    double angleX = Math.Atan(deltaY / deltaX);
-        //                    double angleY = Math.Atan(deltaX / deltaY);
-
-        //                    slopeX = deltaX == 0 ? 1 : Math.Tan(angleX);
-        //                    slopeY = deltaY == 0 ? 1 : Math.Tan(angleY);
-        //                    lineBeingErased = line;
-        //                    containingDrawing = drawing;
-
-        //                    return true;
-        //                }
-        //                else if (line.X2 <= x && x <= line.X1 && line.Y1 <= y && y <= line.Y2) // line going like this: /
-        //                {
-        //                    double deltaY = line.Y2 - line.Y1;
-        //                    double deltaX = line.X1 - line.X2;
-        //                    double angleX = Math.Atan(deltaY / deltaX);
-        //                    double angleY = Math.Atan(deltaX / deltaY);
-
-        //                    slopeX = deltaX == 0 ? -1 : Math.Tan(angleX) * -1;
-        //                    slopeY = deltaY == 0 ? -1 : Math.Tan(angleY) * -1;
-        //                    lineBeingErased = line;
-        //                    containingDrawing = drawing;
-
-        //                    return true;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return false;
-        //}
         
-        //public Point SnapToLine(Line line, double x, double y)
-        //{
-        //    Point snappedToGrid = new Point(x, y);
-        //    double dy = slopeX * (snappedToGrid.X - line.X1);
-        //    double dx = slopeY * (snappedToGrid.Y - line.Y1);
-
-        //    if (dx > dy)
-        //    {
-        //        snappedToGrid.Y = line.Y1 + dy;
-        //    }
-        //    else if (dy > dx)
-        //    {
-        //        snappedToGrid.X = line.X1 + dx;
-        //    }
-
-        //    return new Point(snappedToGrid.X, snappedToGrid.Y);
-        //}
-
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
             drawing = false;
-            source.UnRenderFromCanvas(placeholderRedLine);
-            //if (placeholderRedLine != null && containingDrawing != null && lineBeingErased != null)
-            //{
-            //    log += "line: X1:" + lineBeingErased.X1 + " Y1: " + lineBeingErased.Y1 + ", X2: " + lineBeingErased.X2 + ", Y2: " + lineBeingErased.Y2 + "\n";
-            //    log += "eraser before: " + placeholderRedLine.X1 + " Y1: " + placeholderRedLine.Y1 + ", X2: " + placeholderRedLine.X2 + ", Y2: " + placeholderRedLine.Y2 + "\n";
-            //    SnapLineTool.StandardizeLineDirection(placeholderRedLine);
-            //    log += "eraser after: " + placeholderRedLine.X1 + " Y1: " + placeholderRedLine.Y1 + ", X2: " + placeholderRedLine.X2 + ", Y2: " + placeholderRedLine.Y2 + "\n";
-            //    //MessageBox.Show(log);
-            //    source.EraseLineFromDrawing(containingDrawing, lineBeingErased, placeholderRedLine);
-            //}
-            //keepDrawing = false;
-            //placeholderRedLine = null;
-            //lineBeingErased = null;
+            source.UnRenderFromCanvas(eraserLine);
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)

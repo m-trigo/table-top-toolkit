@@ -217,6 +217,11 @@ namespace TableTopToolKit
             {
                 ListBox iconList = sender as ListBox;
                 object selectedItem = iconList.SelectedItem;
+                if (selectedItem == null)
+                {
+                    return;
+                }
+
                 DataObject target = new DataObject(typeof(Image), selectedItem);
                 DragDrop.DoDragDrop(iconList, target, DragDropEffects.Copy);
             }
