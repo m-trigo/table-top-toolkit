@@ -151,8 +151,29 @@ namespace TableTopToolKit
                         new Point(){X = b.X2, Y = b.Y2}
                     };
 
-                    points.Sort((lhs, rhs) => { return (int)(rhs.Y - lhs.Y); });
+                    points.Sort((lhs, rhs) => { return (int)(lhs.Y - rhs.Y); });
+
+
+                    if (a.Y2 < a.Y1)
+                    {
+                        double temp = a.X1;
+                        a.X1 = a.X2;
+                        a.X2 = temp;
+
+                        temp = a.Y1;
+                        a.Y1 = a.Y2;
+                        a.Y2 = temp;
+                    }
                     
+                    Point aStart = new Point() { X = a.X1, Y = a.Y1 };
+                    Point aEnd = new Point() { X = a.X2, Y = a.Y2 };
+
+                    if ((points[0].Equals(aStart) && points[1].Equals(aEnd))
+                    || (points[2].Equals(aStart) && points[3].Equals(aEnd)))
+                    {
+                        return null;
+                    }
+
                     return new Line()
                     {
                         X1 = points[1].X,
@@ -180,7 +201,7 @@ namespace TableTopToolKit
                     new Point(){X = b.X2, Y = b.Y2}
                 };
 
-                points.Sort((lhs, rhs) => { return (int)(rhs.X - lhs.X); });
+                points.Sort((lhs, rhs) => { return (int)(lhs.X - rhs.X); });
 
                 List<Point> distinctPoints = new List<Point>();
                 foreach(Point p in points)
@@ -206,6 +227,26 @@ namespace TableTopToolKit
 
                 if (inlined)
                 {
+                    if (a.X2 < a.X1)
+                    {
+                        double temp = a.X1;
+                        a.X1 = a.X2;
+                        a.X2 = temp;
+
+                        temp = a.Y1;
+                        a.Y1 = a.Y2;
+                        a.Y2 = temp;
+                    }
+
+                    Point aStart = new Point() { X = a.X1, Y = a.Y1 };
+                    Point aEnd = new Point() { X = a.X2, Y = a.Y2 };
+
+                    if ((points[0].Equals(aStart) && points[1].Equals(aEnd))
+                    || (points[2].Equals(aStart) && points[3].Equals(aEnd)))
+                    {
+                        return null;
+                    }
+                    
                     return new Line()
                     {
                         X1 = points[1].X,
@@ -316,6 +357,9 @@ namespace TableTopToolKit
 
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
+            drawing = false;
+            source.UnRenderFromCanvas(eraserLine);
+            source.UnRenderFromCanvas(redLine);
         }
     }
 }
