@@ -8,6 +8,8 @@ using System.Windows.Shapes;
 namespace TableTopToolKit
 {
     class EraserTool : DrawingTool {
+        
+        const double SLOPE_EPSILON = 0.001;
 
         private CanvasDrawings source;
         private Grid grid;
@@ -125,12 +127,16 @@ namespace TableTopToolKit
             Point b = new Point() { X = line.X2, Y = line.Y2 };
             return (a - b).LengthSquared;
         }
+        
+        private bool Inlined(Point lhs, Point rhs, double targetSlope)
+        {
+            double slope = (rhs.Y - lhs.Y) / (rhs.X - lhs.X);
+            return Math.Abs(targetSlope - slope) < SLOPE_EPSILON;
+        }
 
         public Line SuperSection(Line a, Line b)
         {
-            const double SLOPE_EPSILON = 0.1;
-
-
+            
             bool isAVertical = Math.Abs(a.X1 - a.X2) < Double.Epsilon;
             bool isBVertical = Math.Abs(b.X1 - b.X2) < Double.Epsilon;
 
@@ -167,7 +173,54 @@ namespace TableTopToolKit
 
             if (Math.Abs(aSlope - bSlope) < SLOPE_EPSILON) // same slope
             {
-                return null;
+                List<Point> points = new List<Point>()
+                {
+                    new Point(){X = a.X1, Y = a.Y1},
+                    new Point(){X = a.X2, Y = a.Y2},
+                    new Point(){X = b.X1, Y = b.Y1},
+                    new Point(){X = b.X2, Y = b.Y2}
+                };
+
+                points.Sort((lhs, rhs) => { return (int)(rhs.X - lhs.X); });
+
+                List<Point> distinctPoints = new List<Point>();
+                foreach(Point p in points)
+                {
+                    if (!distinctPoints.Contains(p))
+                    {
+                        distinctPoints.Add(p);
+                    }
+                }
+
+                bool inlined = true;
+                for(int i = 1; i < distinctPoints.Count; i++)
+                {
+                    Point lhs = distinctPoints[i - 1];
+                    Point rhs = distinctPoints[i];
+                    if (lhs.Equals(rhs))
+                    {
+                        continue;
+                    }
+
+                    inlined &= Inlined(lhs, rhs, aSlope);
+                }
+
+
+                //bool inlined = Inlined(points[0], points[1], aSlope)
+                //    && Inlined(points[1], points[2], aSlope)
+                //    && Inlined(points[2], points[3], aSlope);
+
+                if (inlined)
+                {
+                    return new Line()
+                    {
+                        X1 = points[1].X,
+                        Y1 = points[1].Y,
+
+                        X2 = points[2].X,
+                        Y2 = points[2].Y
+                    };
+                }
             }
             
             return null;
