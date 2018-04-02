@@ -104,6 +104,7 @@ namespace TableTopToolKit
 
         public void DrawToCanvas(Image image, double x, double y)
         {
+            undoDrawings.Clear();
             Rectangle newImage = new Rectangle();
 
             newImage.Width = image.Width;
