@@ -25,9 +25,6 @@ namespace TableTopToolKit
         private Line eraserLine;
         private bool drawing;
         private bool mouseDown;
-        private Line redLine;
-        private Drawing erasedDrawing;
-        private Line erasedSegment;
         private List<EraseData> dataToErase;
 
         public EraserTool(CanvasDrawings canvasDrawings, Grid grid)
@@ -37,17 +34,16 @@ namespace TableTopToolKit
 
             drawing = false;
             mouseDown = false;
-            erasedDrawing = null;
-            erasedSegment = null;
-            redLine = null;
             dataToErase = new List<EraseData>();
         }
 
-        private double LineLengthSquared(Line line)
+        private void UnrenderLines()
         {
-            Point a = new Point() { X = line.X1, Y = line.Y1 };
-            Point b = new Point() { X = line.X2, Y = line.Y2 };
-            return (a - b).LengthSquared;
+            source.UnRenderFromCanvas(eraserLine);
+            foreach (EraseData data in dataToErase)
+            {
+                source.UnRenderFromCanvas(data.ErasedSegment);
+            }
         }
 
         private bool Inlined(Point lhs, Point rhs, double targetSlope)
@@ -184,8 +180,7 @@ namespace TableTopToolKit
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            source.UnRenderFromCanvas(eraserLine);
-            source.UnRenderFromCanvas(redLine);
+            UnrenderLines();
 
             Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
             double adx = Math.Abs(mouseDragDistance.X);
@@ -219,8 +214,7 @@ namespace TableTopToolKit
 
                 source.RenderInCanvas(eraserLine);
 
-                Line intersection = null;
-                List<EraseData> eraseData = new List<EraseData>();
+                dataToErase = new List<EraseData>();
                 foreach (Drawing drawing in source.Drawings())
                 {
                     foreach (Shape shape in drawing.Shapes)
@@ -231,103 +225,52 @@ namespace TableTopToolKit
                         }
 
                         Line line = shape as Line;
-                        Line inter = SuperSection(eraserLine, line);
-
-                        if (inter != null)
+                        Line intersection = SuperSection(eraserLine, line);
+                        if (intersection != null)
                         {
-                            eraseData.Add(new EraseData()
+                            intersection.Stroke = Brushes.Red;
+                            intersection.StrokeThickness = 4;
+                            dataToErase.Add(new EraseData()
                             {
                                 SourceDrawing = drawing,
                                 DrawingLine = line,
-                                ErasedSegment = inter
+                                ErasedSegment = intersection
                             });
-                        }
-
-                        bool replaced = false;
-                        if (intersection == null)
-                        {
-                            intersection = inter;
-                            replaced = true;
-                        }
-                        else if (inter != null && LineLengthSquared(inter) > LineLengthSquared(intersection))
-                        {
-                            intersection = inter;
-                            replaced = true;
-                        }
-
-                        if (replaced)
-                        {
-                            erasedDrawing = drawing;
-                            erasedSegment = line;
                         }
                     }
                 }
 
-                dataToErase = eraseData;
-
-                if (intersection != null)
+                foreach (EraseData data in dataToErase)
                 {
-                    redLine = intersection;
-                    redLine.StrokeThickness = 4;
-                    redLine.Stroke = Brushes.Red;
-                    source.RenderInCanvas(redLine);
-                }
-                else
-                {
-                    erasedDrawing = null;
-                    erasedSegment = null;
-                    redLine = null;
+                    source.RenderInCanvas(data.ErasedSegment);
                 }
             }
         }
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            //if (redLine != null && erasedDrawing != null && erasedSegment != null)
-            //{
-            //    source.EraseLineFromDrawing(erasedDrawing, erasedSegment, redLine);
-            //}
-
             for (int i = 0; i < dataToErase.Count; i++)
             {
                 EraseData eraseData = dataToErase[i];
                 source.EraseLineFromDrawing(eraseData.SourceDrawing, eraseData.DrawingLine, eraseData.ErasedSegment);
             }
 
-            source.UnRenderFromCanvas(eraserLine);
-            source.UnRenderFromCanvas(redLine);
+            UnrenderLines();
             drawing = false;
-            erasedDrawing = null;
-            erasedSegment = null;
-            redLine = null;
             mouseDown = false;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
             lastKnownMouseDown = mousePosition;
+            UnrenderLines();
             mouseDown = true;
             drawing = false;
-            erasedDrawing = null;
-            erasedSegment = null;
-
-            if (eraserLine != null)
-            {
-                source.UnRenderFromCanvas(eraserLine);
-            }
-
-            if (redLine != null)
-            {
-                source.UnRenderFromCanvas(redLine);
-            }
-            redLine = null;
         }
 
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
             drawing = false;
-            source.UnRenderFromCanvas(eraserLine);
-            source.UnRenderFromCanvas(redLine);
         }
     }
 }
