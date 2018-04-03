@@ -7,9 +7,16 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    class EraserTool : DrawingTool {
-        
-        const double SLOPE_EPSILON = 0.001;
+    internal class EraserTool : DrawingTool
+    {
+        public class EraseData
+        {
+            public Drawing SourceDrawing { get; set; }
+            public Line DrawingLine { get; set; }
+            public Line ErasedSegment { get; set; }
+        }
+
+        private const double SLOPE_EPSILON = 0.001;
 
         private CanvasDrawings source;
         private Grid grid;
@@ -21,6 +28,7 @@ namespace TableTopToolKit
         private Line redLine;
         private Drawing erasedDrawing;
         private Line erasedSegment;
+        private List<EraseData> dataToErase;
 
         public EraserTool(CanvasDrawings canvasDrawings, Grid grid)
         {
@@ -32,6 +40,7 @@ namespace TableTopToolKit
             erasedDrawing = null;
             erasedSegment = null;
             redLine = null;
+            dataToErase = new List<EraseData>();
         }
 
         private double LineLengthSquared(Line line)
@@ -40,13 +49,13 @@ namespace TableTopToolKit
             Point b = new Point() { X = line.X2, Y = line.Y2 };
             return (a - b).LengthSquared;
         }
-        
+
         private bool Inlined(Point lhs, Point rhs, double targetSlope)
         {
             double slope = (rhs.Y - lhs.Y) / (rhs.X - lhs.X);
             return Math.Abs(targetSlope - slope) < SLOPE_EPSILON;
         }
-        
+
         public Line SuperSection(Line a, Line b)
         {
             bool isAVertical = Math.Abs(a.X1 - a.X2) < Double.Epsilon;
@@ -65,7 +74,7 @@ namespace TableTopToolKit
                     };
 
                     points.Sort((lhs, rhs) => { return (int)(lhs.Y - rhs.Y); });
-                    
+
                     if (a.Y2 < a.Y1)
                     {
                         double temp = a.X1;
@@ -76,7 +85,7 @@ namespace TableTopToolKit
                         a.Y1 = a.Y2;
                         a.Y2 = temp;
                     }
-                    
+
                     Point aStart = new Point() { X = a.X1, Y = a.Y1 };
                     Point aEnd = new Point() { X = a.X2, Y = a.Y2 };
 
@@ -116,7 +125,7 @@ namespace TableTopToolKit
                 points.Sort((lhs, rhs) => { return (int)(lhs.X - rhs.X); });
 
                 List<Point> distinctPoints = new List<Point>();
-                foreach(Point p in points)
+                foreach (Point p in points)
                 {
                     if (!distinctPoints.Contains(p))
                     {
@@ -125,7 +134,7 @@ namespace TableTopToolKit
                 }
 
                 bool inlined = true;
-                for(int i = 1; i < distinctPoints.Count; i++)
+                for (int i = 1; i < distinctPoints.Count; i++)
                 {
                     Point lhs = distinctPoints[i - 1];
                     Point rhs = distinctPoints[i];
@@ -158,7 +167,7 @@ namespace TableTopToolKit
                     {
                         return null;
                     }
-                    
+
                     return new Line()
                     {
                         X1 = points[1].X,
@@ -169,7 +178,7 @@ namespace TableTopToolKit
                     };
                 }
             }
-            
+
             return null;
         }
 
@@ -211,7 +220,7 @@ namespace TableTopToolKit
                 source.RenderInCanvas(eraserLine);
 
                 Line intersection = null;
-
+                List<EraseData> eraseData = new List<EraseData>();
                 foreach (Drawing drawing in source.Drawings())
                 {
                     foreach (Shape shape in drawing.Shapes)
@@ -223,6 +232,16 @@ namespace TableTopToolKit
 
                         Line line = shape as Line;
                         Line inter = SuperSection(eraserLine, line);
+
+                        if (inter != null)
+                        {
+                            eraseData.Add(new EraseData()
+                            {
+                                SourceDrawing = drawing,
+                                DrawingLine = line,
+                                ErasedSegment = inter
+                            });
+                        }
 
                         bool replaced = false;
                         if (intersection == null)
@@ -244,6 +263,8 @@ namespace TableTopToolKit
                     }
                 }
 
+                dataToErase = eraseData;
+
                 if (intersection != null)
                 {
                     redLine = intersection;
@@ -259,14 +280,20 @@ namespace TableTopToolKit
                 }
             }
         }
-        
+
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (redLine != null && erasedDrawing != null && erasedSegment != null)
+            //if (redLine != null && erasedDrawing != null && erasedSegment != null)
+            //{
+            //    source.EraseLineFromDrawing(erasedDrawing, erasedSegment, redLine);
+            //}
+
+            for (int i = 0; i < dataToErase.Count; i++)
             {
-                source.EraseLineFromDrawing(erasedDrawing, erasedSegment, redLine);
+                EraseData eraseData = dataToErase[i];
+                source.EraseLineFromDrawing(eraseData.SourceDrawing, eraseData.DrawingLine, eraseData.ErasedSegment);
             }
-            
+
             source.UnRenderFromCanvas(eraserLine);
             source.UnRenderFromCanvas(redLine);
             drawing = false;
