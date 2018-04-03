@@ -46,6 +46,18 @@ namespace TableTopToolKit
             }
         }
 
+        private void DispatchEraseEvent()
+        {
+            for (int i = 0; i < dataToErase.Count; i++)
+            {
+                EraseData eraseData = dataToErase[i];
+                source.EraseLineFromDrawing(eraseData.SourceDrawing, eraseData.DrawingLine, eraseData.ErasedSegment);
+            }
+
+            UnrenderLines();
+            drawing = false;
+        }
+
         private bool Inlined(Point lhs, Point rhs, double targetSlope)
         {
             double slope = (rhs.Y - lhs.Y) / (rhs.X - lhs.X);
@@ -185,8 +197,7 @@ namespace TableTopToolKit
             Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
             double adx = Math.Abs(mouseDragDistance.X);
             double ady = Math.Abs(mouseDragDistance.Y);
-            if (mouseEvent.LeftButton == MouseButtonState.Pressed && mouseDown
-            && (adx > SystemParameters.MinimumHorizontalDragDistance || ady > SystemParameters.MinimumVerticalDragDistance))
+            if (mouseEvent.LeftButton == MouseButtonState.Pressed && mouseDown)
             {
                 Point start = grid.SnapToGridCorners(lastKnownMouseDown.X, lastKnownMouseDown.Y);
                 Point end = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
@@ -245,18 +256,16 @@ namespace TableTopToolKit
                     source.RenderInCanvas(data.ErasedSegment);
                 }
             }
+            else if (mouseEvent.LeftButton == MouseButtonState.Released && mouseDown)
+            {
+                DispatchEraseEvent();
+                mouseDown = false;
+            }
         }
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            for (int i = 0; i < dataToErase.Count; i++)
-            {
-                EraseData eraseData = dataToErase[i];
-                source.EraseLineFromDrawing(eraseData.SourceDrawing, eraseData.DrawingLine, eraseData.ErasedSegment);
-            }
-
-            UnrenderLines();
-            drawing = false;
+            DispatchEraseEvent();
             mouseDown = false;
         }
 

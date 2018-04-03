@@ -15,8 +15,9 @@ namespace TableTopToolKit
     {
         private App main;
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
-        public ObservableCollection<Image> Icons { get; private set; }
         private Point startDragMousePosition;
+
+        public ObservableCollection<Image> Icons { get; private set; }
 
         public MainWindow()
         {
@@ -123,7 +124,6 @@ namespace TableTopToolKit
                 case Key.D4:  // maybe come up with a better key?
                     main.Command(App.Controls.SelectEraserTool);
                     break;
-
             }
         }
 

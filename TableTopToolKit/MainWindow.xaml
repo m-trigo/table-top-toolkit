@@ -86,7 +86,7 @@
 
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
                         <Canvas x:Name="Canvas" Width="1754" Height="1240" Margin="10, 10, 0, 0" Background="White"
-                                PreviewMouseLeftButtonUp="OnCanvasMouseUp"
+                                MouseUp="OnCanvasMouseUp"
                                 PreviewMouseMove="OnCanvasMouseMove"
                                 MouseDown="OnCanvasMouseDown"
                                 MouseLeave="OnCanvasMouseLeave"
