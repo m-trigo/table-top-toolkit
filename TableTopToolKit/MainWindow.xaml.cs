@@ -17,6 +17,20 @@ namespace TableTopToolKit
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
 
+
+
+        public Image SelectedIcon
+        {
+            get { return (Image)GetValue(SelectedIconProperty); }
+            set { SetValue(SelectedIconProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedIcon.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedIconProperty =
+            DependencyProperty.Register("SelectedIcon", typeof(Image), typeof(MainWindow), new PropertyMetadata(null));
+
+        
+
         public ObservableCollection<Image> Icons { get; private set; }
 
         public MainWindow()
@@ -29,6 +43,7 @@ namespace TableTopToolKit
         {
             List<Image> iconImages = new List<Image>();
             string[] imagePaths = Directory.GetFiles(ICON_IMAGES_DIRECTORY);
+            
             foreach (string imagePath in imagePaths)
             {
                 BitmapImage bmp = new BitmapImage();
@@ -44,6 +59,7 @@ namespace TableTopToolKit
                 iconImages.Add(image);
             }
             Icons = new ObservableCollection<Image>(iconImages);
+            SelectedIcon = Icons[0];
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -70,7 +86,14 @@ namespace TableTopToolKit
         private void OnCanvasMouseDown(object sender, MouseButtonEventArgs e)
         {
             Point currentPoint = e.GetPosition(Canvas);
-            main.CurrentTool.MouseDown(currentPoint, e);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                main.CurrentTool.MouseDown(currentPoint, e);
+            }
+            else if (e.RightButton == MouseButtonState.Pressed && SelectedIcon != null)
+            {               
+                main.PlaceIcon(currentPoint, SelectedIcon);
+            }
         }
 
         private void OnCanvasMouseLeave(object sender, MouseEventArgs e)
@@ -188,13 +211,7 @@ namespace TableTopToolKit
                 main.Command(App.Controls.ClearCanvas);
             }
         }
-
-        private void IconListButtonClick(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-            Image icon = button.Content as Image;
-            main.CommandWithButton(App.Controls.SelectIcon, icon);
-        }
+        
 
         private void Window_Closed(object sender, System.EventArgs e)
         {

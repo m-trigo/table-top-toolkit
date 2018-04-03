@@ -117,15 +117,6 @@ namespace TableTopToolKit
             cd.DrawToCanvas(iconCopy, snapped.X, snapped.Y);
         }
 
-        //second param is for the selected icon
-        public void CommandWithButton(Controls control, Image icon)
-        {
-            switch (control)
-            {
-                case Controls.SelectIcon:
-                    CurrentTool = new IconTool(cd, grid, icon);
-                    break;
-            }
-        }
+        
     }
 }

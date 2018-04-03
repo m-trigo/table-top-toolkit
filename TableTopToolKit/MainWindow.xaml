@@ -45,42 +45,11 @@
                             <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
                             <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle Draw Tool" Click="ButtonClick" Margin="5" />
                             <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
-                        </StackPanel>
-                        <Border Grid.Row="1" CornerRadius="6" BorderBrush="Gray" BorderThickness="2" Padding="4">
-                            <StackPanel Orientation="Horizontal" Height="36">
-                                <Button Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image Source="./imgs/icons/statue.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button Click="IconListButtonClick"  BorderThickness="0" Background="Transparent">
-                                    <Image Source="./imgs/icons/stairs1.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image Source="./imgs/icons/stairs2.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image Source="./imgs/icons/stairs3.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image  Source="./imgs/icons/stairs4.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image  Source="./imgs/icons/doorway1.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image  Source="./imgs/icons/doorway2.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image  Source="./imgs/icons/doorway3.png" IsHitTestVisible="False" />
-                                </Button>
-                                <Button  Click="IconListButtonClick" BorderThickness="0" Background="Transparent">
-                                    <Image  Source="./imgs/icons/doorway4.png" IsHitTestVisible="False" />
-                                </Button>
-                            </StackPanel>
-                        </Border>
+                        </StackPanel>                        
                     </Grid>
 
-                    <ListBox DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
-                             Padding="4" ItemsSource="{Binding Icons}"
+                    <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
+                             Padding="4" ItemsSource="{Binding Icons}" SelectedItem="{Binding SelectedIcon}"
                              PreviewMouseDown="OnIconListPreviewMouseDown"
                              MouseMove="OnIconListMouseMove" />
 
