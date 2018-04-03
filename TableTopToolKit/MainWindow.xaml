@@ -39,13 +39,26 @@
                         <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray">
                             <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
                             <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
                             <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5" />
                             <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil Draw Tool" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleDrawLineButton" Content="Line Draw Tool" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle Draw Tool" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
-                        </StackPanel>                        
+                            <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                                <Separator.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="90"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Separator.RenderTransform>
+
+                            </Separator>
+                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawLineButton" Content="Line" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleLineEraser" Content="Line Erase" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle" Click="ButtonClick" Margin="5" />
+
+                        </StackPanel>
                     </Grid>
 
                     <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"

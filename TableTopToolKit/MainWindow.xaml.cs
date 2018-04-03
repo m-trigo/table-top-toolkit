@@ -210,6 +210,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.ClearCanvas);
             }
+            else if(button.Equals(ToggleLineEraser))
+            {
+                main.Command(App.Controls.SelectEraserTool);
+            }
         }
         
 
