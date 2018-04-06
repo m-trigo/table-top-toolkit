@@ -65,7 +65,6 @@
     <Compile Include="CanvasDrawings.cs" />
     <Compile Include="CanvasState.cs" />
     <Compile Include="ConvertToImage.cs" />
-    <Compile Include="AltEraserTool.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingTool.cs" />
     <Compile Include="EraserTool.cs" />
