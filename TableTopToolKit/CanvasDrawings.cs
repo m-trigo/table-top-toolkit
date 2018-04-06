@@ -18,8 +18,8 @@ namespace TableTopToolKit
         private List<Drawing> drawings;
         private List<Drawing> undoDrawings;
 
-        public Brush backgroundBrush;
-        public Brush foregroundBrush;
+        private Brush backgroundBrush;
+        private Brush foregroundBrush;
 
         private double backgroundThickness;
         private double foregroundThickness;
@@ -38,9 +38,12 @@ namespace TableTopToolKit
             foregroundThickness = 3;
         }
 
-        public List<Drawing> Drawings()
+        public IEnumerable<Drawing> Drawings()
         {
-            return drawings;
+            foreach (Drawing drawing in drawings)
+            {
+                yield return drawing;
+            }
         }
 
         public void AddBackground(Shape element)
@@ -86,12 +89,6 @@ namespace TableTopToolKit
             {
                 canvas.Children.Remove(shape);
             }
-        }
-
-        public void UndrawPartOfDrawingFromCanvas(Drawing drawing, Shape shapeToUndraw)
-        {
-            drawing.Shapes.Remove(shapeToUndraw);
-            canvas.Children.Remove(shapeToUndraw);
         }
 
         public void DrawToCanvas(Drawing drawing)
@@ -143,7 +140,8 @@ namespace TableTopToolKit
 
         public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
         {
-            UndrawPartOfDrawingFromCanvas(drawing, original);
+            drawing.Shapes.Remove(original);
+            canvas.Children.Remove(original);
 
             eraser.X1 = Math.Round(eraser.X1);
             eraser.Y1 = Math.Round(eraser.Y1);
@@ -225,11 +223,7 @@ namespace TableTopToolKit
 
         public void ClearCanvas()
         {
-            MessageBoxResult result = MessageBoxResult.Yes;
-            if (drawings.Count > 0)
-            {
-                result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
-            }
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
 
             if (result == MessageBoxResult.Yes)
             {
