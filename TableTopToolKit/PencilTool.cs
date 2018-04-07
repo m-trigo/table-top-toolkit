@@ -63,5 +63,9 @@ namespace TableTopToolKit
                 }
             }
         }
+
+        public void Close()
+        {
+        }
     }
 }

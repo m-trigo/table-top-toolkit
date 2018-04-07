@@ -123,5 +123,9 @@ namespace TableTopToolKit
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
         }
+
+        public void Close()
+        {
+        }
     }
 }

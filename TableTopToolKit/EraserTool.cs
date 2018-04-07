@@ -59,7 +59,10 @@ namespace TableTopToolKit
 
         private void DispatchEraseEvent()
         {
-            source.Erase(dataToErase);
+            if (dataToErase.Count > 0)
+            {
+                source.Erase(dataToErase);
+            }
             UnrenderLines();
             drawing = false;
         }
@@ -281,6 +284,11 @@ namespace TableTopToolKit
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
             drawing = false;
+        }
+
+        public void Close()
+        {
+            UnrenderLines();
         }
     }
 }
