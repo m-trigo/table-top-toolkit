@@ -36,7 +36,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray">
+                        <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray" MinHeight="50">
                             <Button x:Name="ToggleGridButton" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on/off &#x0a; (Crtl + G)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/toggle_grid.png" />
                             </Button>
@@ -63,7 +63,7 @@
                                 </Separator.RenderTransform>
 
                             </Separator>
-                            <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)">
+                            <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)" Padding="2000">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
                             </Button>
                             <Button x:Name="ToggleDrawLineButton" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a; (Crtl + 2)">

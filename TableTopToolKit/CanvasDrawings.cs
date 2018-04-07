@@ -324,7 +324,7 @@ namespace TableTopToolKit
             );
         }
 
-        public void ClearCanvas()
+        public bool ClearCanvas()
         {
             MessageBoxResult result = MessageBox.Show(
                 "Are you sure you want to clear the canvas, you will NOT be able to undo this action?",
@@ -341,6 +341,8 @@ namespace TableTopToolKit
                 commandHistory.Clear();
                 commandHistoryIndex = -1;
             }
+
+            return result != MessageBoxResult.Yes;
         }
 
         public void RestoreCanvas()
@@ -384,21 +386,32 @@ namespace TableTopToolKit
 
         public void LoadState(string filePath = AUTO_SAVE_FILE_PATH)
         {
-            ClearCanvas();
-
-            if (!File.Exists(filePath))
+            try
             {
-                return;
-            }
+                if (!File.Exists(filePath))
+                {
+                    return;
+                }
 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (StreamReader file = new StreamReader(filePath))
+                bool stop = ClearCanvas();
+                if (stop)
+                {
+                    return;
+                }
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
+                using (StreamReader file = new StreamReader(filePath))
+                {
+                    CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
+                    drawings = canvasState.Drawings;
+                }
+
+                RestoreCanvas();
+            }
+            catch (Exception)
             {
-                CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
-                drawings = canvasState.Drawings;
+                MessageBox.Show($"The save file <{filePath}> is invalid and could not be loaded", "File Load Failed");
             }
-
-            RestoreCanvas();
         }
 
         public void SaveAs()
