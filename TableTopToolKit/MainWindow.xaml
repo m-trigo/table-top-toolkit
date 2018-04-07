@@ -53,11 +53,18 @@
                                 </Separator.RenderTransform>
 
                             </Separator>
-                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)"/>
-                            <Button x:Name="ToggleDrawLineButton" Content="Line" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a; (Crtl + 2)"/>
-                            <Button x:Name="ToggleLineEraser" Content="Line Erase" Click="ButtonClick" Margin="5" ToolTip="Erases a selected chunk of any line drawn with the rectangle or line tool &#x0a; (Crtl + 3)" />
-                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle" Click="ButtonClick" Margin="5" ToolTip="Draws a rectangle that snaps to grid lines &#x0a; (Crtl + 4)"/>
-
+                            <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
+                            </Button>
+                            <Button x:Name="ToggleDrawLineButton" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a; (Crtl + 2)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/line.png" />
+                            </Button>
+                            <Button x:Name="ToggleLineEraser" Click="ButtonClick" Margin="5" ToolTip="Erases a selected chunk of any line drawn with the rectangle or line tool &#x0a; (Crtl + 3)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/erase.png" />
+                            </Button>
+                            <Button x:Name="ToggleDrawRectangleButton" Click="ButtonClick" Margin="5" ToolTip="Draws a rectangle that snaps to grid lines &#x0a; (Crtl + 4)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
+                            </Button>
                         </StackPanel>
                     </Grid>
 

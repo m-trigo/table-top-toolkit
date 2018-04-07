@@ -133,7 +133,12 @@
     <Resource Include="imgs\icons\doorway6.png" />
     <Resource Include="imgs\icons\doorway7.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\erase.png" />
+    <Resource Include="imgs\menu_icons\line.png" />
+    <Resource Include="imgs\menu_icons\pencil.png" />
+    <Resource Include="imgs\menu_icons\rectangle.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="imgs\menu alt icons\Clear Canvas.png" />
     <Resource Include="imgs\menu alt icons\Grid.png" />
