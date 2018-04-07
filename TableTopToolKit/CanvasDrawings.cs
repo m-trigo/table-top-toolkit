@@ -85,31 +85,17 @@ namespace TableTopToolKit
 
         private void RenderToCanvas(UIElement element)
         {
+            UnRenderFromCanvas(element);
             canvas.Children.Add(element);
         }
 
         private void RenderToCanvas(Drawing drawing)
         {
+            UnRenderFromCanvas(drawing);
             foreach (UIElement element in drawing.Elements)
             {
                 canvas.Children.Add(element);
             }
-        }
-
-        private void RenderToCanvas(Image image, double x, double y)
-        {
-            Rectangle newImage = new Rectangle();
-
-            newImage.Width = image.Width;
-            newImage.Height = image.Height;
-
-            Canvas.SetLeft(newImage, x);
-            Canvas.SetTop(newImage, y);
-
-            ImageBrush brush = new ImageBrush(image.Source);
-            newImage.Fill = brush;
-
-            canvas.Children.Add(newImage);
         }
 
         private void UnRenderFromCanvas(UIElement element)
@@ -192,13 +178,40 @@ namespace TableTopToolKit
             }
         }
 
-        public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
+        public void Erase(IEnumerable<EraserTool.EraseData> eraseRequests)
+        {
+            List<Command> eraseCommands = new List<Command>();
+            foreach (EraserTool.EraseData data in eraseRequests)
+            {
+                eraseCommands.Add(EraseFromDrawingCommand(data.SourceDrawing, data.DrawingLine, data.ErasedSegment));
+            }
+
+            Command groupedErasesCommand = new Command
+            (
+                doAction: () =>
+                {
+                    foreach (Command command in eraseCommands)
+                    {
+                        command.Do();
+                    }
+                },
+
+                undoAction: () =>
+                {
+                    foreach (Command command in eraseCommands)
+                    {
+                        command.Undo();
+                    }
+                }
+            );
+
+            AddNewCommand(groupedErasesCommand);
+        }
+
+        private Command EraseFromDrawingCommand(Drawing drawing, Line original, Line eraser)
         {
             Brush brush = original.Stroke;
             double thickness = original.StrokeThickness;
-
-            drawing.Elements.Remove(original);
-            UnRenderFromCanvas(original);
 
             eraser.X1 = Math.Round(eraser.X1);
             eraser.Y1 = Math.Round(eraser.Y1);
@@ -209,7 +222,20 @@ namespace TableTopToolKit
             if ((vertical && original.Y1 == eraser.Y1 && original.Y2 == eraser.Y2)
             || (!vertical && original.X1 == eraser.X1 && original.X2 == eraser.X2))
             {
-                return; // whole line is erased, no need to rebuild additional ones
+                return new Command
+                (
+                    doAction: () =>
+                    {
+                        drawing.Elements.Remove(original);
+                        UnRenderFromCanvas(original);
+                    },
+
+                    undoAction: () =>
+                    {
+                        drawing.Elements.Add(original);
+                        RenderToCanvas(original);
+                    }
+                );
             }
 
             List<Point> points = new List<Point>()
@@ -272,10 +298,30 @@ namespace TableTopToolKit
                 };
             }
 
-            drawing.Elements.Add(firstSegment);
-            drawing.Elements.Add(secondSegment);
-            RenderToCanvas(firstSegment);
-            RenderToCanvas(secondSegment);
+            return new Command
+            (
+               doAction: () =>
+               {
+                   drawing.Elements.Remove(original);
+                   UnRenderFromCanvas(original);
+
+                   drawing.Elements.Add(firstSegment);
+                   drawing.Elements.Add(secondSegment);
+                   RenderToCanvas(firstSegment);
+                   RenderToCanvas(secondSegment);
+               },
+
+               undoAction: () =>
+               {
+                   drawing.Elements.Remove(firstSegment);
+                   UnRenderFromCanvas(firstSegment);
+                   drawing.Elements.Remove(secondSegment);
+                   UnRenderFromCanvas(secondSegment);
+
+                   drawing.Elements.Add(original);
+                   RenderToCanvas(original);
+               }
+            );
         }
 
         public void ClearCanvas()
@@ -289,8 +335,11 @@ namespace TableTopToolKit
             {
                 foreach (Drawing drawing in drawings)
                 {
-                    RemoveDrawing(drawing);
+                    UnRenderFromCanvas(drawing);
                 }
+                drawings.Clear();
+                commandHistory.Clear();
+                commandHistoryIndex = -1;
             }
         }
 
@@ -298,7 +347,8 @@ namespace TableTopToolKit
         {
             foreach (Drawing drawing in drawings)
             {
-                AddDrawing(drawing);
+                UnRenderFromCanvas(drawing);
+                RenderToCanvas(drawing);
             }
         }
 

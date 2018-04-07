@@ -59,12 +59,7 @@ namespace TableTopToolKit
 
         private void DispatchEraseEvent()
         {
-            for (int i = 0; i < dataToErase.Count; i++)
-            {
-                EraseData eraseData = dataToErase[i];
-                source.EraseLineFromDrawing(eraseData.SourceDrawing, eraseData.DrawingLine, eraseData.ErasedSegment);
-            }
-
+            source.Erase(dataToErase);
             UnrenderLines();
             drawing = false;
         }
