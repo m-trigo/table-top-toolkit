@@ -46,10 +46,10 @@
                             <Button x:Name="ToggleClearCanvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a; (Crtl + C)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/clear_canvas.png" />
                             </Button>
-                            <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTip="Undo the most recent operation &#x0a; (Crtl + Y)">
+                            <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTip="Undo the most recent operation &#x0a; (Crtl + Z)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/undo.png" />
                             </Button>
-                            <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Z)">
+                            <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Y)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/redo.png" />
                             </Button>
                             <Separator RenderTransformOrigin="0.5,0.5" Width="14">

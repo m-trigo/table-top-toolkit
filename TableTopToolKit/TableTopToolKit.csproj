@@ -151,10 +151,14 @@
     <Resource Include="imgs\menu alt icons\Undo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="imgs\menu_icons\clear_canvas.png" />
-    <Resource Include="imgs\menu_icons\print_preview.png" />
-    <Resource Include="imgs\menu_icons\redo.png" />
     <Resource Include="imgs\menu_icons\toggle_grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\print_preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\clear_canvas.png" />
+    <Resource Include="imgs\menu_icons\redo.png" />
     <Resource Include="imgs\menu_icons\undo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
