@@ -23,7 +23,7 @@
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleMenuItemButton"></MenuItem>
+                <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
         </Menu>
 

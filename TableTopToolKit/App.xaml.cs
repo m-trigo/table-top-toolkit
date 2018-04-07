@@ -104,6 +104,9 @@ namespace TableTopToolKit
                 case Controls.LoadFile:
                     canvasDrawings.LoadFile();
                     break;
+               // case Controls.ToggleIconView:
+                    
+
             }
         }
 
