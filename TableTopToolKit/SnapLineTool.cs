@@ -4,7 +4,7 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    internal class SnapLineTool : DrawingTool
+    public class SnapLineTool : DrawingTool
     {
         private CanvasDrawings source;
 
@@ -45,11 +45,13 @@ namespace TableTopToolKit
                         }
 
                         currentLine = new Line();
+                        currentLine.Stroke = source.ForegroundColor;
+                        currentLine.StrokeThickness = source.ForegroundThickness;
                         Point beginning = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
                         currentLine.X1 = beginning.X;
                         currentLine.Y1 = beginning.Y;
 
-                        source.StartDrawing(currentLine);
+                        source.AddDrawing(new Drawing(currentLine));
                     }
 
                     if (Keyboard.IsKeyDown(Key.LeftShift))

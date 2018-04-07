@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace TableTopToolKit
 {
-    internal interface DrawingTool
+    public interface DrawingTool
     {
         void MouseMove(Point position, MouseEventArgs mouseEvent);
 

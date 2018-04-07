@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    internal class RectangleTool : DrawingTool
+    public class RectangleTool : DrawingTool
     {
         private CanvasDrawings source;
         private Grid grid;
@@ -65,15 +65,46 @@ namespace TableTopToolKit
                         Point startingPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);
                         Point endPoint = startingPoint;
 
-                        left = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y };
-                        top = new Line() { X1 = startingPoint.X, Y1 = startingPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y };
-                        right = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = endPoint.X, Y2 = startingPoint.Y };
-                        bottom = new Line() { X1 = endPoint.X, Y1 = endPoint.Y, X2 = startingPoint.X, Y2 = endPoint.Y };
+                        left = new Line()
+                        {
+                            X1 = startingPoint.X,
+                            Y1 = startingPoint.Y,
+                            X2 = startingPoint.X,
+                            Y2 = endPoint.Y,
+                            Stroke = source.ForegroundColor,
+                            StrokeThickness = source.ForegroundThickness
+                        };
+                        top = new Line()
+                        {
+                            X1 = startingPoint.X,
+                            Y1 = startingPoint.Y,
+                            X2 = endPoint.X,
+                            Y2 = startingPoint.Y,
+                            Stroke = source.ForegroundColor,
+                            StrokeThickness = source.ForegroundThickness
+                        };
+                        right = new Line()
+                        {
+                            X1 = endPoint.X,
+                            Y1 = endPoint.Y,
+                            X2 = endPoint.X,
+                            Y2 = startingPoint.Y,
+                            Stroke = source.ForegroundColor,
+                            StrokeThickness = source.ForegroundThickness
+                        };
+                        bottom = new Line()
+                        {
+                            X1 = endPoint.X,
+                            Y1 = endPoint.Y,
+                            X2 = startingPoint.X,
+                            Y2 = endPoint.Y,
+                            Stroke = source.ForegroundColor,
+                            StrokeThickness = source.ForegroundThickness
+                        };
 
-                        source.StartDrawing(left);
-                        source.ContinueDrawing(top);
-                        source.ContinueDrawing(right);
-                        source.ContinueDrawing(bottom);
+                        Drawing rectangleDrawing = new Drawing(left);
+                        rectangleDrawing.AddToDrawing(new UIElement[] { top, right, bottom });
+                        source.AddDrawing(rectangleDrawing);
                     }
 
                     Point currentPoint = grid.SnapToGridCorners(mousePosition.X, mousePosition.Y);

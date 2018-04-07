@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Shapes;
 using System.Xml;
@@ -11,24 +12,32 @@ namespace TableTopToolKit
 {
     public class Drawing : IXmlSerializable
     {
-        private List<Shape> shapes;
+        private List<UIElement> elements;
 
-        public IList<Shape> Shapes { get => shapes; }
+        public IList<UIElement> Elements { get => elements; }
 
         private Drawing() // for serialization only
         {
-            shapes = new List<Shape>();
+            elements = new List<UIElement>();
         }
 
-        public Drawing(Shape shape)
+        public Drawing(UIElement element)
         {
-            shapes = new List<Shape>();
-            shapes.Add(shape);
+            elements = new List<UIElement>();
+            elements.Add(element);
         }
 
-        public void AddToDrawing(Shape shape)
+        public void AddToDrawing(UIElement element)
         {
-            shapes.Add(shape);
+            elements.Add(element);
+        }
+
+        public void AddToDrawing(IEnumerable<UIElement> additions)
+        {
+            foreach (UIElement element in additions)
+            {
+                elements.Add(element);
+            }
         }
 
         public XmlSchema GetSchema()
@@ -42,8 +51,8 @@ namespace TableTopToolKit
             while (reader.Name == "Shape")
             {
                 reader.ReadStartElement("Shape");
-                Shape shape = XamlReader.Parse(reader.Value) as Shape;
-                shapes.Add(shape);
+                UIElement element = XamlReader.Parse(reader.Value) as UIElement;
+                elements.Add(element);
                 reader.Read();
                 reader.ReadEndElement();
             }
@@ -52,9 +61,9 @@ namespace TableTopToolKit
 
         public void WriteXml(XmlWriter writer)
         {
-            foreach (Shape shape in Shapes)
+            foreach (UIElement element in Elements)
             {
-                writer.WriteElementString("Shape", XamlWriter.Save(shape));
+                writer.WriteElementString("Shape", XamlWriter.Save(element));
             }
         }
     }

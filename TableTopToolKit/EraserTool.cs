@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    internal class EraserTool : DrawingTool
+    public class EraserTool : DrawingTool
     {
         public class EraseData
         {
@@ -37,13 +37,24 @@ namespace TableTopToolKit
             dataToErase = new List<EraseData>();
         }
 
-        private void UnrenderLines()
+        private void RenderLines()
         {
-            source.UnRenderFromCanvas(eraserLine);
+            List<UIElement> toRender = new List<UIElement>() { eraserLine };
             foreach (EraseData data in dataToErase)
             {
-                source.UnRenderFromCanvas(data.ErasedSegment);
+                toRender.Add(data.ErasedSegment);
             }
+            source.AddNonDrawing(toRender);
+        }
+
+        private void UnrenderLines()
+        {
+            List<UIElement> removables = new List<UIElement>() { eraserLine };
+            foreach (EraseData data in dataToErase)
+            {
+                removables.Add(data.ErasedSegment);
+            }
+            source.RemoveNonDrawing(removables);
         }
 
         private void DispatchEraseEvent()
@@ -223,12 +234,10 @@ namespace TableTopToolKit
                     eraserLine.Y2 = end.Y;
                 }
 
-                source.RenderInCanvas(eraserLine);
-
                 dataToErase = new List<EraseData>();
-                foreach (Drawing drawing in source.Drawings())
+                foreach (Drawing drawing in source.Drawings)
                 {
-                    foreach (Shape shape in drawing.Shapes)
+                    foreach (Shape shape in drawing.Elements)
                     {
                         if (!(shape is Line))
                         {
@@ -251,10 +260,7 @@ namespace TableTopToolKit
                     }
                 }
 
-                foreach (EraseData data in dataToErase)
-                {
-                    source.RenderInCanvas(data.ErasedSegment);
-                }
+                RenderLines();
             }
             else if (mouseEvent.LeftButton == MouseButtonState.Released && mouseDown)
             {

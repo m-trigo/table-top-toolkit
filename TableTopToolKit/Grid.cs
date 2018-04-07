@@ -6,25 +6,29 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    internal class Grid
+    public class Grid
     {
         private int canvasWidth;
         private int canvasHeight;
         private int step;
         private bool isVisible;
+        private CanvasDrawings canvasDrawings;
 
         public int SquareSize { get => step; }
         public List<Line> GridLines { private set; get; }
         private double MaxX { get => GridLines[GridLines.Count - 1].X2; }
         private double MaxY { get => GridLines[GridLines.Count - 1].Y2; }
 
-        public Grid(int width, int height, int step)
+        public Grid(int width, int height, int step, CanvasDrawings source)
         {
             canvasWidth = width;
             canvasHeight = height;
             this.step = step;
             isVisible = true;
+            canvasDrawings = source;
+
             InitializeGridLines();
+            canvasDrawings.AddNonDrawing(GridLines);
         }
 
         public void InitializeGridLines()
@@ -39,6 +43,9 @@ namespace TableTopToolKit
             for (int xPos = 0; xPos < canvasWidth; xPos += step)
             {
                 Line line = new Line();
+                line.Stroke = canvasDrawings.BackgroundColor;
+                line.StrokeThickness = canvasDrawings.BackgroundThickness;
+
                 line.X1 = xPos;
                 line.Y1 = 0;
 
@@ -51,7 +58,9 @@ namespace TableTopToolKit
             for (int yPos = 0; yPos < canvasHeight; yPos += step)
             {
                 Line line = new Line();
-                line.Y1 = yPos;
+                line.Stroke = canvasDrawings.BackgroundColor;
+                line.StrokeThickness = canvasDrawings.BackgroundThickness; line.Y1 = yPos;
+
                 line.X1 = 0;
 
                 line.Y2 = yPos;
@@ -83,9 +92,9 @@ namespace TableTopToolKit
 
         public int RoundToClosestVerticalLineX(double value)
         {
-            for(int x = 0; x <= MaxX; x++)
+            for (int x = 0; x <= MaxX; x++)
             {
-                if (Math.Abs(value - x) < step/2)
+                if (Math.Abs(value - x) < step / 2)
                 {
                     return x;
                 }

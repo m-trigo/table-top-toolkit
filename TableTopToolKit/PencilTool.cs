@@ -10,66 +10,58 @@ using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
-    internal class PencilTool : DrawingTool
+    public class PencilTool : DrawingTool
     {
-        private CanvasDrawings source;
-        private Point lastKnownMouseDown;
-        private bool mouseDown;
-        private bool startDrawing;
+        private CanvasDrawings canvasDrawings;
+        private Polyline line;
+        private bool added;
 
-        public PencilTool(CanvasDrawings canvasDrawings)
+        public PencilTool(CanvasDrawings cd)
         {
-            source = canvasDrawings;
-            mouseDown = false;
-            startDrawing = false;
+            canvasDrawings = cd;
+            line = null;
+            added = false;
         }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
             if (mouseEvent.LeftButton == MouseButtonState.Pressed)
             {
-                mouseDown = true;
+                line = new Polyline()
+                {
+                    Stroke = canvasDrawings.ForegroundColor,
+                    StrokeThickness = canvasDrawings.ForegroundThickness
+                };
             }
-            lastKnownMouseDown = mousePosition;
         }
 
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
             if (mouseEvent.LeftButton == MouseButtonState.Released)
             {
-                mouseDown = false;
-                startDrawing = false;
+                line = null;
+                added = false;
             }
         }
 
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            mouseDown = false;
-            startDrawing = false;
+            line = null;
+            added = false;
         }
 
         public void MouseMove(Point mousePosition, MouseEventArgs mouseEvent)
         {
-            if (mouseDown && !mousePosition.Equals(lastKnownMouseDown))
+            if (line != null)
             {
-                Line lineSegment = new Line();
-                lineSegment.X1 = lastKnownMouseDown.X;
-                lineSegment.Y1 = lastKnownMouseDown.Y;
-                lineSegment.X2 = mousePosition.X;
-                lineSegment.Y2 = mousePosition.Y;
+                line.Points.Add(mousePosition);
 
-                if (!startDrawing)
+                if (!added)
                 {
-                    source.StartDrawing(lineSegment);
-                    startDrawing = true;
-                }
-                else
-                {
-                    source.ContinueDrawing(lineSegment);
+                    canvasDrawings.AddDrawing(new Drawing(line));
+                    added = true;
                 }
             }
-
-            lastKnownMouseDown = mousePosition;
         }
     }
 }

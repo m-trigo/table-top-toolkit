@@ -10,98 +10,94 @@ using System.Xml.Serialization;
 
 namespace TableTopToolKit
 {
-    internal class CanvasDrawings
+    public class CanvasDrawings
     {
+        private class Command
+        {
+            private Action doAction;
+            private Action undoAction;
+
+            public Command(Action doAction, Action undoAction)
+            {
+                this.doAction = doAction;
+                this.undoAction = undoAction;
+            }
+
+            public void Do()
+            {
+                doAction();
+            }
+
+            public void Undo()
+            {
+                undoAction();
+            }
+        }
+
         private const string AUTO_SAVE_FILE_PATH = "autosave.xml";
 
         private Canvas canvas;
         private List<Drawing> drawings;
-        private List<Drawing> undoDrawings;
-
-        private Brush backgroundBrush;
-        private Brush foregroundBrush;
-
-        private double backgroundThickness;
-        private double foregroundThickness;
+        private List<Command> commandHistory;
+        private int commandHistoryIndex;
 
         public int Width => (int)canvas.Width;
         public int Height => (int)canvas.Height;
+
+        public Brush ForegroundColor
+        {
+            get => Brushes.Black.Clone();
+        }
+
+        public Brush BackgroundColor
+        {
+            get => Brushes.LightGray.Clone();
+        }
+
+        public double ForegroundThickness
+        {
+            get => 3;
+        }
+
+        public double BackgroundThickness
+        {
+            get => 1;
+        }
 
         public CanvasDrawings(Canvas source)
         {
             canvas = source;
             drawings = new List<Drawing>();
-            undoDrawings = new List<Drawing>();
-            backgroundBrush = Brushes.LightGray;
-            foregroundBrush = Brushes.Black;
-            backgroundThickness = 1;
-            foregroundThickness = 3;
+            commandHistory = new List<Command>();
+            commandHistoryIndex = -1;
         }
 
-        public IEnumerable<Drawing> Drawings()
+        public IEnumerable<Drawing> Drawings
         {
-            foreach (Drawing drawing in drawings)
+            get
             {
-                yield return drawing;
+                foreach (Drawing drawing in drawings)
+                {
+                    yield return drawing;
+                }
             }
         }
 
-        public void AddBackground(Shape element)
-        {
-            element.StrokeThickness = backgroundThickness;
-            element.Stroke = backgroundBrush;
-            canvas.Children.Add(element);
-        }
-
-        public void AddForeGround(Shape element)
-        {
-            element.StrokeThickness = foregroundThickness;
-            element.Stroke = element.Stroke ?? foregroundBrush;
-            canvas.Children.Add(element);
-        }
-
-        public void RenderInCanvas(Shape element)
+        private void RenderToCanvas(UIElement element)
         {
             canvas.Children.Add(element);
         }
 
-        public void UnRenderFromCanvas(Shape element)
+        private void RenderToCanvas(Drawing drawing)
         {
-            canvas.Children.Remove(element);
-        }
-
-        public void StartDrawing(Shape element)
-        {
-            undoDrawings.Clear();
-            drawings.Add(new Drawing(element));
-            AddForeGround(element);
-        }
-
-        public void ContinueDrawing(Shape element)
-        {
-            drawings[drawings.Count - 1].AddToDrawing(element);
-            AddForeGround(element);
-        }
-
-        public void UndrawFromCanvas(Drawing drawing)
-        {
-            foreach (Shape shape in drawing.Shapes)
+            foreach (UIElement element in drawing.Elements)
             {
-                canvas.Children.Remove(shape);
+                canvas.Children.Add(element);
             }
         }
 
-        public void DrawToCanvas(Drawing drawing)
+        private void RenderToCanvas(Image image, double x, double y)
         {
-            foreach (Shape shape in drawing.Shapes)
-            {
-                canvas.Children.Add(shape);
-            }
-        }
-
-        public void DrawToCanvas(Image image, double x, double y)
-        {
-            undoDrawings.Clear();
             Rectangle newImage = new Rectangle();
 
             newImage.Width = image.Width;
@@ -112,36 +108,97 @@ namespace TableTopToolKit
 
             ImageBrush brush = new ImageBrush(image.Source);
             newImage.Fill = brush;
-            drawings.Add(new Drawing(newImage));
+
             canvas.Children.Add(newImage);
         }
 
-        public void UndoDrawing()
+        private void UnRenderFromCanvas(UIElement element)
         {
-            if (drawings.Count > 0)
+            canvas.Children.Remove(element);
+        }
+
+        private void UnRenderFromCanvas(Drawing drawing)
+        {
+            foreach (UIElement element in drawing.Elements)
             {
-                Drawing drawing = drawings[drawings.Count - 1];
-                undoDrawings.Add(drawing);
-                drawings.Remove(drawing);
-                UndrawFromCanvas(drawing);
+                canvas.Children.Remove(element);
             }
         }
 
-        public void RedoDrawing()
+        public void RemoveDrawing(Drawing drawing)
         {
-            if (undoDrawings.Count > 0)
+            drawings.Remove(drawing);
+            UnRenderFromCanvas(drawing);
+        }
+
+        public void AddDrawing(Drawing drawing)
+        {
+            Command addNewDrawing = new Command
+            (
+                doAction: () =>
+                {
+                    RemoveDrawing(drawing);
+                    drawings.Add(drawing);
+                    RenderToCanvas(drawing);
+                },
+
+                undoAction: () =>
+                {
+                    RemoveDrawing(drawing);
+                }
+            );
+            AddNewCommand(addNewDrawing);
+        }
+
+        private void AddNewCommand(Command command)
+        {
+            command.Do();
+            commandHistory.Add(command);
+            commandHistoryIndex++;
+            commandHistory.RemoveRange(commandHistoryIndex, commandHistory.Count - (commandHistoryIndex + 1));
+        }
+
+        public void UndoLast()
+        {
+            if (commandHistoryIndex > -1 && commandHistory.Count > 0)
             {
-                Drawing drawing = undoDrawings[undoDrawings.Count - 1];
-                undoDrawings.Remove(drawing);
-                drawings.Add(drawing);
-                DrawToCanvas(drawing);
+                commandHistory[commandHistoryIndex].Undo();
+                commandHistoryIndex--;
+            }
+        }
+
+        public void RedoLast()
+        {
+            if (commandHistoryIndex < commandHistory.Count - 1)
+            {
+                commandHistoryIndex++;
+                commandHistory[commandHistoryIndex].Do();
+            }
+        }
+
+        public void AddNonDrawing(IEnumerable<UIElement> elements)
+        {
+            foreach (UIElement element in elements)
+            {
+                canvas.Children.Add(element);
+            }
+        }
+
+        public void RemoveNonDrawing(IEnumerable<UIElement> elements)
+        {
+            foreach (UIElement element in elements)
+            {
+                canvas.Children.Remove(element);
             }
         }
 
         public void EraseLineFromDrawing(Drawing drawing, Line original, Line eraser)
         {
-            drawing.Shapes.Remove(original);
-            canvas.Children.Remove(original);
+            Brush brush = original.Stroke;
+            double thickness = original.StrokeThickness;
+
+            drawing.Elements.Remove(original);
+            UnRenderFromCanvas(original);
 
             eraser.X1 = Math.Round(eraser.X1);
             eraser.Y1 = Math.Round(eraser.Y1);
@@ -176,8 +233,8 @@ namespace TableTopToolKit
                     Y1 = points[0].Y,
                     X2 = points[1].X,
                     Y2 = points[1].Y,
-                    Stroke = foregroundBrush,
-                    StrokeThickness = foregroundThickness
+                    Stroke = brush,
+                    StrokeThickness = thickness
                 };
 
                 secondSegment = new Line()
@@ -186,8 +243,8 @@ namespace TableTopToolKit
                     Y1 = points[2].Y,
                     X2 = points[3].X,
                     Y2 = points[3].Y,
-                    Stroke = foregroundBrush,
-                    StrokeThickness = foregroundThickness
+                    Stroke = brush,
+                    StrokeThickness = thickness
                 };
             }
             else
@@ -200,8 +257,8 @@ namespace TableTopToolKit
                     Y1 = points[0].Y,
                     X2 = points[1].X,
                     Y2 = points[1].Y,
-                    Stroke = foregroundBrush,
-                    StrokeThickness = foregroundThickness
+                    Stroke = brush,
+                    StrokeThickness = thickness
                 };
 
                 secondSegment = new Line()
@@ -210,29 +267,30 @@ namespace TableTopToolKit
                     Y1 = points[2].Y,
                     X2 = points[3].X,
                     Y2 = points[3].Y,
-                    Stroke = foregroundBrush,
-                    StrokeThickness = foregroundThickness
+                    Stroke = brush,
+                    StrokeThickness = thickness
                 };
             }
 
-            drawing.Shapes.Add(firstSegment);
-            drawing.Shapes.Add(secondSegment);
-            RenderInCanvas(firstSegment);
-            RenderInCanvas(secondSegment);
+            drawing.Elements.Add(firstSegment);
+            drawing.Elements.Add(secondSegment);
+            RenderToCanvas(firstSegment);
+            RenderToCanvas(secondSegment);
         }
 
         public void ClearCanvas()
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to clear the canvas, you will NOT be able to undo this action?", "Confirmation", MessageBoxButton.YesNo);
+            MessageBoxResult result = MessageBox.Show(
+                "Are you sure you want to clear the canvas, you will NOT be able to undo this action?",
+                "Confirmation", MessageBoxButton.YesNo
+            );
 
             if (result == MessageBoxResult.Yes)
             {
                 foreach (Drawing drawing in drawings)
                 {
-                    UndrawFromCanvas(drawing);
+                    RemoveDrawing(drawing);
                 }
-                undoDrawings.Clear();
-                drawings.Clear();
             }
         }
 
@@ -240,9 +298,8 @@ namespace TableTopToolKit
         {
             foreach (Drawing drawing in drawings)
             {
-                DrawToCanvas(drawing);
+                AddDrawing(drawing);
             }
-            undoDrawings.Clear();
         }
 
         public void SaveToPNG(string filename)
