@@ -37,11 +37,21 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray">
-                            <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on/off &#x0a; (Crtl + G)"/>
-                            <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" ToolTip="Displays a a window containing a preview of everything that will be printed &#x0a; (Crtl + P)"/>
-                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a; (Crtl + C)" />
-                            <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5"  ToolTip="Undo the most recent operation &#x0a; (Crtl + Y)"/>
-                            <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Z)"/>
+                            <Button x:Name="ToggleGridButton" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on/off &#x0a; (Crtl + G)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/toggle_grid.png" />
+                            </Button>
+                            <Button x:Name="PrintPreviewButton" Click="ButtonClick" Margin="5" ToolTip="Displays a a window containing a preview of everything that will be printed &#x0a; (Crtl + P)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/print_preview.png" />
+                            </Button>
+                            <Button x:Name="ToggleClearCanvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a; (Crtl + C)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/clear_canvas.png" />
+                            </Button>
+                            <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTip="Undo the most recent operation &#x0a; (Crtl + Y)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/undo.png" />
+                            </Button>
+                            <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Z)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/redo.png" />
+                            </Button>
                             <Separator RenderTransformOrigin="0.5,0.5" Width="14">
                                 <Separator.RenderTransform>
                                     <TransformGroup>
