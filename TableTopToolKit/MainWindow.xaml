@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:TableTopToolKit"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Table Top Toolkit" Closed="Window_Closed"
-        Width="800" MinWidth="800" Height="600" MinHeight="600" MaxWidth="1754">
+        Width="800" MinWidth="800" Height="600" MinHeight="600" MaxWidth="1754"  KeyDown="OnKeyDown">
 
     <Window.Resources>
         <ResourceDictionary Source="ResourceDictionary.xaml" />
     </Window.Resources>
 
-    <DockPanel LastChildFill="True" KeyDown="OnKeyDown">
+    <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick"></MenuItem>
