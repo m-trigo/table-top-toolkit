@@ -324,7 +324,7 @@ namespace TableTopToolKit
             );
         }
 
-        public void ClearCanvas()
+        public bool ClearCanvas()
         {
             MessageBoxResult result = MessageBox.Show(
                 "Are you sure you want to clear the canvas, you will NOT be able to undo this action?",
@@ -341,6 +341,8 @@ namespace TableTopToolKit
                 commandHistory.Clear();
                 commandHistoryIndex = -1;
             }
+
+            return result != MessageBoxResult.Yes;
         }
 
         public void RestoreCanvas()
@@ -384,9 +386,13 @@ namespace TableTopToolKit
 
         public void LoadState(string filePath = AUTO_SAVE_FILE_PATH)
         {
-            ClearCanvas();
-
             if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            bool stop = ClearCanvas();
+            if (stop)
             {
                 return;
             }
