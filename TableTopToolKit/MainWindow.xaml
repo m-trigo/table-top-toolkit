@@ -37,11 +37,11 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray">
-                            <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleGridButton" Content="Toggle Grid" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on/off &#x0a; (Crtl + G)"/>
+                            <Button x:Name="PrintPreviewButton" Content="Print Preview" Click="ButtonClick" Margin="5" ToolTip="Displays a a window containing a preview of everything that will be printed &#x0a; (Crtl + P)"/>
+                            <Button x:Name="ToggleClearCanvas" Content="Clear Canvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a; (Crtl + C)" />
+                            <Button x:Name="ToggleUndoButton" Content="Undo" Click="ButtonClick" Margin="5"  ToolTip="Undo the most recent operation &#x0a; (Crtl + Y)"/>
+                            <Button x:Name="ToggleRedoButton" Content="Redo" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Z)"/>
                             <Separator RenderTransformOrigin="0.5,0.5" Width="14">
                                 <Separator.RenderTransform>
                                     <TransformGroup>
@@ -53,10 +53,10 @@
                                 </Separator.RenderTransform>
 
                             </Separator>
-                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleDrawLineButton" Content="Line" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleLineEraser" Content="Line Erase" Click="ButtonClick" Margin="5" />
-                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle" Click="ButtonClick" Margin="5" />
+                            <Button x:Name="ToggleDrawPencilButton" Content="Pencil" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)"/>
+                            <Button x:Name="ToggleDrawLineButton" Content="Line" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a; (Crtl + 2)"/>
+                            <Button x:Name="ToggleLineEraser" Content="Line Erase" Click="ButtonClick" Margin="5" ToolTip="Erases a selected chunk of any line drawn with the rectangle or line tool &#x0a; (Crtl + 3)" />
+                            <Button x:Name="ToggleDrawRectangleButton" Content="Rectangle" Click="ButtonClick" Margin="5" ToolTip="Draws a rectangle that snaps to grid lines &#x0a; (Crtl + 4)"/>
 
                         </StackPanel>
                     </Grid>

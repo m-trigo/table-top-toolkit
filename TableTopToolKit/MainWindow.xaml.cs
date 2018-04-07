@@ -106,12 +106,25 @@ namespace TableTopToolKit
         {
             switch (e.Key)
             {
-                case Key.F1:
-                    main.Command(App.Controls.AutoSave);
+                case Key.G:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.ToggleGrid);
+                    }
                     break;
 
-                case Key.F2:
-                    main.Command(App.Controls.LoadPreviousAutoSave);
+                case Key.P:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.PrintPreview);
+                    }
+                    break;
+
+                case Key.C:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.ClearCanvas);
+                    }
                     break;
 
                 case Key.Z:
@@ -127,25 +140,32 @@ namespace TableTopToolKit
                         main.Command(App.Controls.Redo);
                     }
                     break;
-
-                case Key.Space:
-                    main.Command(App.Controls.ToggleGrid);
-                    break;
-
                 case Key.D1:
-                    main.Command(App.Controls.SelectPencilTool);
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.SelectPencilTool);
+                    }
                     break;
 
                 case Key.D2:
-                    main.Command(App.Controls.SelectLineTool);
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.SelectLineTool);
+                    }
                     break;
 
                 case Key.D3:
-                    main.Command(App.Controls.SelectRectangleTool);
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.SelectEraserTool);
+                    }
                     break;
 
-                case Key.D4:  // maybe come up with a better key?
-                    main.Command(App.Controls.SelectEraserTool);
+                case Key.D4:
+                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                    {
+                        main.Command(App.Controls.SelectRectangleTool);
+                    }
                     break;
             }
         }
