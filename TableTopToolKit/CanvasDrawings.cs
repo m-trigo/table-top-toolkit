@@ -386,25 +386,32 @@ namespace TableTopToolKit
 
         public void LoadState(string filePath = AUTO_SAVE_FILE_PATH)
         {
-            if (!File.Exists(filePath))
+            try
             {
-                return;
-            }
+                if (!File.Exists(filePath))
+                {
+                    return;
+                }
 
-            bool stop = ClearCanvas();
-            if (stop)
+                bool stop = ClearCanvas();
+                if (stop)
+                {
+                    return;
+                }
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
+                using (StreamReader file = new StreamReader(filePath))
+                {
+                    CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
+                    drawings = canvasState.Drawings;
+                }
+
+                RestoreCanvas();
+            }
+            catch (Exception)
             {
-                return;
+                MessageBox.Show($"The save file <{filePath}> is invalid and could not be loaded", "File Load Failed");
             }
-
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(CanvasState));
-            using (StreamReader file = new StreamReader(filePath))
-            {
-                CanvasState canvasState = xmlSerializer.Deserialize(file) as CanvasState;
-                drawings = canvasState.Drawings;
-            }
-
-            RestoreCanvas();
         }
 
         public void SaveAs()
