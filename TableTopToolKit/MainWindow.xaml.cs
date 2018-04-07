@@ -19,7 +19,6 @@ namespace TableTopToolKit
         private Point startDragMousePosition;
         private bool iconViewHasSwitched = false;
 
-
         public Image SelectedIcon
         {
             get { return (Image)GetValue(SelectedIconProperty); }
@@ -29,8 +28,6 @@ namespace TableTopToolKit
         // Using a DependencyProperty as the backing store for SelectedIcon.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedIconProperty =
             DependencyProperty.Register("SelectedIcon", typeof(Image), typeof(MainWindow), new PropertyMetadata(null));
-
-        
 
         public ObservableCollection<Image> Icons { get; private set; }
 
@@ -44,7 +41,7 @@ namespace TableTopToolKit
         {
             List<Image> iconImages = new List<Image>();
             string[] imagePaths = Directory.GetFiles(ICON_IMAGES_DIRECTORY);
-            
+
             foreach (string imagePath in imagePaths)
             {
                 BitmapImage bmp = new BitmapImage();
@@ -92,7 +89,7 @@ namespace TableTopToolKit
                 main.CurrentTool.MouseDown(currentPoint, e);
             }
             else if (e.RightButton == MouseButtonState.Pressed && SelectedIcon != null)
-            {               
+            {
                 main.PlaceIcon(currentPoint, SelectedIcon);
             }
         }
@@ -105,6 +102,11 @@ namespace TableTopToolKit
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.IsRepeat)
+            {
+                return;
+            }
+
             switch (e.Key)
             {
                 case Key.G:
@@ -141,6 +143,7 @@ namespace TableTopToolKit
                         main.Command(App.Controls.Redo);
                     }
                     break;
+
                 case Key.D1:
                     if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                     {
@@ -194,14 +197,12 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.LoadFile);
             }
-            
         }
 
         private void IconSwitch()
         {
             if (!iconViewHasSwitched)
             {
-
                 {
                     Image img = new Image();
                     img.Height = 32;
@@ -292,7 +293,6 @@ namespace TableTopToolKit
                     ToggleDrawRectangleButton.Content = img;
                 }
 
-
                 iconViewHasSwitched = true;
             }
             else
@@ -349,12 +349,11 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.ClearCanvas);
             }
-            else if(button.Equals(ToggleLineEraser))
+            else if (button.Equals(ToggleLineEraser))
             {
                 main.Command(App.Controls.SelectEraserTool);
             }
         }
-        
 
         private void Window_Closed(object sender, System.EventArgs e)
         {

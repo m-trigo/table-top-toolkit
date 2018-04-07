@@ -285,5 +285,10 @@ namespace TableTopToolKit
         {
             drawing = false;
         }
+
+        public void Close()
+        {
+            UnrenderLines();
+        }
     }
 }

@@ -144,5 +144,9 @@ namespace TableTopToolKit
 
             lastKnownMouseDown = mousePosition;
         }
+
+        public void Close()
+        {
+        }
     }
 }
