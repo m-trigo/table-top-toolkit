@@ -202,48 +202,95 @@ namespace TableTopToolKit
             if (!iconViewHasSwitched)
             {
 
-                Image img = new Image();
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
 
-                //Grid Toggle Button
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Grid.png", UriKind.Relative));
-                ToggleGridButton.Content = img;
-                //Print Preview
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Print Preview.png", UriKind.Relative));
+                    //Grid Toggle Button
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Grid.png", UriKind.Relative));
+                    ToggleGridButton.Content = img;
+                }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    //Print Preview
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Print Preview.png", UriKind.Relative));
 
-                PrintPreviewButton.Content = img;
+                    PrintPreviewButton.Content = img;
+                }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
 
-                //Clear Canvas
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Clear Canvas.png", UriKind.Relative));
+                    //Clear Canvas
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Clear Canvas.png", UriKind.Relative));
 
-                ToggleClearCanvas.Content = img;
+                    ToggleClearCanvas.Content = img;
+                }
 
-                //Undo
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Undo.png", UriKind.Relative));
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
 
-                ToggleUndoButton.Content = img;
+                    //Undo
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Undo.png", UriKind.Relative));
 
-                //Redo
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Redo.png", UriKind.Relative));
+                    ToggleUndoButton.Content = img;
+                }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
 
-                ToggleRedoButton.Content = img;
+                    //Redo
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Redo.png", UriKind.Relative));
 
-                //Tools
-                //Pencil Tool
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Pencil Draw Tool.png", UriKind.Relative));
+                    ToggleRedoButton.Content = img;
+                }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
 
-                ToggleDrawPencilButton.Content = img;
-                //Line
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Line Tool.png", UriKind.Relative));
+                    //Tools
+                    //Pencil Tool
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Pencil Draw Tool.png", UriKind.Relative));
 
-                ToggleDrawLineButton.Content = img;
-                //Line Erase
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Line Erase.png", UriKind.Relative));
+                    ToggleDrawPencilButton.Content = img;
+                }
 
-                ToggleLineEraser.Content = img;
-                //Rectangle
-                img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Rectangle Tool.png", UriKind.Relative));
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    //Line
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Line Tool.png", UriKind.Relative));
 
-                ToggleDrawRectangleButton.Content = img;
+                    ToggleDrawLineButton.Content = img;
+                }
+
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    //Line Erase
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Line Erase.png", UriKind.Relative));
+
+                    ToggleLineEraser.Content = img;
+                }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    //Rectangle
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu alt icons/Rectangle Tool.png", UriKind.Relative));
+
+                    ToggleDrawRectangleButton.Content = img;
+                }
 
 
                 iconViewHasSwitched = true;
