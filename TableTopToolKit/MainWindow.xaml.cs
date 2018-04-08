@@ -17,7 +17,7 @@ namespace TableTopToolKit
         private App main;
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
-        private bool iconViewHasSwitched = false;
+        private bool iconViewHasSwitched = true;
 
         public Image SelectedIcon
         {
@@ -145,31 +145,19 @@ namespace TableTopToolKit
                     break;
 
                 case Key.D1:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.SelectPencilTool);
-                    }
+                    main.Command(App.Controls.SelectPencilTool);
                     break;
 
                 case Key.D2:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.SelectLineTool);
-                    }
+                    main.Command(App.Controls.SelectLineTool);
                     break;
 
                 case Key.D3:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.SelectEraserTool);
-                    }
+                    main.Command(App.Controls.SelectRectangleTool);
                     break;
 
                 case Key.D4:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.SelectRectangleTool);
-                    }
+                    main.Command(App.Controls.SelectEraserTool);
                     break;
             }
         }
@@ -231,7 +219,6 @@ namespace TableTopToolKit
 
                     ToggleClearCanvas.Content = img;
                 }
-
                 {
                     Image img = new Image();
                     img.Height = 32;
@@ -263,7 +250,6 @@ namespace TableTopToolKit
 
                     ToggleDrawPencilButton.Content = img;
                 }
-
                 {
                     Image img = new Image();
                     img.Height = 32;
@@ -273,7 +259,6 @@ namespace TableTopToolKit
 
                     ToggleDrawLineButton.Content = img;
                 }
-
                 {
                     Image img = new Image();
                     img.Height = 32;

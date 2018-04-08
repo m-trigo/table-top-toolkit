@@ -16,8 +16,8 @@
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick"></MenuItem>
-                <MenuItem Header="_New Map"></MenuItem>
-                <MenuItem Header="_Save"></MenuItem>
+                <!--<MenuItem Header="_New Map"></MenuItem>-->
+                <!--<MenuItem Header="_Save"></MenuItem>-->
                 <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
@@ -37,43 +37,42 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray" MinHeight="50">
-                            <Button x:Name="ToggleGridButton" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on/off &#x0a; (Crtl + G)">
+                            <Button x:Name="ToggleGridButton" Click="ButtonClick" Margin="5" ToolTip="Toggles the grid on or off &#x0a;(Crtl + G)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/toggle_grid.png" />
                             </Button>
-                            <Button x:Name="PrintPreviewButton" Click="ButtonClick" Margin="5" ToolTip="Displays a a window containing a preview of everything that will be printed &#x0a; (Crtl + P)">
+                            <Button x:Name="PrintPreviewButton" Click="ButtonClick" Margin="5" ToolTip="Displays a a window containing a preview of everything that will be printed &#x0a;(Crtl + P)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/print_preview.png" />
                             </Button>
-                            <Button x:Name="ToggleClearCanvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a; (Crtl + C)">
+                            <Button x:Name="ToggleClearCanvas" Click="ButtonClick" Margin="5" ToolTip="Clears all items from the Canvas (this action is irreseversible) &#x0a;(Crtl + C)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/clear_canvas.png" />
                             </Button>
-                            <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTip="Undo the most recent operation &#x0a; (Crtl + Z)">
+                            <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTip="Undoes the most recent operation &#x0a;(Crtl + Z)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/undo.png" />
                             </Button>
-                            <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTip="Redo the most recent operation &#x0a; (Crtl + Y)">
+                            <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTip="Redoes the most recent operation &#x0a;(Crtl + Y)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/redo.png" />
                             </Button>
                             <Separator RenderTransformOrigin="0.5,0.5" Width="14">
                                 <Separator.RenderTransform>
                                     <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="90"/>
-                                        <TranslateTransform/>
+                                        <ScaleTransform />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="90" />
+                                        <TranslateTransform />
                                     </TransformGroup>
                                 </Separator.RenderTransform>
-
                             </Separator>
-                            <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a; (Crtl + 1)" Padding="2000">
+                            <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5" ToolTip="Allows free-drawing on the canvas &#x0a;(Number 1)" Padding="2000">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
                             </Button>
-                            <Button x:Name="ToggleDrawLineButton" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a; (Crtl + 2)">
+                            <Button x:Name="ToggleDrawLineButton" Click="ButtonClick" Margin="5" ToolTip="Allows for snap drawing. Lines will always be drawn straight on the grid lines &#x0a;(Number 2)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/line.png" />
                             </Button>
-                            <Button x:Name="ToggleLineEraser" Click="ButtonClick" Margin="5" ToolTip="Erases a selected chunk of any line drawn with the rectangle or line tool &#x0a; (Crtl + 3)">
-                                <Image Width="32" Height="32" Source="./imgs/menu_icons/erase.png" />
-                            </Button>
-                            <Button x:Name="ToggleDrawRectangleButton" Click="ButtonClick" Margin="5" ToolTip="Draws a rectangle that snaps to grid lines &#x0a; (Crtl + 4)">
+                            <Button x:Name="ToggleDrawRectangleButton" Click="ButtonClick" Margin="5" ToolTip="Draws a rectangle that snaps to grid lines &#x0a;(Number 3)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
+                            </Button>
+                            <Button x:Name="ToggleLineEraser" Click="ButtonClick" Margin="5" ToolTip="Erases a selected chunk of any line drawn with the rectangle or line tool &#x0a;(Number 4)">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/erase.png" />
                             </Button>
                         </StackPanel>
                     </Grid>
