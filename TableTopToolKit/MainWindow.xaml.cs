@@ -145,18 +145,22 @@ namespace TableTopToolKit
                     break;
 
                 case Key.D1:
+                case Key.NumPad1:
                     main.Command(App.Controls.SelectPencilTool);
                     break;
 
                 case Key.D2:
+                case Key.NumPad2:
                     main.Command(App.Controls.SelectLineTool);
                     break;
 
                 case Key.D3:
+                case Key.NumPad3:
                     main.Command(App.Controls.SelectRectangleTool);
                     break;
 
                 case Key.D4:
+                case Key.NumPad4:
                     main.Command(App.Controls.SelectEraserTool);
                     break;
             }
