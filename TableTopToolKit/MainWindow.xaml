@@ -89,7 +89,9 @@
                     <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
                              Padding="4" ItemsSource="{Binding Icons}" SelectedItem="{Binding SelectedIcon}"
                              PreviewMouseDown="OnIconListPreviewMouseDown"
-                             MouseMove="OnIconListMouseMove" />
+                             MouseMove="OnIconListMouseMove"
+                             ToolTipService.ShowDuration="60000"
+                             ToolTip="Click and drag an icon to place it on the map&#x0a;Right clicking also places the selected icon on the map" />
 
                     <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
                         <Canvas x:Name="Canvas" Width="1754" Height="1240" Margin="10, 10, 0, 0" Background="White"
