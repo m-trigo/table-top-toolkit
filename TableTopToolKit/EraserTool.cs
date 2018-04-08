@@ -37,6 +37,12 @@ namespace TableTopToolKit
             dataToErase = new List<EraseData>();
         }
 
+        private void Clear()
+        {
+            UnrenderLines();
+            dataToErase.Clear();
+        }
+
         private void RenderLines()
         {
             List<UIElement> toRender = new List<UIElement>() { eraserLine };
@@ -63,7 +69,7 @@ namespace TableTopToolKit
             {
                 source.Erase(dataToErase);
             }
-            UnrenderLines();
+            Clear();
             drawing = false;
         }
 
@@ -270,6 +276,7 @@ namespace TableTopToolKit
         public void MouseUp(Point mousePosition, MouseEventArgs mouseEvent)
         {
             DispatchEraseEvent();
+            Clear();
             mouseDown = false;
         }
 
@@ -284,11 +291,12 @@ namespace TableTopToolKit
         public void MouseExit(Point mousePosition, MouseEventArgs mouseEvent)
         {
             drawing = false;
+            Clear();
         }
 
         public void Close()
         {
-            UnrenderLines();
+            Clear();
         }
     }
 }
