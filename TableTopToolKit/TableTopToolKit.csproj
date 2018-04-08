@@ -121,17 +121,6 @@
     <Resource Include="imgs\menu_icons\rectangle.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="imgs\menu alt icons\Clear Canvas.png" />
-    <Resource Include="imgs\menu alt icons\Grid.png" />
-    <Resource Include="imgs\menu alt icons\Line Erase.png" />
-    <Resource Include="imgs\menu alt icons\Line Tool.png" />
-    <Resource Include="imgs\menu alt icons\Pencil Draw Tool.png" />
-    <Resource Include="imgs\menu alt icons\Print Preview.png" />
-    <Resource Include="imgs\menu alt icons\Rectangle Tool.png" />
-    <Resource Include="imgs\menu alt icons\Redo.png" />
-    <Resource Include="imgs\menu alt icons\Undo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\menu_icons\toggle_grid.png" />
   </ItemGroup>
   <ItemGroup>
