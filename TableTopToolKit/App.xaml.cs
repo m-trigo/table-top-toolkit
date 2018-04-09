@@ -92,7 +92,7 @@ namespace TableTopToolKit
                     break;
 
                 case Controls.ClearCanvas:
-                    canvasDrawings.ClearCanvas();
+                    canvasDrawings.ClearCanvas("Are you sure you would like to clear the canvas?");
                     break;
 
                 case Controls.AutoSave:

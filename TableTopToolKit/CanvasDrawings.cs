@@ -324,25 +324,49 @@ namespace TableTopToolKit
             );
         }
 
-        public bool ClearCanvas()
+        public bool ClearCanvas(string confirmationPrompt = null)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Are you sure you want to clear the canvas, you will NOT be able to undo this action?",
-                "Confirmation", MessageBoxButton.YesNo
-            );
+            if (drawings.Count == 0)
+            {
+                return true;
+            }
+
+            MessageBoxResult result = MessageBoxResult.Yes;
+
+            if (confirmationPrompt != null)
+            {
+                result = MessageBox.Show(confirmationPrompt, "Confirmation", MessageBoxButton.YesNo);
+            }
 
             if (result == MessageBoxResult.Yes)
             {
-                foreach (Drawing drawing in drawings)
-                {
-                    UnRenderFromCanvas(drawing);
-                }
-                drawings.Clear();
-                commandHistory.Clear();
-                commandHistoryIndex = -1;
+                IEnumerable<Drawing> erasedDrawings = new List<Drawing>(drawings.ToArray());
+
+                Command clearCanvas = new Command
+                (
+                    doAction: () =>
+                    {
+                        foreach (Drawing drawing in drawings)
+                        {
+                            UnRenderFromCanvas(drawing);
+                        }
+                        drawings.Clear();
+                    },
+
+                    undoAction: () =>
+                    {
+                        foreach (Drawing drawing in erasedDrawings)
+                        {
+                            drawings.Add(drawing);
+                            RenderToCanvas(drawing);
+                        }
+                    }
+                );
+
+                AddNewCommand(clearCanvas);
             }
 
-            return result != MessageBoxResult.Yes;
+            return result == MessageBoxResult.Yes;
         }
 
         public void RestoreCanvas()
@@ -393,8 +417,8 @@ namespace TableTopToolKit
                     return;
                 }
 
-                bool stop = ClearCanvas();
-                if (stop)
+                bool accepted = ClearCanvas("Loading a file will overrite any current progress\nAre you sure you would like to proceed?");
+                if (!accepted)
                 {
                     return;
                 }
