@@ -24,6 +24,7 @@
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick"></MenuItem>
+                <MenuItem Header="Switch _Grid Lines To Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
         </Menu>
 

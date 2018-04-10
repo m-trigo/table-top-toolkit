@@ -12,10 +12,12 @@ namespace TableTopToolKit
         private int canvasHeight;
         private int step;
         private bool isVisible;
+        private bool isInDotsMode;
         private CanvasDrawings canvasDrawings;
 
         public int SquareSize { get => step; }
         public List<Line> GridLines { private set; get; }
+        private List<Line> GridDots { set; get; }
         private double MaxX { get => GridLines[GridLines.Count - 1].X2; }
         private double MaxY { get => GridLines[GridLines.Count - 1].Y2; }
 
@@ -25,15 +27,18 @@ namespace TableTopToolKit
             canvasHeight = height;
             this.step = step;
             isVisible = true;
+            isInDotsMode = false;
             canvasDrawings = source;
 
             InitializeGridLines();
             canvasDrawings.AddNonDrawing(GridLines);
+            canvasDrawings.AddNonDrawing(GridDots);
         }
 
         public void InitializeGridLines()
         {
             GridLines = new List<Line>();
+            GridDots = new List<Line>();
             int numberOfHorizonalLines = canvasHeight / step;
             int numberOfVerticalLines = canvasWidth / step;
 
@@ -67,6 +72,33 @@ namespace TableTopToolKit
                 line.X2 = gridRight;
 
                 GridLines.Add(line);
+            }
+        }
+
+
+        public void InitializeGridDots()
+        {
+            for (int xPos = 0; xPos < canvasWidth; xPos += step) {
+                for (int yPos = 0; yPos < canvasHeight; yPos += step) {
+                    Line leftToRight = new Line();
+                    leftToRight.Stroke = Brushes.Transparent;
+                    leftToRight.StrokeThickness = canvasDrawings.ForegroundThickness;
+                    leftToRight.X1 = xPos - 0.5;
+                    leftToRight.X2 = xPos + 0.5;
+                    leftToRight.Y1 = yPos - 0.5;
+                    leftToRight.Y2 = yPos + 0.5;
+
+                    Line rightToLeft = new Line();
+                    rightToLeft.Stroke = Brushes.Transparent;
+                    rightToLeft.StrokeThickness = canvasDrawings.ForegroundThickness;
+                    rightToLeft.X1 = xPos + 0.5;
+                    rightToLeft.X2 = xPos - 0.5;
+                    rightToLeft.Y1 = yPos - 0.5;
+                    rightToLeft.Y2 = yPos + 0.5;
+
+                    GridDots.Add(leftToRight);
+                    GridDots.Add(rightToLeft);
+                }
             }
         }
 
@@ -131,12 +163,53 @@ namespace TableTopToolKit
 
         public void ToggleVisibility()
         {
-            foreach (Line line in GridLines)
+            if (isInDotsMode)
             {
-                line.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
+                foreach (Line dot in GridDots)
+                {
+                    dot.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
+                }
+            }
+            else
+            {
+                foreach (Line line in GridLines)
+                {
+                    line.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
+                }
             }
 
             isVisible = !isVisible;
+        }
+
+        public void ToggleMode()
+        {
+            if (isInDotsMode)
+            {
+                foreach (Line line in GridLines)
+                {
+                    line.Visibility = Visibility.Visible;
+                    line.Stroke = canvasDrawings.BackgroundColor;
+                }
+                foreach (Line dot in GridDots)
+                {
+                    dot.Stroke = Brushes.Transparent;
+                }
+            }
+            else
+            {
+                foreach (Line line in GridLines)
+                {
+                    line.Stroke = Brushes.Transparent;
+                }
+                foreach (Line dot in GridDots)
+                {
+                    dot.Visibility = Visibility.Visible;
+                    dot.Stroke = Brushes.DarkGray;
+                }
+            }
+
+            isVisible = true;
+            isInDotsMode = !isInDotsMode;
         }
 
         public Line ClosestGridLine(double x, double y)

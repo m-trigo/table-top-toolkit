@@ -177,6 +177,10 @@ namespace TableTopToolKit
             {
                 IconSwitch();
             }
+            else if (item.Equals(GridDotsToggleButton))
+            {
+                main.Command(App.Controls.ToggleGridMode);
+            }
             else if (item.Equals(RestoreLastSessionButton))
             {
                 main.Command(App.Controls.LoadPreviousAutoSave);

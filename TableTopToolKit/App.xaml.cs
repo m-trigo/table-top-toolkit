@@ -19,7 +19,7 @@ namespace TableTopToolKit
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave, ToggleIconView, SaveAs, LoadFile,
+            AutoSave, LoadPreviousAutoSave, ToggleIconView, ToggleGridMode, SaveAs, LoadFile,
             SelectIcon
         };
 
@@ -109,6 +109,10 @@ namespace TableTopToolKit
 
                 case Controls.LoadFile:
                     canvasDrawings.LoadFile();
+                    break;
+
+                case Controls.ToggleGridMode:
+                    grid.ToggleMode();
                     break;
             }
         }
