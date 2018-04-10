@@ -31,6 +31,7 @@ namespace TableTopToolKit
             canvasDrawings = source;
 
             InitializeGridLines();
+            InitializeGridDots();
             canvasDrawings.AddNonDrawing(GridLines);
             canvasDrawings.AddNonDrawing(GridDots);
         }
