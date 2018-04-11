@@ -431,6 +431,8 @@ namespace TableTopToolKit
                 }
 
                 RestoreCanvas();
+                commandHistory.Clear();
+                commandHistoryIndex = -1;
             }
             catch (Exception)
             {
