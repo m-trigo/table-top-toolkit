@@ -285,6 +285,15 @@ namespace TableTopToolKit
 
                     ToggleDrawRectangleButton.Content = img;
                 }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    // Ruler
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/ruler.png", UriKind.Relative));
+
+                    ToggleDrawRectangleButton.Content = img;
+                }
 
                 iconViewHasSwitched = true;
             }
@@ -302,6 +311,7 @@ namespace TableTopToolKit
                 ToggleDrawLineButton.Content = "Line";
                 ToggleLineEraser.Content = "Line Erase";
                 ToggleDrawRectangleButton.Content = "Rectangle";
+                ToggleRulerButton.Content = "Ruler";
 
                 iconViewHasSwitched = false;
             }
