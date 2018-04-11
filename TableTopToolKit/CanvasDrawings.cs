@@ -180,6 +180,26 @@ namespace TableTopToolKit
             }
         }
 
+        public void PlaceIcon(Point position, Image icon, double width, double height)
+        {
+            Image iconCopy = new Image();
+            iconCopy.Source = icon.Source;
+            iconCopy.Height = width;
+            iconCopy.Width = height;
+
+            Rectangle newImage = new Rectangle();
+            newImage.Width = iconCopy.Width;
+            newImage.Height = iconCopy.Height;
+
+            newImage.OpacityMask = new ImageBrush(iconCopy.Source);
+            newImage.Fill = theme.IconsColor;
+
+            Canvas.SetLeft(newImage, position.X);
+            Canvas.SetTop(newImage, position.Y);
+
+            AddDrawing(new Drawing(newImage));
+        }
+
         public void Erase(IEnumerable<EraserTool.EraseData> eraseRequests)
         {
             List<Command> eraseCommands = new List<Command>();
@@ -330,9 +350,9 @@ namespace TableTopToolKit
         {
             theme = newTheme;
 
-            foreach(Drawing drawing in drawings)
+            foreach (Drawing drawing in drawings)
             {
-                foreach(UIElement element in drawing.Elements)
+                foreach (UIElement element in drawing.Elements)
                 {
                     if (element is Line) // lines & rectangles
                     {
