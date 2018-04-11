@@ -36,6 +36,7 @@ namespace TableTopToolKit
 
         private const string AUTO_SAVE_FILE_PATH = "autosave.xml";
 
+        private Theme theme;
         private Canvas canvas;
         private List<Drawing> drawings;
         private List<Command> commandHistory;
@@ -46,7 +47,7 @@ namespace TableTopToolKit
 
         public Brush ForegroundColor
         {
-            get => Brushes.Black.Clone();
+            get => theme.DrawingsColor.Clone();
         }
 
         public Brush BackgroundColor
@@ -56,7 +57,7 @@ namespace TableTopToolKit
 
         public double ForegroundThickness
         {
-            get => 3;
+            get => theme.LinesThickness;
         }
 
         public double BackgroundThickness
@@ -70,6 +71,7 @@ namespace TableTopToolKit
             drawings = new List<Drawing>();
             commandHistory = new List<Command>();
             commandHistoryIndex = -1;
+            theme = Theme.standard;
         }
 
         public IEnumerable<Drawing> Drawings
@@ -176,6 +178,26 @@ namespace TableTopToolKit
             {
                 canvas.Children.Remove(element);
             }
+        }
+
+        public void PlaceIcon(Point position, Image icon, double width, double height)
+        {
+            Image iconCopy = new Image();
+            iconCopy.Source = icon.Source;
+            iconCopy.Height = width;
+            iconCopy.Width = height;
+
+            Rectangle newImage = new Rectangle();
+            newImage.Width = iconCopy.Width;
+            newImage.Height = iconCopy.Height;
+
+            newImage.OpacityMask = new ImageBrush(iconCopy.Source);
+            newImage.Fill = theme.IconsColor;
+
+            Canvas.SetLeft(newImage, position.X);
+            Canvas.SetTop(newImage, position.Y);
+
+            AddDrawing(new Drawing(newImage));
         }
 
         public void Erase(IEnumerable<EraserTool.EraseData> eraseRequests)
@@ -322,6 +344,33 @@ namespace TableTopToolKit
                    RenderToCanvas(original);
                }
             );
+        }
+
+        public void ChangeTheme(Theme newTheme)
+        {
+            theme = newTheme;
+
+            foreach (Drawing drawing in drawings)
+            {
+                foreach (UIElement element in drawing.Elements)
+                {
+                    if (element is Line) // lines & rectangles
+                    {
+                        (element as Line).Stroke = theme.DrawingsColor;
+                        (element as Line).StrokeThickness = theme.LinesThickness;
+                    }
+                    else if (element is Polyline) // pencil
+                    {
+                        (element as Polyline).Stroke = theme.DrawingsColor;
+                        (element as Polyline).StrokeThickness = theme.LinesThickness;
+                    }
+                    else if (element is Rectangle) // icons
+                    {
+                        Rectangle icon = element as Rectangle;
+                        icon.Fill = theme.IconsColor;
+                    }
+                }
+            }
         }
 
         public bool ClearCanvas(string confirmationPrompt = null)

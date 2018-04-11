@@ -14,6 +14,7 @@ namespace TableTopToolKit
         private bool isVisible;
         private bool isInDotsMode;
         private CanvasDrawings canvasDrawings;
+        private GridTheme theme;
 
         public int SquareSize { get => step; }
         public List<Line> GridLines { private set; get; }
@@ -21,7 +22,7 @@ namespace TableTopToolKit
         private double MaxX { get => GridLines[GridLines.Count - 1].X2; }
         private double MaxY { get => GridLines[GridLines.Count - 1].Y2; }
 
-        public Grid(int width, int height, int step, CanvasDrawings source)
+        public Grid(int width, int height, int step, CanvasDrawings source, GridTheme gridTheme)
         {
             canvasWidth = width;
             canvasHeight = height;
@@ -29,6 +30,7 @@ namespace TableTopToolKit
             isVisible = true;
             isInDotsMode = false;
             canvasDrawings = source;
+            theme = gridTheme;
 
             InitializeGridLines();
             InitializeGridDots();
@@ -36,10 +38,9 @@ namespace TableTopToolKit
             canvasDrawings.AddNonDrawing(GridDots);
         }
 
-        public void InitializeGridLines()
+        private void InitializeGridLines()
         {
             GridLines = new List<Line>();
-            GridDots = new List<Line>();
             int numberOfHorizonalLines = canvasHeight / step;
             int numberOfVerticalLines = canvasWidth / step;
 
@@ -49,8 +50,8 @@ namespace TableTopToolKit
             for (int xPos = 0; xPos < canvasWidth; xPos += step)
             {
                 Line line = new Line();
-                line.Stroke = canvasDrawings.BackgroundColor;
-                line.StrokeThickness = canvasDrawings.BackgroundThickness;
+                line.Stroke = theme.GridLinesColor;
+                line.StrokeThickness = theme.GridLinesThickness;
 
                 line.X1 = xPos;
                 line.Y1 = 0;
@@ -64,9 +65,10 @@ namespace TableTopToolKit
             for (int yPos = 0; yPos < canvasHeight; yPos += step)
             {
                 Line line = new Line();
-                line.Stroke = canvasDrawings.BackgroundColor;
-                line.StrokeThickness = canvasDrawings.BackgroundThickness; line.Y1 = yPos;
+                line.Stroke = theme.GridLinesColor;
+                line.StrokeThickness = theme.GridLinesThickness;
 
+                line.Y1 = yPos;
                 line.X1 = 0;
 
                 line.Y2 = yPos;
@@ -198,18 +200,20 @@ namespace TableTopToolKit
 
         public void ToggleVisibility()
         {
-            if (isInDotsMode)
+            if (isVisible)
             {
-                foreach (Line dot in GridDots)
-                {
-                    dot.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
-                }
+                MakeLinesTransparent();
+                MakeDotsTransparent();
             }
             else
             {
-                foreach (Line line in GridLines)
+                if (isInDotsMode)
                 {
-                    line.Visibility = isVisible ? Visibility.Hidden : Visibility.Visible;
+                    MakeDotsVisible();
+                }
+                else
+                {
+                    MakeLinesVisible();
                 }
             }
 
@@ -220,31 +224,51 @@ namespace TableTopToolKit
         {
             if (isInDotsMode)
             {
-                foreach (Line line in GridLines)
-                {
-                    line.Visibility = Visibility.Visible;
-                    line.Stroke = canvasDrawings.BackgroundColor;
-                }
-                foreach (Line dot in GridDots)
-                {
-                    dot.Stroke = Brushes.Transparent;
-                }
+                MakeDotsTransparent();
+                MakeLinesVisible();
             }
             else
             {
-                foreach (Line line in GridLines)
-                {
-                    line.Stroke = Brushes.Transparent;
-                }
-                foreach (Line dot in GridDots)
-                {
-                    dot.Visibility = Visibility.Visible;
-                    dot.Stroke = Brushes.DarkGray;
-                }
+                MakeLinesTransparent();
+                MakeDotsVisible();
             }
 
             isVisible = true;
             isInDotsMode = !isInDotsMode;
+        }
+
+        private void MakeLinesTransparent()
+        {
+            foreach (Line line in GridLines)
+            {
+                line.Stroke = Brushes.Transparent;
+            }
+        }
+
+        private void MakeDotsTransparent()
+        {
+            foreach (Line dot in GridDots)
+            {
+                dot.Stroke = Brushes.Transparent;
+            }
+        }
+
+        private void MakeLinesVisible()
+        {
+            foreach (Line line in GridLines)
+            {
+                line.Stroke = theme.GridLinesColor;
+                line.StrokeThickness = theme.GridLinesThickness;
+            }
+        }
+
+        private void MakeDotsVisible()
+        {
+            foreach (Line dot in GridDots)
+            {
+                dot.Stroke = theme.GridDotsColor;
+                dot.StrokeThickness = theme.GridDotsThickness;
+            }
         }
 
         public Line ClosestGridLine(double x, double y)
@@ -283,5 +307,33 @@ namespace TableTopToolKit
                 Y2 = farPoint.Y
             };
         }
+
+        public void ChangeTheme(GridTheme newTheme)
+        {
+            theme = newTheme;
+
+            if (!isVisible)
+            {
+                return;
+            }
+
+            if(isInDotsMode)
+            {
+                foreach (Line dot in GridDots)
+                {
+                    dot.Stroke = theme.GridDotsColor;
+                    dot.StrokeThickness = theme.GridDotsThickness;
+                }
+            }
+            else
+            {
+                foreach (Line line in GridLines)
+                {
+                    line.Stroke = theme.GridLinesColor;
+                    line.StrokeThickness = theme.GridLinesThickness;
+                }
+            }
+        }
+
     }
 }

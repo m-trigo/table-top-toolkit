@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Theme.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,52 +120,24 @@
     <Resource Include="imgs\menu_icons\line.png" />
     <Resource Include="imgs\menu_icons\pencil.png" />
     <Resource Include="imgs\menu_icons\rectangle.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\menu_icons\toggle_grid.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\menu_icons\print_preview.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\menu_icons\clear_canvas.png" />
     <Resource Include="imgs\menu_icons\redo.png" />
     <Resource Include="imgs\menu_icons\undo.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="imgs\menu_icons\ruler.png" />
     <Resource Include="imgs\icons\12_conflict.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="imgs\icons\20_chest.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\01_door_left.png" />
     <Resource Include="imgs\icons\02_door_right.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\10_note.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\00_stairs.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\03_locked_door.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\21_torch.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\11_star.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\30_sword.png" />
     <Resource Include="imgs\icons\31_bow.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\32_armor.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="imgs\menu_icons\ruler.png" />
+    <Resource Include="imgs\icons\20_chest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
