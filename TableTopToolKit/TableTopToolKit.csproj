@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Theme.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,9 +136,6 @@
     <Resource Include="imgs\icons\12_conflict.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="imgs\icons\20_chest.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="imgs\icons\01_door_left.png" />
     <Resource Include="imgs\icons\02_door_right.png" />
   </ItemGroup>
@@ -162,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="imgs\icons\32_armor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\icons\20_chest.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

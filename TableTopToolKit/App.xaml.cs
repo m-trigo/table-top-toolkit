@@ -20,7 +20,8 @@ namespace TableTopToolKit
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool,
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, ToggleIconView, ToggleGridMode, SaveAs, LoadFile,
-            SelectIcon
+            SelectIcon,
+            SetStandardTheme, SetInkTheme
         };
 
         private CanvasDrawings canvasDrawings;
@@ -37,7 +38,7 @@ namespace TableTopToolKit
         public void InitializeCanvasDrawing(Canvas canvas)
         {
             canvasDrawings = new CanvasDrawings(canvas);
-            grid = new Grid(canvasDrawings.Width, canvasDrawings.Height, 64, canvasDrawings);
+            grid = new Grid(canvasDrawings.Width, canvasDrawings.Height, 64, canvasDrawings, Theme.standard.GridTheme);
             CurrentTool = new SnapLineTool(canvasDrawings, grid);
         }
 
@@ -114,28 +115,23 @@ namespace TableTopToolKit
                 case Controls.ToggleGridMode:
                     grid.ToggleMode();
                     break;
+
+                case Controls.SetStandardTheme:
+                    canvasDrawings.ChangeTheme(Theme.standard);
+                    grid.ChangeTheme(Theme.standard.GridTheme);
+                    break;
+
+                case Controls.SetInkTheme:
+                    canvasDrawings.ChangeTheme(Theme.ink);
+                    grid.ChangeTheme(Theme.ink.GridTheme);
+                    break;
             }
         }
 
         public void PlaceIcon(Point position, Image icon)
         {
-            Image iconCopy = new Image();
-            iconCopy.Source = icon.Source;
-            iconCopy.Height = grid.SquareSize;
-            iconCopy.Width = grid.SquareSize;
-
-            Rectangle newImage = new Rectangle();
-            newImage.Width = iconCopy.Width;
-            newImage.Height = iconCopy.Height;
-
-            ImageBrush brush = new ImageBrush(iconCopy.Source);
-            newImage.Fill = brush;
-
             Point snapped = grid.SnapToGridCorners(position.X - grid.SquareSize / 2, position.Y - grid.SquareSize / 2);
-            Canvas.SetLeft(newImage, snapped.X);
-            Canvas.SetTop(newImage, snapped.Y);
-
-            canvasDrawings.AddDrawing(new Drawing(newImage));
+            canvasDrawings.PlaceIcon(snapped, icon, grid.SquareSize, grid.SquareSize);
         }
     }
 }

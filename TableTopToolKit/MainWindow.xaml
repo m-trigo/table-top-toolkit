@@ -26,6 +26,10 @@
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick"></MenuItem>
                 <MenuItem Header="Switch _Grid Lines To Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
+            <MenuItem Header="_Theme">
+                <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick"/>
+                <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick"/>
+            </MenuItem>
         </Menu>
 
         <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" MinWidth="780">

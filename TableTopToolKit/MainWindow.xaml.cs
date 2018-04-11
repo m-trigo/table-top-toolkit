@@ -193,6 +193,14 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.LoadFile);
             }
+            else if (item.Equals(StandardThemeButton))
+            {
+                main.Command(App.Controls.SetStandardTheme);
+            }
+            else if (item.Equals(InkThemeButton))
+            {
+                main.Command(App.Controls.SetInkTheme);
+            }
         }
 
         private void IconSwitch()
