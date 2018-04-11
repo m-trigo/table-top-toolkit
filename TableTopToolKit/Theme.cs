@@ -45,14 +45,14 @@ namespace TableTopToolKit
         {
             GridTheme = new GridTheme
             {
-                GridLinesColor = Brushes.CornflowerBlue,
-                GridDotsColor = Brushes.CornflowerBlue,
+                GridLinesColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
+                GridDotsColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
                 GridLinesThickness = 1,
                 GridDotsThickness = 3,
             },
 
             LinesThickness = 3,
-            DrawingsColor = Brushes.DarkBlue,
+            DrawingsColor = new SolidColorBrush(Color.FromArgb(255, 49, 68, 152)),
             IconsColor = Brushes.DarkBlue
         };
     }
