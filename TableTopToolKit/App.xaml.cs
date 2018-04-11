@@ -130,23 +130,8 @@ namespace TableTopToolKit
 
         public void PlaceIcon(Point position, Image icon)
         {
-            Image iconCopy = new Image();
-            iconCopy.Source = icon.Source;
-            iconCopy.Height = grid.SquareSize;
-            iconCopy.Width = grid.SquareSize;
-
-            Rectangle newImage = new Rectangle();
-            newImage.Width = iconCopy.Width;
-            newImage.Height = iconCopy.Height;
-
-            newImage.OpacityMask = new ImageBrush(iconCopy.Source);
-            newImage.Fill = Brushes.Black;
-
             Point snapped = grid.SnapToGridCorners(position.X - grid.SquareSize / 2, position.Y - grid.SquareSize / 2);
-            Canvas.SetLeft(newImage, snapped.X);
-            Canvas.SetTop(newImage, snapped.Y);
-
-            canvasDrawings.AddDrawing(new Drawing(newImage));
+            canvasDrawings.PlaceIcon(snapped, icon, grid.SquareSize, grid.SquareSize);
         }
     }
 }
