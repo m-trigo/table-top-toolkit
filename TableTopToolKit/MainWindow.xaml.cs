@@ -25,7 +25,6 @@ namespace TableTopToolKit
             set { SetValue(SelectedIconProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedIcon.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedIconProperty =
             DependencyProperty.Register("SelectedIcon", typeof(Image), typeof(MainWindow), new PropertyMetadata(null));
 
@@ -162,6 +161,11 @@ namespace TableTopToolKit
                 case Key.D4:
                 case Key.NumPad4:
                     main.Command(App.Controls.SelectEraserTool);
+                    break;
+
+                case Key.D5:
+                case Key.NumPad5:
+                    main.Command(App.Controls.SelectRulerTool);
                     break;
             }
         }

@@ -27,8 +27,8 @@
                 <MenuItem Header="Switch _Grid Lines To Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Theme">
-                <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick"/>
-                <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick"/>
+                <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
+                <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
             </MenuItem>
         </Menu>
 
@@ -99,7 +99,7 @@
                                 </Separator.RenderTransform>
                             </Separator>
                             <Button x:Name="ToggleRulerButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                                    ToolTip="REPLACE ME">
+                                    ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
                             </Button>
                         </StackPanel>

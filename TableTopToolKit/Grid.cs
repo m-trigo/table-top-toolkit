@@ -41,6 +41,7 @@ namespace TableTopToolKit
         private void InitializeGridLines()
         {
             GridLines = new List<Line>();
+            GridDots = new List<Line>();
             int numberOfHorizonalLines = canvasHeight / step;
             int numberOfVerticalLines = canvasWidth / step;
 
@@ -317,7 +318,7 @@ namespace TableTopToolKit
                 return;
             }
 
-            if(isInDotsMode)
+            if (isInDotsMode)
             {
                 foreach (Line dot in GridDots)
                 {
@@ -334,6 +335,5 @@ namespace TableTopToolKit
                 }
             }
         }
-
     }
 }
