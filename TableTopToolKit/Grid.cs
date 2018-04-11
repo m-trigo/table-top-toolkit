@@ -76,11 +76,12 @@ namespace TableTopToolKit
             }
         }
 
-
         public void InitializeGridDots()
         {
-            for (int xPos = 0; xPos < canvasWidth; xPos += step) {
-                for (int yPos = 0; yPos < canvasHeight; yPos += step) {
+            for (int xPos = 0; xPos < canvasWidth; xPos += step)
+            {
+                for (int yPos = 0; yPos < canvasHeight; yPos += step)
+                {
                     Line leftToRight = new Line();
                     leftToRight.Stroke = Brushes.Transparent;
                     leftToRight.StrokeThickness = canvasDrawings.ForegroundThickness;
@@ -160,6 +161,33 @@ namespace TableTopToolKit
             {
                 return step * (cellIndex + 1);
             }
+        }
+
+        private IEnumerable<Point> AllSquareCenters()
+        {
+            for (double x = step / 2; x < canvasWidth - step / 2; x += step)
+            {
+                for (int y = step / 2; y < canvasHeight - step / 2; y += step)
+                {
+                    yield return new Point(x, y);
+                }
+            }
+        }
+
+        public Point SnapToGridCornersOrCenter(double x, double y)
+        {
+            Point P = new Point(x, y);
+            double quarterStepSquared = (step / 4) * (step / 4);
+
+            foreach (Point point in AllSquareCenters())
+            {
+                if ((P - point).LengthSquared < quarterStepSquared)
+                {
+                    return point;
+                }
+            }
+
+            return SnapToGridCorners(x, y);
         }
 
         public void ToggleVisibility()
