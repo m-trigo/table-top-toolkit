@@ -102,6 +102,10 @@
                                     ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
                             </Button>
+                            <Button x:Name="ToggleSelectIconButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
+                                    ToolTip="Selects the Select Icon tool&#x0a;Allows you to click icons on the grid and delete,rotate or drag them to another location&#x0a;">
+                                <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
+                            </Button>
                         </StackPanel>
                     </Grid>
 

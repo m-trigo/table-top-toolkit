@@ -368,6 +368,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectEraserTool);
             }
+            else if(button.Equals(ToggleSelectIconButton))
+            {
+                main.Command(App.Controls.SelectIconTool);
+            }
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
