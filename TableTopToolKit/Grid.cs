@@ -190,6 +190,12 @@ namespace TableTopToolKit
             return SnapToGridCorners(x, y);
         }
 
+        public double DistanceInSquares(Point A, Point B)
+        {
+            int unitSquared = step * step;
+            return (B - A).LengthSquared / unitSquared;
+        }
+
         public void ToggleVisibility()
         {
             if (isInDotsMode)
