@@ -20,7 +20,7 @@ namespace TableTopToolKit
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool,
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, ToggleIconView, ToggleGridMode, SaveAs, LoadFile,
-            SelectIcon, SetStandardTheme, SetInkTheme
+            SelectIcon, SetStandardTheme, SetInkTheme, Zoom
         };
 
         private CanvasDrawings canvasDrawings;

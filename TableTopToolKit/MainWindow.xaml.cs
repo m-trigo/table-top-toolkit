@@ -167,6 +167,7 @@ namespace TableTopToolKit
                 case Key.NumPad5:
                     main.Command(App.Controls.SelectRulerTool);
                     break;
+                
             }
         }
 
@@ -413,6 +414,34 @@ namespace TableTopToolKit
                 Point dropPosition = e.GetPosition(Canvas);
                 main.PlaceIcon(dropPosition, icon);
             }
+        }
+
+        private void zoom_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            
+            const double ZOOM_RATE = 0.05;
+            
+            if(e.Delta > 0 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                scrollViewer.IsEnabled = false;
+                if (scale.ScaleX < zoom.Maximum && scale.ScaleY < zoom.Maximum)
+                {
+                    scale.ScaleX += ZOOM_RATE;
+                    scale.ScaleY += ZOOM_RATE;
+                }
+                
+            }
+            else if(e.Delta < 0 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            {
+                scrollViewer.IsEnabled = false;
+                if (scale.ScaleX > zoom.Minimum && scale.ScaleY > zoom.Minimum)
+                {
+                    scale.ScaleX -= ZOOM_RATE;
+                    scale.ScaleY -= ZOOM_RATE;
+                }
+            }
+            scrollViewer.IsEnabled = true;
+
         }
     }
 }
