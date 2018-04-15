@@ -15,12 +15,14 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick"></MenuItem>
+                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick" />
                 <!--<MenuItem Header="_New Map"></MenuItem>-->
                 <!--<MenuItem Header="_Save"></MenuItem>-->
-                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick"></MenuItem>
-                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick"></MenuItem>
+                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick" InputGestureText="Ctrl + S" />
+                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick" />
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
+                <Separator />
+                <MenuItem Header="E_xit" x:Name="Exit" Click="MenuItemClick" InputGestureText="Alt + F4" />
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick"></MenuItem>
@@ -107,6 +109,10 @@
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/select_icon.png" />
                             </Button>
                         </StackPanel>
+                        <!--<Slider HorizontalAlignment="Right" Width="75" VerticalAlignment="Center"
+                                SmallChange="0.05" LargeChange="0.05" Minimum="0.5" Maximum="1"
+                                Value="{Binding ZoomLevel, Mode=TwoWay}"
+                                ToolTip="Zooms in and out on the Canvas&#x0a;(Ctrl + Scroll)" />-->
                     </Grid>
 
                     <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
@@ -116,14 +122,18 @@
                              ToolTipService.ShowDuration="60000"
                              ToolTip="Click and drag an icon to place it on the map&#x0a;Right clicking also places the selected icon on the map" />
 
-                    <ScrollViewer HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
+                    <ScrollViewer x:Name="scrollViewer"  HorizontalScrollBarVisibility="Visible"  MaxWidth="1754" MaxHeight="1240">
                         <Canvas x:Name="Canvas" Width="1754" Height="1240" Margin="10, 10, 0, 0" Background="White"
                                 MouseUp="OnCanvasMouseUp"
                                 PreviewMouseMove="OnCanvasMouseMove"
                                 MouseDown="OnCanvasMouseDown"
                                 MouseLeave="OnCanvasMouseLeave"
                                 AllowDrop="True"
-                                Drop="OnIconDragDrop">
+                                Drop="OnIconDragDrop"
+                                MouseWheel="OnMouseWheel">
+                            <Canvas.LayoutTransform>
+                                <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}" />
+                            </Canvas.LayoutTransform>
                         </Canvas>
                     </ScrollViewer>
                 </DockPanel>

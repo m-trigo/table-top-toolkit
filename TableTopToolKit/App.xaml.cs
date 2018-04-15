@@ -20,7 +20,7 @@ namespace TableTopToolKit
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool,
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, ToggleIconView, ToggleGridMode, SaveAs, LoadFile,
-            SelectIcon, SetStandardTheme, SetInkTheme
+            SelectIcon, SetStandardTheme, SetInkTheme, Zoom
         };
 
         private CanvasDrawings canvasDrawings;
@@ -52,85 +52,86 @@ namespace TableTopToolKit
             switch (control)
             {
                 case Controls.ToggleGrid:
-                    grid.ToggleVisibility();
-                    break;
+                grid.ToggleVisibility();
+                break;
 
                 case Controls.SaveToPng:
-                    canvasDrawings.SaveToPNG("replace this later");
-                    break;
+                canvasDrawings.SaveToPNG("replace this later");
+                break;
 
                 case Controls.Undo:
-                    canvasDrawings.UndoLast();
-                    break;
+                canvasDrawings.UndoLast();
+                break;
 
                 case Controls.Redo:
-                    canvasDrawings.RedoLast();
-                    break;
+                canvasDrawings.RedoLast();
+                break;
 
                 case Controls.SelectPencilTool:
-                    ChangeTool(new PencilTool(canvasDrawings));
-                    break;
+                ChangeTool(new PencilTool(canvasDrawings));
+                break;
 
                 case Controls.SelectLineTool:
-                    ChangeTool(new SnapLineTool(canvasDrawings, grid));
-                    break;
+                ChangeTool(new SnapLineTool(canvasDrawings, grid));
+                break;
 
                 case Controls.SelectRectangleTool:
-                    ChangeTool(new RectangleTool(canvasDrawings, grid));
-                    break;
+                ChangeTool(new RectangleTool(canvasDrawings, grid));
+                break;
 
                 case Controls.SelectEraserTool:
-                    ChangeTool(new EraserTool(canvasDrawings, grid));
-                    break;
+                ChangeTool(new EraserTool(canvasDrawings, grid));
+                break;
 
                 case Controls.SelectRulerTool:
-                    ChangeTool(new RulerTool(canvasDrawings, grid));
-                    break;
+                ChangeTool(new RulerTool(canvasDrawings, grid));
+                break;
+
                 case Controls.SelectIconTool:
-                    ChangeTool(new SelectIconTool(canvasDrawings, grid));
-                    break;
+                ChangeTool(new SelectIconTool(canvasDrawings, grid));
+                break;
 
                 case Controls.Print:
-                    canvasDrawings.Print();
-                    break;
+                canvasDrawings.Print();
+                break;
 
                 case Controls.PrintPreview:
-                    canvasDrawings.PrintPreview();
-                    break;
+                canvasDrawings.PrintPreview();
+                break;
 
                 case Controls.ClearCanvas:
-                    canvasDrawings.ClearCanvas("Are you sure you would like to clear the canvas?");
-                    break;
+                canvasDrawings.ClearCanvas("Are you sure you would like to clear the canvas?");
+                break;
 
                 case Controls.AutoSave:
-                    canvasDrawings.SaveState();
-                    break;
+                canvasDrawings.SaveState();
+                break;
 
                 case Controls.LoadPreviousAutoSave:
-                    canvasDrawings.LoadState();
-                    break;
+                canvasDrawings.LoadState();
+                break;
 
                 case Controls.SaveAs:
-                    canvasDrawings.SaveAs();
-                    break;
+                canvasDrawings.SaveAs();
+                break;
 
                 case Controls.LoadFile:
-                    canvasDrawings.LoadFile();
-                    break;
+                canvasDrawings.LoadFile();
+                break;
 
                 case Controls.ToggleGridMode:
-                    grid.ToggleMode();
-                    break;
+                grid.ToggleMode();
+                break;
 
                 case Controls.SetStandardTheme:
-                    canvasDrawings.ChangeTheme(Theme.standard);
-                    grid.ChangeTheme(Theme.standard.GridTheme);
-                    break;
+                canvasDrawings.ChangeTheme(Theme.standard);
+                grid.ChangeTheme(Theme.standard.GridTheme);
+                break;
 
                 case Controls.SetInkTheme:
-                    canvasDrawings.ChangeTheme(Theme.ink);
-                    grid.ChangeTheme(Theme.ink.GridTheme);
-                    break;
+                canvasDrawings.ChangeTheme(Theme.ink);
+                grid.ChangeTheme(Theme.ink.GridTheme);
+                break;
             }
         }
 

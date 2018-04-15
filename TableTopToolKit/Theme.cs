@@ -2,7 +2,6 @@
 
 namespace TableTopToolKit
 {
-
     public class GridTheme
     {
         public Brush GridLinesColor { get; set; }
@@ -14,9 +13,8 @@ namespace TableTopToolKit
         public int GridDotsThickness { get; set; }
     }
 
-
-    public class Theme {
-
+    public class Theme
+    {
         public int LinesThickness { get; set; }
 
         public Brush DrawingsColor { get; set; }  // lines, rectangles, pencil
@@ -25,17 +23,16 @@ namespace TableTopToolKit
 
         public GridTheme GridTheme { get; set; }
 
-
-        public static Theme standard = new Theme() 
+        public static Theme standard = new Theme()
         {
             GridTheme = new GridTheme
             {
-                GridLinesColor = Brushes.LightGray,
+                GridLinesColor = Brushes.DarkGray,
                 GridDotsColor = Brushes.DarkGray,
                 GridLinesThickness = 1,
                 GridDotsThickness = 3,
             },
-            
+
             LinesThickness = 3,
             DrawingsColor = Brushes.Black,
             IconsColor = Brushes.Black
