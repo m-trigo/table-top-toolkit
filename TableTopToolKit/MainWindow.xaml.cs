@@ -491,6 +491,7 @@ namespace TableTopToolKit
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
+                e.Handled = true;
                 if (e.Delta > 0)
                 {
                     ZoomIn();
