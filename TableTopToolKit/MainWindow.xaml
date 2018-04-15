@@ -15,12 +15,14 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick"></MenuItem>
+                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick" />
                 <!--<MenuItem Header="_New Map"></MenuItem>-->
                 <!--<MenuItem Header="_Save"></MenuItem>-->
-                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick"></MenuItem>
-                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick"></MenuItem>
+                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick" InputGestureText="Ctrl + S" />
+                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick" />
                 <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
+                <Separator />
+                <MenuItem Header="E_xit" x:Name="Exit" Click="MenuItemClick" InputGestureText="Alt + F4" />
             </MenuItem>
             <MenuItem Header="_View">
                 <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick"></MenuItem>
@@ -107,11 +109,12 @@
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/select.png" />
                             </Button>
                         </StackPanel>
-                        <Slider Name="zoom" HorizontalAlignment="Right" Width="75" VerticalAlignment="Center" SmallChange="0.05" LargeChange="0.25" Minimum="0.5" Maximum="2"  
-                                ToolTip="Zooms in and out on the Canvas&#x0a;(Ctrl + Scroll)"/>
-                        
+                        <!--<Slider HorizontalAlignment="Right" Width="75" VerticalAlignment="Center"
+                                SmallChange="0.05" LargeChange="0.05" Minimum="0.5" Maximum="1"
+                                Value="{Binding ZoomLevel, Mode=TwoWay}"
+                                ToolTip="Zooms in and out on the Canvas&#x0a;(Ctrl + Scroll)" />-->
                     </Grid>
-        
+
                     <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
                              Padding="4" ItemsSource="{Binding Icons}" SelectedItem="{Binding SelectedIcon}"
                              PreviewMouseDown="OnIconListPreviewMouseDown"
@@ -127,9 +130,9 @@
                                 MouseLeave="OnCanvasMouseLeave"
                                 AllowDrop="True"
                                 Drop="OnIconDragDrop"
-                                MouseWheel="zoom_MouseWheel">
+                                MouseWheel="OnMouseWheel">
                             <Canvas.LayoutTransform>
-                                <ScaleTransform x:Name="scale" ScaleX="{Binding Path=Value, ElementName=zoom}" ScaleY="{Binding Path=Value, ElementName=zoom}"/>
+                                <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}" />
                             </Canvas.LayoutTransform>
                         </Canvas>
                     </ScrollViewer>

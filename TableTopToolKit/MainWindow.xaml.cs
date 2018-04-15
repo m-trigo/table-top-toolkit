@@ -18,6 +18,7 @@ namespace TableTopToolKit
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
         private bool iconViewHasSwitched = true;
+        private const double ZOOM_RATE = 0.05;
 
         public Image SelectedIcon
         {
@@ -28,12 +29,33 @@ namespace TableTopToolKit
         public static readonly DependencyProperty SelectedIconProperty =
             DependencyProperty.Register("SelectedIcon", typeof(Image), typeof(MainWindow), new PropertyMetadata(null));
 
+        public double ZoomLevel
+        {
+            get { return (double)GetValue(ZoomLevelProperty); }
+            set
+            {
+                if (value < 0.5)
+                {
+                    value = 0.5;
+                }
+                else if (value > 1.0)
+                {
+                    value = 1.0;
+                }
+                SetValue(ZoomLevelProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ZoomLevelProperty =
+            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(MainWindow), new PropertyMetadata(null));
+
         public ObservableCollection<Image> Icons { get; private set; }
 
         public MainWindow()
         {
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
+            ZoomLevel = 1;
         }
 
         private void LoadIconImages()
@@ -101,73 +123,90 @@ namespace TableTopToolKit
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            // Repeatable
+            switch (e.Key)
+            {
+                case Key.Z:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.Undo);
+                    return;
+                }
+                break;
+
+                case Key.Y:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.Redo);
+                    return;
+                }
+                break;
+            }
+
             if (e.IsRepeat)
             {
                 return;
             }
 
+            // Non-Repeatable
             switch (e.Key)
             {
                 case Key.G:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.ToggleGrid);
-                    }
-                    break;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.ToggleGrid);
+                }
+                break;
 
                 case Key.P:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.PrintPreview);
-                    }
-                    break;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    // Temporary fix-hack
+                    double zoom = ZoomLevel;
+                    ZoomLevel = 1;
+                    main.Command(App.Controls.PrintPreview);
+                    ZoomLevel = zoom;
+                }
+                break;
 
                 case Key.C:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.ClearCanvas);
-                    }
-                    break;
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.ClearCanvas);
+                }
+                break;
 
-                case Key.Z:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.Undo);
-                    }
-                    break;
-
-                case Key.Y:
-                    if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                    {
-                        main.Command(App.Controls.Redo);
-                    }
-                    break;
+                case Key.S:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.SaveAs);
+                }
+                break;
 
                 case Key.D1:
                 case Key.NumPad1:
-                    main.Command(App.Controls.SelectPencilTool);
-                    break;
+                main.Command(App.Controls.SelectPencilTool);
+                break;
 
                 case Key.D2:
                 case Key.NumPad2:
-                    main.Command(App.Controls.SelectLineTool);
-                    break;
+                main.Command(App.Controls.SelectLineTool);
+                break;
 
                 case Key.D3:
                 case Key.NumPad3:
-                    main.Command(App.Controls.SelectRectangleTool);
-                    break;
+                main.Command(App.Controls.SelectRectangleTool);
+                break;
 
                 case Key.D4:
                 case Key.NumPad4:
-                    main.Command(App.Controls.SelectEraserTool);
-                    break;
+                main.Command(App.Controls.SelectEraserTool);
+                break;
 
                 case Key.D5:
                 case Key.NumPad5:
-                    main.Command(App.Controls.SelectRulerTool);
-                    break;
-                
+                main.Command(App.Controls.SelectRulerTool);
+                break;
             }
         }
 
@@ -205,6 +244,10 @@ namespace TableTopToolKit
             else if (item.Equals(InkThemeButton))
             {
                 main.Command(App.Controls.SetInkTheme);
+            }
+            else if (item.Equals(Exit))
+            {
+                Close();
             }
         }
 
@@ -305,7 +348,7 @@ namespace TableTopToolKit
                     // Ruler
                     img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/ruler.png", UriKind.Relative));
 
-                    ToggleDrawRectangleButton.Content = img;
+                    ToggleRulerButton.Content = img;
                 }
 
                 iconViewHasSwitched = true;
@@ -339,7 +382,11 @@ namespace TableTopToolKit
             }
             else if (button.Equals(PrintPreviewButton))
             {
+                // Temporary fix-hack
+                double zoom = ZoomLevel;
+                ZoomLevel = 1;
                 main.Command(App.Controls.PrintPreview);
+                ZoomLevel = zoom;
             }
             else if (button.Equals(ToggleUndoButton))
             {
@@ -369,7 +416,7 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectEraserTool);
             }
-            else if(button.Equals(ToggleSelectIconButton))
+            else if (button.Equals(ToggleSelectIconButton))
             {
                 main.Command(App.Controls.SelectIconTool);
             }
@@ -416,32 +463,33 @@ namespace TableTopToolKit
             }
         }
 
-        private void zoom_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            
-            const double ZOOM_RATE = 0.05;
-            
-            if(e.Delta > 0 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                scrollViewer.IsEnabled = false;
-                if (scale.ScaleX < zoom.Maximum && scale.ScaleY < zoom.Maximum)
+                if (e.Delta > 0)
                 {
-                    scale.ScaleX += ZOOM_RATE;
-                    scale.ScaleY += ZOOM_RATE;
+                    ZoomIn();
                 }
-                
-            }
-            else if(e.Delta < 0 && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
-            {
-                scrollViewer.IsEnabled = false;
-                if (scale.ScaleX > zoom.Minimum && scale.ScaleY > zoom.Minimum)
+                else if (e.Delta < 0)
                 {
-                    scale.ScaleX -= ZOOM_RATE;
-                    scale.ScaleY -= ZOOM_RATE;
+                    ZoomOut();
                 }
             }
-            scrollViewer.IsEnabled = true;
+        }
 
+        private void ZoomIn()
+        {
+            scrollViewer.IsEnabled = false;
+            ZoomLevel += ZOOM_RATE;
+            scrollViewer.IsEnabled = true;
+        }
+
+        private void ZoomOut()
+        {
+            scrollViewer.IsEnabled = false;
+            ZoomLevel -= ZOOM_RATE;
+            scrollViewer.IsEnabled = true;
         }
     }
 }
