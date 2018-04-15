@@ -144,5 +144,8 @@
   <ItemGroup>
     <Resource Include="imgs\menu_icons\select.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\select_icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
