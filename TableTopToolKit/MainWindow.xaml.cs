@@ -183,6 +183,22 @@ namespace TableTopToolKit
                 }
                 break;
 
+                case Key.Add:
+                case Key.OemPlus:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    ZoomIn();
+                }
+                break;
+
+                case Key.Subtract:
+                case Key.OemMinus:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    ZoomOut();
+                }
+                break;
+
                 case Key.D1:
                 case Key.NumPad1:
                 main.Command(App.Controls.SelectPencilTool);
@@ -248,6 +264,14 @@ namespace TableTopToolKit
             else if (item.Equals(Exit))
             {
                 Close();
+            }
+            else if (item.Equals(ZoomInMenuitem))
+            {
+                ZoomIn();
+            }
+            else if (item.Equals(ZoomOutMenuItem))
+            {
+                ZoomOut();
             }
         }
 
