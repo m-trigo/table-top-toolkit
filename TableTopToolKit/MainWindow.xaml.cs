@@ -444,6 +444,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectIconTool);
             }
+            else if (button.Equals(ToggleRulerButton))
+            {
+                main.Command(App.Controls.SelectRulerTool);
+            }
         }
 
         private void Window_Closed(object sender, System.EventArgs e)

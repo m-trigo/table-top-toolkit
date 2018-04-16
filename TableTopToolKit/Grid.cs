@@ -195,8 +195,7 @@ namespace TableTopToolKit
 
         public double DistanceInSquares(Point A, Point B)
         {
-            int unitSquared = step * step;
-            return (B - A).LengthSquared / unitSquared;
+            return (B - A).Length / step;
         }
 
         public void ToggleVisibility()
