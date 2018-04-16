@@ -44,14 +44,10 @@ namespace TableTopToolKit
             CurrentTool = new SnapLineTool(canvasDrawings, grid);
         }
 
-        private void ChangeTool(DrawingTool newTool)
-        {
-            CurrentTool.Close();
-            CurrentTool = newTool;
-        }
-
         public void Command(Controls control)
         {
+            CurrentTool.Close(); // Allows the current tool to cleanup before anything else can occur
+
             switch (control)
             {
                 case Controls.ToggleGrid:
@@ -71,27 +67,27 @@ namespace TableTopToolKit
                 break;
 
                 case Controls.SelectPencilTool:
-                ChangeTool(new PencilTool(canvasDrawings));
+                CurrentTool = new PencilTool(canvasDrawings);
                 break;
 
                 case Controls.SelectLineTool:
-                ChangeTool(new SnapLineTool(canvasDrawings, grid));
+                CurrentTool = new SnapLineTool(canvasDrawings, grid);
                 break;
 
                 case Controls.SelectRectangleTool:
-                ChangeTool(new RectangleTool(canvasDrawings, grid));
+                CurrentTool = new RectangleTool(canvasDrawings, grid);
                 break;
 
                 case Controls.SelectEraserTool:
-                ChangeTool(new EraserTool(canvasDrawings, grid));
+                CurrentTool = new EraserTool(canvasDrawings, grid);
                 break;
 
                 case Controls.SelectRulerTool:
-                ChangeTool(new RulerTool(canvasDrawings, grid));
+                CurrentTool = new RulerTool(canvasDrawings, grid);
                 break;
 
                 case Controls.SelectIconTool:
-                ChangeTool(new SelectIconTool(canvasDrawings, grid));
+                CurrentTool = new SelectIconTool(canvasDrawings, grid);
                 break;
 
                 case Controls.Print:

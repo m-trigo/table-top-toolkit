@@ -47,9 +47,10 @@ namespace TableTopToolKit
 
         public void ReadXml(XmlReader reader)
         {
-            while (reader.IsEmptyElement)
+            if (reader.IsEmptyElement)
             {
                 reader.Read();
+                return;
             }
             reader.ReadStartElement("Drawing");
             while (reader.Name == "Shape")
