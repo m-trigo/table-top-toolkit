@@ -20,6 +20,7 @@ namespace TableTopToolKit
 
         private CanvasDrawings source;
         private Grid grid;
+        public static Theme theme = Theme.standard;
 
         private Point lastKnownMouseDown;
         private Line eraserLine;
@@ -225,7 +226,7 @@ namespace TableTopToolKit
                         Y1 = start.Y,
                         X2 = end.X,
                         Y2 = end.Y,
-                        Stroke = Brushes.LightPink,
+                        Stroke = theme.EraserColor,
                         StrokeThickness = 5
                     };
                     drawing = true;
@@ -252,7 +253,7 @@ namespace TableTopToolKit
                         Line intersection = SuperSection(eraserLine, line);
                         if (intersection != null)
                         {
-                            intersection.Stroke = Brushes.Red;
+                            intersection.Stroke = theme.EraserSelectionColor;
                             intersection.StrokeThickness = 4;
                             dataToErase.Add(new EraseData()
                             {

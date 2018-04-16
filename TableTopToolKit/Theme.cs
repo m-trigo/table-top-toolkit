@@ -21,6 +21,14 @@ namespace TableTopToolKit
 
         public Brush IconsColor { get; set; }
 
+        public Brush EraserColor { get; set; }
+
+        public Brush EraserSelectionColor { get; set; }
+
+        public Brush IconSelectionColor { get; set; }
+
+        public Brush RulerColor { get; set; }
+
         public GridTheme GridTheme { get; set; }
 
         public static Theme standard = new Theme()
@@ -35,7 +43,11 @@ namespace TableTopToolKit
 
             LinesThickness = 3,
             DrawingsColor = Brushes.Black,
-            IconsColor = Brushes.Black
+            IconsColor = Brushes.Black,
+            EraserColor = Brushes.LightPink,
+            EraserSelectionColor = Brushes.Red,
+            IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
+            RulerColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203))
         };
 
         public static Theme ink = new Theme()
@@ -50,7 +62,11 @@ namespace TableTopToolKit
 
             LinesThickness = 3,
             DrawingsColor = new SolidColorBrush(Color.FromArgb(255, 49, 68, 152)),
-            IconsColor = Brushes.DarkBlue
+            IconsColor = Brushes.DarkBlue,
+            EraserColor = Brushes.LightPink,
+            EraserSelectionColor = Brushes.Red,
+            IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
+            RulerColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203))
         };
     }
 }

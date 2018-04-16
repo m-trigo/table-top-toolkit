@@ -19,8 +19,11 @@ namespace TableTopToolKit
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool,
             Print, PrintPreview,
-            AutoSave, LoadPreviousAutoSave, ToggleIconView, ToggleGridMode, SaveAs, LoadFile,
-            SelectIcon, SetStandardTheme, SetInkTheme, Zoom
+            AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
+            ToggleIconView, ToggleGridMode,
+            SetStandardTheme, SetInkTheme,
+            SelectIcon,
+            Zoom
         };
 
         private CanvasDrawings canvasDrawings;
@@ -126,11 +129,15 @@ namespace TableTopToolKit
                 case Controls.SetStandardTheme:
                 canvasDrawings.ChangeTheme(Theme.standard);
                 grid.ChangeTheme(Theme.standard.GridTheme);
+                EraserTool.theme = Theme.standard;
+                SelectIconTool.theme = Theme.standard;
                 break;
 
                 case Controls.SetInkTheme:
                 canvasDrawings.ChangeTheme(Theme.ink);
                 grid.ChangeTheme(Theme.ink.GridTheme);
+                EraserTool.theme = Theme.ink;
+                SelectIconTool.theme = Theme.ink;
                 break;
             }
         }

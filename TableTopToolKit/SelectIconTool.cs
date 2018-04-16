@@ -17,6 +17,7 @@ namespace TableTopToolKit
         private Grid grid;
         private CanvasDrawings source;
         private static Brush currentBrush;
+        public static Theme theme = Theme.standard;
 
         public SelectIconTool(CanvasDrawings canvasDrawings, Grid grid)
         {
@@ -47,8 +48,7 @@ namespace TableTopToolKit
                             currentIcon = item.Elements[0] as Rectangle;
                             currentBrush = currentIcon.Fill;
 
-                            Brush brush = new SolidColorBrush(Color.FromArgb(200,0, 0, 255));
-                            currentIcon.Fill = brush;
+                            currentIcon.Fill = theme.IconSelectionColor;
                             break;
                         }
                     }
