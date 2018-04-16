@@ -18,6 +18,7 @@ namespace TableTopToolKit
         private Point lastKnownMouseDown;
         private bool drawing;
         private bool mouseDown;
+        public static Theme theme = Theme.standard;
 
         private Line MeasuringLine { get; set; }
         private TextBlock DistanceDisplay { get; set; }
@@ -29,7 +30,7 @@ namespace TableTopToolKit
             drawing = false;
             mouseDown = false;
             DistanceDisplay = new TextBlock();
-            DistanceDisplay.Foreground = Brushes.Blue;
+            DistanceDisplay.Foreground = theme.RulerColor;
             DistanceDisplay.FontSize = 20;
             DistanceDisplay.FontFamily = new FontFamily("Consolas");
         }
@@ -71,7 +72,7 @@ namespace TableTopToolKit
                         Y1 = start.Y,
                         X2 = end.X,
                         Y2 = end.Y,
-                        Stroke = Brushes.Blue,
+                        Stroke = theme.RulerColor,
                         StrokeDashArray = new DoubleCollection(new double[] { 6, 2 }),
                         StrokeThickness = 3
                     };
