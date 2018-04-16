@@ -27,8 +27,8 @@
             <MenuItem Header="_View">
                 <MenuItem Header="Zoom In" x:Name="ZoomInMenuitem" Click="MenuItemClick" InputGestureText="Ctrl + +" />
                 <MenuItem Header="Zoom Out" x:Name="ZoomOutMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + -" />
-                <MenuItem Header="_Switch Button Text to Icons" x:Name="IconToggleButton" Click="MenuItemClick" />
-                <MenuItem Header="Switch _Grid Lines To Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick" />
+                <MenuItem Header="Toggle _Buttons: Icons / Text" x:Name="IconToggleButton" Click="MenuItemClick" />
+                <MenuItem Header="Toggle _Grid: Lines / Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick" />
             </MenuItem>
             <MenuItem Header="_Theme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
