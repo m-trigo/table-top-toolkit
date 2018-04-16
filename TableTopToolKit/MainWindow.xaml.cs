@@ -374,6 +374,15 @@ namespace TableTopToolKit
 
                     ToggleRulerButton.Content = img;
                 }
+                {
+                    Image img = new Image();
+                    img.Height = 32;
+                    img.Width = 32;
+                    // Select icon
+                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/select_icon.png", UriKind.Relative));
+
+                    ToggleSelectIconButton.Content = img;
+                }
 
                 iconViewHasSwitched = true;
             }
@@ -392,6 +401,7 @@ namespace TableTopToolKit
                 ToggleLineEraser.Content = "Line Erase";
                 ToggleDrawRectangleButton.Content = "Rectangle";
                 ToggleRulerButton.Content = "Ruler";
+                ToggleSelectIconButton.Content = "Select Icon";
 
                 iconViewHasSwitched = false;
             }
