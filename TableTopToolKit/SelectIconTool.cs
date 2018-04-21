@@ -13,7 +13,7 @@ namespace TableTopToolKit
 {
     public class SelectIconTool : DrawingTool
     {
-        private static Rectangle currentIcon;
+        public static Rectangle currentIcon;
         private Grid grid;
         private CanvasDrawings source;
         private static Brush currentBrush;
@@ -29,6 +29,7 @@ namespace TableTopToolKit
         public void Close()
         {
         }
+
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {

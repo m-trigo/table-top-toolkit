@@ -458,6 +458,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectRulerTool);
             }
+            else if(button.Equals(RotateIconButton))
+            {
+                main.Command(App.Controls.RotateIcon);
+            }
         }
 
         private void Window_Closed(object sender, System.EventArgs e)

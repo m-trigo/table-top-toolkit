@@ -23,7 +23,8 @@ namespace TableTopToolKit
             ToggleIconView, ToggleGridMode,
             SetStandardTheme, SetInkTheme,
             SelectIcon,
-            Zoom
+            Zoom,
+            RotateIcon
         };
 
         private CanvasDrawings canvasDrawings;
@@ -135,6 +136,25 @@ namespace TableTopToolKit
                 EraserTool.theme = Theme.ink;
                 SelectIconTool.theme = Theme.ink;
                 break;
+
+                case Controls.RotateIcon:
+                    rotateIcon();
+                    break;
+            }
+        }
+
+        public void rotateIcon()
+        {
+            RotateTransform rotation = SelectIconTool.currentIcon.LayoutTransform as RotateTransform;
+            if (rotation != null)
+            {
+                double angle = rotation.Angle;
+                angle += 90;
+                SelectIconTool.currentIcon.LayoutTransform = new RotateTransform(angle);
+            }
+            else
+            {
+                SelectIconTool.currentIcon.LayoutTransform = new RotateTransform(90);
             }
         }
 
