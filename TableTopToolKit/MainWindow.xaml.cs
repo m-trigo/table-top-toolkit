@@ -231,7 +231,11 @@ namespace TableTopToolKit
             MenuItem item = sender as MenuItem;
             if (item.Equals(PrintMenuItemButton))
             {
+                // Temporary fix-hack
+                double zoom = ZoomLevel;
+                ZoomLevel = 1;
                 main.Command(App.Controls.Print);
+                ZoomLevel = zoom;
             }
             else if (item.Equals(IconToggleButton))
             {
