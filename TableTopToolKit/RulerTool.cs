@@ -31,7 +31,7 @@ namespace TableTopToolKit
             mouseDown = false;
             DistanceDisplay = new TextBlock();
             DistanceDisplay.Foreground = theme.RulerColor;
-            DistanceDisplay.FontSize = 20;
+            DistanceDisplay.FontSize = 22;
             DistanceDisplay.FontFamily = new FontFamily("Consolas");
         }
 
@@ -56,9 +56,6 @@ namespace TableTopToolKit
         {
             UnrenderLine();
 
-            Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
-            double adx = Math.Abs(mouseDragDistance.X);
-            double ady = Math.Abs(mouseDragDistance.Y);
             if (mouseEvent.LeftButton == MouseButtonState.Pressed && mouseDown)
             {
                 Point start = grid.SnapToGridCornersOrCenter(lastKnownMouseDown.X, lastKnownMouseDown.Y);
@@ -86,7 +83,10 @@ namespace TableTopToolKit
                     MeasuringLine.Y2 = end.Y;
                 }
 
-                UpdateDisplay(end.X, end.Y, grid.DistanceInSquares(start, end).ToString("0.##"));
+                Vector mouseDragDistance = mousePosition - lastKnownMouseDown;
+                double dy = mouseDragDistance.Y / (mouseDragDistance.Y == 0 ? 1 : Math.Abs(mouseDragDistance.Y));
+                double displayOffset = dy > 0 ? -40 : 20;
+                UpdateDisplay(start.X, start.Y + displayOffset, grid.DistanceInSquares(start, end).ToString("0.##"));
                 RenderLine();
             }
             else if (mouseEvent.LeftButton == MouseButtonState.Released && mouseDown)
