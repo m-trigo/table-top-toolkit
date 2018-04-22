@@ -151,6 +151,13 @@ namespace TableTopToolKit
             // Non-Repeatable
             switch (e.Key)
             {
+                case Key.R:
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    main.Command(App.Controls.RotateIcon);
+                }
+                break;
+
                 case Key.G:
                 if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 {
@@ -462,7 +469,7 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectRulerTool);
             }
-            else if(button.Equals(RotateIconButton))
+            else if (button.Equals(RotateIconButton))
             {
                 main.Command(App.Controls.RotateIcon);
             }

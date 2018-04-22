@@ -13,7 +13,7 @@ namespace TableTopToolKit
 {
     public class SelectIconTool : DrawingTool
     {
-        public static Rectangle currentIcon;
+        private Rectangle currentIcon;
         private Grid grid;
         private CanvasDrawings source;
         private static Brush currentBrush;
@@ -23,27 +23,48 @@ namespace TableTopToolKit
         {
             source = canvasDrawings;
             this.grid = grid;
-            if(currentIcon == null)
+            if (currentIcon == null)
                 currentIcon = new Rectangle();
         }
+
         public void Close()
         {
+            currentIcon.Fill = theme.IconsColor;
         }
 
+        public void Rotate()
+        {
+            if (currentIcon == null)
+            {
+                return;
+            }
+
+            RotateTransform rotation = currentIcon.LayoutTransform as RotateTransform;
+            if (rotation != null)
+            {
+                double angle = rotation.Angle;
+                angle += 90;
+                currentIcon.LayoutTransform = new RotateTransform(angle);
+            }
+            else
+            {
+                currentIcon.LayoutTransform = new RotateTransform(90);
+            }
+        }
 
         public void MouseDown(Point mousePosition, MouseEventArgs mouseEvent)
         {
             Point snapped = grid.SnapToGridCorners(mousePosition.X - grid.SquareSize / 2, mousePosition.Y - grid.SquareSize / 2);
             foreach (var item in source.Drawings)
             {
-                if(item.Elements.Count == 1)
+                if (item.Elements.Count == 1)
                 {
-                    if(item.Elements[0].GetType() == typeof(Rectangle) && item.Elements[0] as Rectangle != currentIcon)
+                    if (item.Elements[0].GetType() == typeof(Rectangle) && item.Elements[0] as Rectangle != currentIcon)
                     {
                         Point p = new Point();
                         p.X = Canvas.GetLeft(item.Elements[0]);
                         p.Y = Canvas.GetTop(item.Elements[0]);
-                        if(p == snapped)
+                        if (p == snapped)
                         {
                             currentIcon.Fill = currentBrush;
                             currentIcon = item.Elements[0] as Rectangle;

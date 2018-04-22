@@ -110,7 +110,7 @@
                                     ToolTip="Selects the Select Icon tool&#x0a;Allows you to click icons on the grid and delete,rotate or drag them to another location&#x0a;">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/select_icon.png" />
                             </Button>
-                            <Button x:Name="RotateIconButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
+                            <Button Visibility="Hidden" x:Name="RotateIconButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
                                     ToolTip="Rotates selected icon 90 degrees to the right&#x0a;">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/select_icon.png" />
                             </Button>
