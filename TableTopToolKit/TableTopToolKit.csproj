@@ -162,5 +162,8 @@
     <Resource Include="imgs\icons_alt\stairs4.png" />
     <Resource Include="imgs\icons_alt\statue.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\icons_alt\trap.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
