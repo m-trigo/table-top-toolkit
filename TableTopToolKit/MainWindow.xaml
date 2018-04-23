@@ -33,6 +33,7 @@
             <MenuItem Header="_Theme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
+                <MenuItem Header="_Blueprint" x:Name="BlueprintThemeButton" Click="MenuItemClick" />
             </MenuItem>
         </Menu>
 

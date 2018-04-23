@@ -272,6 +272,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SetInkTheme);
             }
+            else if (item.Equals(BlueprintThemeButton))
+            {
+                main.Command(App.Controls.SetBlueprintTheme);
+            }
             else if (item.Equals(Exit))
             {
                 Close();

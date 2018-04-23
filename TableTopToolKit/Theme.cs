@@ -31,6 +31,8 @@ namespace TableTopToolKit
 
         public GridTheme GridTheme { get; set; }
 
+        public Brush BackgroundColor { get; set; }
+
         public static Theme standard = new Theme()
         {
             GridTheme = new GridTheme
@@ -47,7 +49,8 @@ namespace TableTopToolKit
             EraserColor = Brushes.LightPink,
             EraserSelectionColor = Brushes.Red,
             IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
-            RulerColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203))
+            RulerColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
+            BackgroundColor = Brushes.White
         };
 
         public static Theme ink = new Theme()
@@ -66,7 +69,28 @@ namespace TableTopToolKit
             EraserColor = Brushes.LightPink,
             EraserSelectionColor = Brushes.Red,
             IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
-            RulerColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203))
+            RulerColor = Brushes.Goldenrod,
+            BackgroundColor = Brushes.White
+        };
+
+        public static Theme blueprint = new Theme()
+        {
+            GridTheme = new GridTheme
+            {
+                GridLinesColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
+                GridDotsColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
+                GridLinesThickness = 1,
+                GridDotsThickness = 3,
+            },
+
+            LinesThickness = 3,
+            DrawingsColor = Brushes.WhiteSmoke,
+            IconsColor = Brushes.WhiteSmoke,
+            EraserColor = Brushes.HotPink,
+            EraserSelectionColor = Brushes.Red,
+            IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
+            RulerColor = Brushes.Goldenrod,
+            BackgroundColor = new BrushConverter().ConvertFromString("#0f4490") as Brush
         };
     }
 }

@@ -71,7 +71,8 @@ namespace TableTopToolKit
             drawings = new List<Drawing>();
             commandHistory = new List<Command>();
             commandHistoryIndex = -1;
-            theme = Theme.standard;
+
+            ChangeTheme(Theme.standard);
         }
 
         public IEnumerable<Drawing> Drawings
@@ -350,6 +351,7 @@ namespace TableTopToolKit
         {
             theme = newTheme;
 
+            canvas.Background = theme.BackgroundColor;
             foreach (Drawing drawing in drawings)
             {
                 foreach (UIElement element in drawing.Elements)

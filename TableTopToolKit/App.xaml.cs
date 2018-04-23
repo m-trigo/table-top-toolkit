@@ -21,7 +21,7 @@ namespace TableTopToolKit
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
             ToggleIconView, ToggleGridMode,
-            SetStandardTheme, SetInkTheme,
+            SetStandardTheme, SetInkTheme, SetBlueprintTheme,
             SelectIcon,
             Zoom,
             RotateIcon
@@ -128,6 +128,7 @@ namespace TableTopToolKit
                 grid.ChangeTheme(Theme.standard.GridTheme);
                 EraserTool.theme = Theme.standard;
                 SelectIconTool.theme = Theme.standard;
+                RulerTool.theme = Theme.standard;
                 break;
 
                 case Controls.SetInkTheme:
@@ -135,6 +136,15 @@ namespace TableTopToolKit
                 grid.ChangeTheme(Theme.ink.GridTheme);
                 EraserTool.theme = Theme.ink;
                 SelectIconTool.theme = Theme.ink;
+                RulerTool.theme = Theme.ink;
+                break;
+
+                case Controls.SetBlueprintTheme:
+                canvasDrawings.ChangeTheme(Theme.blueprint);
+                grid.ChangeTheme(Theme.blueprint.GridTheme);
+                EraserTool.theme = Theme.blueprint;
+                SelectIconTool.theme = Theme.blueprint;
+                RulerTool.theme = Theme.blueprint;
                 break;
 
                 case Controls.RotateIcon:

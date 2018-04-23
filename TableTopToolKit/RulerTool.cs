@@ -30,7 +30,6 @@ namespace TableTopToolKit
             drawing = false;
             mouseDown = false;
             DistanceDisplay = new TextBlock();
-            DistanceDisplay.Foreground = theme.RulerColor;
             DistanceDisplay.FontSize = 22;
             DistanceDisplay.FontFamily = new FontFamily("Consolas");
         }
@@ -38,6 +37,7 @@ namespace TableTopToolKit
         private void UpdateDisplay(double x, double y, string text)
         {
             DistanceDisplay.Text = text;
+            DistanceDisplay.Foreground = theme.RulerColor;
             Canvas.SetLeft(DistanceDisplay, x);
             Canvas.SetTop(DistanceDisplay, y);
         }
