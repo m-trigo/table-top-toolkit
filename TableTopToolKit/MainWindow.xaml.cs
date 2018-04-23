@@ -16,6 +16,7 @@ namespace TableTopToolKit
     {
         private App main;
         private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
+        private const string ALT_ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons_alt\";
         private Point startDragMousePosition;
         private bool iconViewHasSwitched = true;
         private const double ZOOM_RATE = 0.05;
@@ -58,10 +59,10 @@ namespace TableTopToolKit
             ZoomLevel = 1;
         }
 
-        private void LoadIconImages()
+        private void LoadIconImages(string imageDirectory)
         {
             List<Image> iconImages = new List<Image>();
-            string[] imagePaths = Directory.GetFiles(ICON_IMAGES_DIRECTORY);
+            string[] imagePaths = Directory.GetFiles(imageDirectory);
 
             foreach (string imagePath in imagePaths)
             {
@@ -77,7 +78,19 @@ namespace TableTopToolKit
                 };
                 iconImages.Add(image);
             }
-            Icons = new ObservableCollection<Image>(iconImages);
+
+            if (Icons == null)
+            {
+                Icons = new ObservableCollection<Image>(iconImages);
+            }
+            else
+            {
+                Icons.Clear();
+                foreach (Image image in iconImages)
+                {
+                    Icons.Add(image);
+                }
+            }
             SelectedIcon = Icons[0];
         }
 
@@ -85,7 +98,7 @@ namespace TableTopToolKit
         {
             main = Application.Current as App;
             DataContext = this;
-            LoadIconImages();
+            LoadIconImages(ICON_IMAGES_DIRECTORY);
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             main.InitializeCanvasDrawing(Canvas);
         }
@@ -287,6 +300,16 @@ namespace TableTopToolKit
             else if (item.Equals(ZoomOutMenuItem))
             {
                 ZoomOut();
+            }
+            else if (StandardTokenSetButton.Equals(item))
+            {
+                Icons.Clear();
+                LoadIconImages(ICON_IMAGES_DIRECTORY);
+            }
+            else if (SimpleTokenSetButton.Equals(item))
+            {
+                Icons.Clear();
+                LoadIconImages(ALT_ICON_IMAGES_DIRECTORY);
             }
         }
 

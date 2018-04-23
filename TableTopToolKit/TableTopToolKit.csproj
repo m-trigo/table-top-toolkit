@@ -147,5 +147,20 @@
   <ItemGroup>
     <Resource Include="imgs\menu_icons\select_icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\icons_alt\doorway0.png" />
+    <Resource Include="imgs\icons_alt\doorway1.png" />
+    <Resource Include="imgs\icons_alt\doorway2.png" />
+    <Resource Include="imgs\icons_alt\doorway3.png" />
+    <Resource Include="imgs\icons_alt\doorway4.png" />
+    <Resource Include="imgs\icons_alt\doorway5.png" />
+    <Resource Include="imgs\icons_alt\doorway6.png" />
+    <Resource Include="imgs\icons_alt\doorway7.png" />
+    <Resource Include="imgs\icons_alt\stairs1.png" />
+    <Resource Include="imgs\icons_alt\stairs2.png" />
+    <Resource Include="imgs\icons_alt\stairs3.png" />
+    <Resource Include="imgs\icons_alt\stairs4.png" />
+    <Resource Include="imgs\icons_alt\statue.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
