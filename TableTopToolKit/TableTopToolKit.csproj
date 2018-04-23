@@ -165,5 +165,8 @@
   <ItemGroup>
     <Resource Include="imgs\icons_alt\trap.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\rotate.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
