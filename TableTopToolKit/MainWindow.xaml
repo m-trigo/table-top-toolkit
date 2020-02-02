@@ -25,9 +25,9 @@
                 <MenuItem Header="E_xit" x:Name="Exit" Click="MenuItemClick" InputGestureText="Alt + F4" />
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="Zoom In" x:Name="ZoomInMenuitem" Click="MenuItemClick" InputGestureText="Ctrl + +" />
-                <MenuItem Header="Zoom Out" x:Name="ZoomOutMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + -" />
-                <MenuItem Header="Toggle _Grid: Lines / Dots" x:Name="GridDotsToggleButton" Click="MenuItemClick" />
+                <MenuItem Header="Zoom _In" x:Name="ZoomInMenuitem" Click="MenuItemClick" InputGestureText="Ctrl +" />
+                <MenuItem Header="Zoom _Out" x:Name="ZoomOutMenuItem" Click="MenuItemClick" InputGestureText="Ctrl -" />
+                <MenuItem Header="_Toggle Grid Type" x:Name="GridDotsToggleButton" Click="MenuItemClick" InputGestureText="Ctrl T"/>
             </MenuItem>
             <MenuItem Header="_Theme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />

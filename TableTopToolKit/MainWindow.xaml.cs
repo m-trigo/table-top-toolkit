@@ -219,6 +219,13 @@ namespace TableTopToolKit
                 }
                 break;
 
+                case Key.T:
+                if ( Keyboard.IsKeyDown( Key.LeftCtrl ) || Keyboard.IsKeyDown( Key.RightCtrl ) )
+                {
+                    main.Command(App.Controls.ToggleGridMode);
+                }
+                break;
+
                 case Key.D1:
                 case Key.NumPad1:
                 main.Command(App.Controls.SelectPencilTool);
