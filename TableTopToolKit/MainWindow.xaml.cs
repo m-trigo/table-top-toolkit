@@ -15,8 +15,8 @@ namespace TableTopToolKit
     public partial class MainWindow : Window
     {
         private App main;
-        private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
-        private const string ALT_ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons_alt\";
+        private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons_alt\";
+        private const string ALT_ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
         private bool iconViewHasSwitched = true;
         private const double ZOOM_RATE = 0.05;
@@ -310,16 +310,6 @@ namespace TableTopToolKit
             else if (item.Equals(ZoomOutMenuItem))
             {
                 ZoomOut();
-            }
-            else if (StandardTokenSetButton.Equals(item))
-            {
-                Icons.Clear();
-                LoadIconImages(ICON_IMAGES_DIRECTORY);
-            }
-            else if (SimpleTokenSetButton.Equals(item))
-            {
-                Icons.Clear();
-                LoadIconImages(ALT_ICON_IMAGES_DIRECTORY);
             }
         }
 

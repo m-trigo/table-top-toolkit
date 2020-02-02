@@ -35,10 +35,6 @@
                 <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Blueprint" x:Name="BlueprintThemeButton" Click="MenuItemClick" />
             </MenuItem>
-            <MenuItem Header="_Token Sets">
-                <MenuItem Header="_Standard" x:Name="StandardTokenSetButton" Click="MenuItemClick" />
-                <MenuItem Header="_Simple" x:Name="SimpleTokenSetButton" Click="MenuItemClick" />
-            </MenuItem>
         </Menu>
 
         <TabControl x:Name="tabControl" Canvas.Left="-2" Canvas.Top="-2" MinWidth="780">

@@ -160,10 +160,6 @@
     <Resource Include="imgs\icons_alt\stairs2.png" />
     <Resource Include="imgs\icons_alt\stairs3.png" />
     <Resource Include="imgs\icons_alt\stairs4.png" />
-    <Resource Include="imgs\icons_alt\statue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="imgs\icons_alt\trap.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="imgs\menu_icons\rotate.png" />
