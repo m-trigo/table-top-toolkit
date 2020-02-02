@@ -164,13 +164,6 @@ namespace TableTopToolKit
             // Non-Repeatable
             switch (e.Key)
             {
-                case Key.R:
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                {
-                    main.Command(App.Controls.RotateIcon);
-                }
-                break;
-
                 case Key.G:
                 if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 {
@@ -249,16 +242,6 @@ namespace TableTopToolKit
                 case Key.D5:
                 case Key.NumPad5:
                 main.Command(App.Controls.SelectRulerTool);
-                break;
-
-                case Key.D6:
-                case Key.NumPad6:
-                main.Command(App.Controls.SelectIconTool);
-                break;
-
-                case Key.D7:
-                case Key.NumPad7:
-                main.Command(App.Controls.RotateIcon);
                 break;
             }
         }
@@ -415,15 +398,6 @@ namespace TableTopToolKit
 
                     ToggleRulerButton.Content = img;
                 }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    // Select icon
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/select_icon.png", UriKind.Relative));
-
-                    ToggleSelectIconButton.Content = img;
-                }
 
                 iconViewHasSwitched = true;
             }
@@ -442,7 +416,6 @@ namespace TableTopToolKit
                 ToggleLineEraser.Content = "Line Erase";
                 ToggleDrawRectangleButton.Content = "Rectangle";
                 ToggleRulerButton.Content = "Ruler";
-                ToggleSelectIconButton.Content = "Select Icon";
 
                 iconViewHasSwitched = false;
             }
@@ -491,17 +464,9 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectEraserTool);
             }
-            else if (button.Equals(ToggleSelectIconButton))
-            {
-                main.Command(App.Controls.SelectIconTool);
-            }
             else if (button.Equals(ToggleRulerButton))
             {
                 main.Command(App.Controls.SelectRulerTool);
-            }
-            else if (button.Equals(RotateIconButton))
-            {
-                main.Command(App.Controls.RotateIcon);
             }
         }
 

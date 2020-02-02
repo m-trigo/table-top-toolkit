@@ -106,14 +106,6 @@
                                     ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
                                 <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
                             </Button>
-                            <Button x:Name="ToggleSelectIconButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                                    ToolTip="Selects the Select Icon tool&#x0a;Allows you to click icons on the grid and delete, rotate or drag them to another location&#x0a;(Number 6)">
-                                <Image Width="32" Height="32" Source="./imgs/menu_icons/select_icon.png" />
-                            </Button>
-                            <Button x:Name="RotateIconButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                                    ToolTip="Rotates selected icon 90 degrees to the right&#x0a;(Number 7)">
-                                <Image Width="32" Height="32" Source="./imgs/menu_icons/rotate.png" />
-                            </Button>
                         </StackPanel>
                         <!--<Slider HorizontalAlignment="Right" Width="75" VerticalAlignment="Center"
                                 SmallChange="0.05" LargeChange="0.05" Minimum="0.5" Maximum="1"
