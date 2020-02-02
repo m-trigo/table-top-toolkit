@@ -267,10 +267,6 @@ namespace TableTopToolKit
                 main.Command(App.Controls.Print);
                 ZoomLevel = zoom;
             }
-            else if (item.Equals(IconToggleButton))
-            {
-                IconSwitch();
-            }
             else if (item.Equals(GridDotsToggleButton))
             {
                 main.Command(App.Controls.ToggleGridMode);
