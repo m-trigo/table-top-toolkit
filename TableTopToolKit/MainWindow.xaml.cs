@@ -243,6 +243,16 @@ namespace TableTopToolKit
                 case Key.NumPad5:
                 main.Command(App.Controls.SelectRulerTool);
                 break;
+
+                case Key.D6:
+                case Key.NumPad6:
+                main.Command(App.Controls.SelectIconTool);
+                break;
+
+                case Key.D7:
+                case Key.NumPad7:
+                main.Command(App.Controls.RotateIcon);
+                break;
             }
         }
 
