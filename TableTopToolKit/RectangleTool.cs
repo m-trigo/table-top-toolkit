@@ -114,17 +114,6 @@ namespace TableTopToolKit
 
                     if (Keyboard.IsKeyDown(Key.LeftShift))
                     {
-                        if (Math.Abs(width) <= Math.Abs(height))
-                        {
-                            height = width;
-                        }
-                        else
-                        {
-                            width = height;
-                        }
-                    }
-                    else if (Keyboard.IsKeyDown(Key.LeftCtrl))
-                    {
                         height = Math.Abs(width);
                     }
 
