@@ -88,25 +88,11 @@
                             ToolTip="Selects the Line Eraser tool&#x0a;Allows you to click and drag to draw an erasing line connecting any two corners of the grid&#x0a;Any lines or sides of rectangles under the erasing line will be erased&#x0a;(Number 4)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/erase.png" />
                     </Button>
-                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
-                        <Separator.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform Angle="90" />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Separator.RenderTransform>
-                    </Separator>
                     <Button x:Name="ToggleRulerButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
                             ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
                     </Button>
                 </StackPanel>
-                <!--<Slider HorizontalAlignment="Right" Width="75" VerticalAlignment="Center"
-                        SmallChange="0.05" LargeChange="0.05" Minimum="0.5" Maximum="1"
-                        Value="{Binding ZoomLevel, Mode=TwoWay}"
-                        ToolTip="Zooms in and out on the Canvas&#x0a;(Ctrl + Scroll)" />-->
             </Grid>
 
             <ListBox Name="iconList" DockPanel.Dock="Left" BorderBrush="Gray" BorderThickness="2"
