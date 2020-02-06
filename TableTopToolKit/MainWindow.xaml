@@ -62,7 +62,7 @@
                             ToolTip="Redoes the most recent operation&#x0a;(Crtl + Y)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/redo.png" />
                     </Button>
-                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                    <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -84,7 +84,7 @@
                             ToolTip="Selects the Rectangle tool&#x0a;Allows you to click and drag to draw a rectangle on top of the grid lines&#x0a;Holding shift forces the rectangle to be a square&#x0a;(Number 3)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
                     </Button>
-                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                    <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -102,7 +102,7 @@
                             ToolTip="Selects the Pencil Eraser tool&#x0a;Allows you to click and drag erase pencil drawings">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil_eraser.png" />
                     </Button>
-                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                    <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
