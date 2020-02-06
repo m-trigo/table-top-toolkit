@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PencilEraserTool.cs" />
     <Compile Include="RulerTool.cs" />
     <Compile Include="SelectIconTool.cs" />
     <Compile Include="Theme.cs" />
@@ -166,6 +167,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="app-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="imgs\menu_icons\line_eraser.png" />
+    <Resource Include="imgs\menu_icons\pencil_eraser.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

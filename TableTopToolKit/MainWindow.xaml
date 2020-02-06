@@ -84,10 +84,34 @@
                             ToolTip="Selects the Rectangle tool&#x0a;Allows you to click and drag to draw a rectangle on top of the grid lines&#x0a;Holding shift forces the rectangle to be a square&#x0a;(Number 3)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
                     </Button>
+                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                        <Separator.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="90" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Separator.RenderTransform>
+                    </Separator>
                     <Button x:Name="ToggleLineEraser" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
                             ToolTip="Selects the Line Eraser tool&#x0a;Allows you to click and drag to draw an erasing line connecting any two corners of the grid&#x0a;Any lines or sides of rectangles under the erasing line will be erased&#x0a;(Number 4)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/erase.png" />
+                        <Image Width="32" Height="32" Source="./imgs/menu_icons/line_eraser.png" />
                     </Button>
+                    <Button x:Name="TogglePencilEraser" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
+                            ToolTip="Selects the Pencil Eraser tool&#x0a;Allows you to click and drag erase pencil drawings">
+                        <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil_eraser.png" />
+                    </Button>
+                    <Separator RenderTransformOrigin="0.5,0.5" Width="14">
+                        <Separator.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="90" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Separator.RenderTransform>
+                    </Separator>
                     <Button x:Name="ToggleRulerButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
                             ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />

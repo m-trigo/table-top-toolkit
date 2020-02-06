@@ -464,6 +464,10 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectRulerTool);
             }
+            else if (button.Equals(TogglePencilEraser))
+            {
+                main.Command( App.Controls.SelectPencilEraser );
+            }
         }
 
         private void Window_Closed(object sender, System.EventArgs e)

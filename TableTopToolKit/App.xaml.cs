@@ -17,7 +17,7 @@ namespace TableTopToolKit
         public enum Controls
         {
             ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
-            SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool,
+            SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool, SelectPencilEraser,
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
             ToggleIconView, ToggleGridMode,
@@ -89,6 +89,10 @@ namespace TableTopToolKit
 
                 case Controls.SelectIconTool:
                 CurrentTool = new SelectIconTool(canvasDrawings, grid);
+                break;
+
+                case Controls.SelectPencilEraser:
+                CurrentTool = new PencilEraserTool(canvasDrawings);
                 break;
 
                 case Controls.Print:
