@@ -122,10 +122,6 @@ namespace TableTopToolKit
             {
                 main.CurrentTool.MouseDown(currentPoint, e);
             }
-            else if (e.RightButton == MouseButtonState.Pressed && SelectedIcon != null)
-            {
-                main.PlaceIcon(currentPoint, SelectedIcon);
-            }
         }
 
         private void OnCanvasMouseLeave(object sender, MouseEventArgs e)
