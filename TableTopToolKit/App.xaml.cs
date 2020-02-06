@@ -42,7 +42,7 @@ namespace TableTopToolKit
         {
             canvasDrawings = new CanvasDrawings(canvas);
             grid = new Grid(canvasDrawings.Width, canvasDrawings.Height, 64, canvasDrawings, Theme.standard.GridTheme);
-            CurrentTool = new SnapLineTool(canvasDrawings, grid);
+            CurrentTool = new PencilTool(canvasDrawings);
         }
 
         public void Command(Controls control)
