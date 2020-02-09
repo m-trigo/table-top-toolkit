@@ -59,7 +59,6 @@
     </ApplicationDefinition>
     <Compile Include="PencilEraserTool.cs" />
     <Compile Include="RulerTool.cs" />
-    <Compile Include="SelectIconTool.cs" />
     <Compile Include="Theme.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,35 +131,9 @@
     <Resource Include="imgs\menu_icons\redo.png" />
     <Resource Include="imgs\menu_icons\undo.png" />
     <Resource Include="imgs\menu_icons\ruler.png" />
-    <Resource Include="imgs\icons\12_conflict.png" />
-    <Resource Include="imgs\icons\01_door_left.png" />
-    <Resource Include="imgs\icons\02_door_right.png" />
-    <Resource Include="imgs\icons\10_note.png" />
-    <Resource Include="imgs\icons\00_stairs.png" />
-    <Resource Include="imgs\icons\03_locked_door.png" />
-    <Resource Include="imgs\icons\21_torch.png" />
-    <Resource Include="imgs\icons\11_star.png" />
-    <Resource Include="imgs\icons\30_sword.png" />
-    <Resource Include="imgs\icons\31_bow.png" />
-    <Resource Include="imgs\icons\32_armor.png" />
-    <Resource Include="imgs\icons\20_chest.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="imgs\menu_icons\select_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="imgs\icons_alt\doorway0.png" />
-    <Resource Include="imgs\icons_alt\doorway1.png" />
-    <Resource Include="imgs\icons_alt\doorway2.png" />
-    <Resource Include="imgs\icons_alt\doorway3.png" />
-    <Resource Include="imgs\icons_alt\doorway4.png" />
-    <Resource Include="imgs\icons_alt\doorway5.png" />
-    <Resource Include="imgs\icons_alt\doorway6.png" />
-    <Resource Include="imgs\icons_alt\doorway7.png" />
-    <Resource Include="imgs\icons_alt\stairs1.png" />
-    <Resource Include="imgs\icons_alt\stairs2.png" />
-    <Resource Include="imgs\icons_alt\stairs3.png" />
-    <Resource Include="imgs\icons_alt\stairs4.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="imgs\menu_icons\rotate.png" />

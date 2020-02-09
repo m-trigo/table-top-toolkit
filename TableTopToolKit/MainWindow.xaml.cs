@@ -5,31 +5,17 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
-using System.Windows.Shapes;
 
 namespace TableTopToolKit
 {
     public partial class MainWindow : Window
     {
         private App main;
-        private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons_alt\";
+        private const string ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons_alt\"; // Fix this later
         private const string ALT_ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
-        private bool iconViewHasSwitched = true;
-        private const double ZOOM_RATE = 0.05;
-
-        public Image SelectedIcon
-        {
-            get { return (Image)GetValue(SelectedIconProperty); }
-            set { SetValue(SelectedIconProperty, value); }
-        }
-
-        public static readonly DependencyProperty SelectedIconProperty =
-            DependencyProperty.Register("SelectedIcon", typeof(Image), typeof(MainWindow), new PropertyMetadata(null));
-
+        private const double ZOOM_RATE = 0.05; // Fix this later
         public double ZoomLevel
         {
             get { return (double)GetValue(ZoomLevelProperty); }
@@ -50,8 +36,6 @@ namespace TableTopToolKit
         public static readonly DependencyProperty ZoomLevelProperty =
             DependencyProperty.Register("ZoomLevel", typeof(double), typeof(MainWindow), new PropertyMetadata(null));
 
-        public ObservableCollection<Image> Icons { get; private set; }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -59,46 +43,10 @@ namespace TableTopToolKit
             ZoomLevel = 1;
         }
 
-        private void LoadIconImages(string imageDirectory)
-        {
-            List<Image> iconImages = new List<Image>();
-            string[] imagePaths = Directory.GetFiles(imageDirectory);
-
-            foreach (string imagePath in imagePaths)
-            {
-                BitmapImage bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = new Uri(imagePath, UriKind.Relative);
-                bmp.EndInit();
-                Image image = new Image
-                {
-                    Source = bmp,
-                    Height = 32,
-                    Width = 32
-                };
-                iconImages.Add(image);
-            }
-
-            if (Icons == null)
-            {
-                Icons = new ObservableCollection<Image>(iconImages);
-            }
-            else
-            {
-                Icons.Clear();
-                foreach (Image image in iconImages)
-                {
-                    Icons.Add(image);
-                }
-            }
-            SelectedIcon = Icons[0];
-        }
-
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             main = Application.Current as App;
             DataContext = this;
-            LoadIconImages(ICON_IMAGES_DIRECTORY);
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             main.InitializeCanvasDrawing(Canvas);
         }
@@ -163,7 +111,7 @@ namespace TableTopToolKit
                 case Key.G:
                 if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 {
-                    main.Command(App.Controls.ToggleGrid);
+                    main.Command(App.Controls.ToggleGridDisplay);
                 }
                 break;
 
@@ -232,11 +180,16 @@ namespace TableTopToolKit
 
                 case Key.D4:
                 case Key.NumPad4:
-                main.Command(App.Controls.SelectEraserTool);
+                main.Command(App.Controls.SelectPencilEraser);
                 break;
 
                 case Key.D5:
                 case Key.NumPad5:
+                main.Command(App.Controls.SelectEraserTool);
+                break;
+
+                case Key.D6:
+                case Key.NumPad6:
                 main.Command(App.Controls.SelectRulerTool);
                 break;
             }
@@ -245,7 +198,20 @@ namespace TableTopToolKit
         private void MenuItemClick(object sender, RoutedEventArgs e)
         {
             MenuItem item = sender as MenuItem;
-            if (item.Equals(PrintMenuItemButton))
+
+            if (item.Equals(NewMenuItem))
+            {
+                main.Command(App.Controls.ClearCanvas);
+            }
+            else if (item.Equals(OpenMenuItem))
+            {
+                main.Command(App.Controls.LoadFile);
+            }
+            else if (item.Equals(SaveMenuItem))
+            {
+                main.Command(App.Controls.SaveAs);
+            }
+            else if (item.Equals(PrintMenuItem))
             {
                 // Temporary fix-hack
                 double zoom = ZoomLevel;
@@ -253,21 +219,61 @@ namespace TableTopToolKit
                 main.Command(App.Controls.Print);
                 ZoomLevel = zoom;
             }
-            else if (item.Equals(GridDotsToggleButton))
-            {
-                main.Command(App.Controls.ToggleGridMode);
-            }
-            else if (item.Equals(RestoreLastSessionButton))
+            else if (item.Equals(RestorePreviousSessionMenuItem))
             {
                 main.Command(App.Controls.LoadPreviousAutoSave);
             }
-            else if (item.Equals(SaveAs))
+            else if (item.Equals(ExitMenuItem))
             {
-                main.Command(App.Controls.SaveAs);
+                Close();
             }
-            else if (item.Equals(LoadFile))
+            else if (item.Equals(UndoMenuItem))
             {
-                main.Command(App.Controls.LoadFile);
+                main.Command( App.Controls.Undo );
+            }
+            else if (item.Equals(RedoMenuItem))
+            {
+                main.Command( App.Controls.Redo );
+            }
+            else if (item.Equals(ZoomInMenuitem))
+            {
+                ZoomIn();
+            }
+            else if (item.Equals(ZoomOutMenuItem))
+            {
+                ZoomOut();
+            }
+            else if (item.Equals(ToggleGridTypeMenuItem))
+            {
+                main.Command( App.Controls.ToggleGridMode );
+            }
+            else if (item.Equals(ToggleGridDisplayMenuItem))
+            {
+                main.Command( App.Controls.ToggleGridMode );
+            }
+            else if (item.Equals(PencilMenuItem))
+            {
+                main.Command(App.Controls.SelectPencilTool);
+            }
+            else if (item.Equals(LineMenuItem))
+            {
+                main.Command(App.Controls.SelectLineTool);
+            }
+            else if (item.Equals(RectangleMenuItem))
+            {
+                main.Command(App.Controls.SelectRectangleTool);
+            }
+            else if (item.Equals(PencilEraserMenuItem))
+            {
+                main.Command(App.Controls.SelectPencilEraser);
+            }
+            else if (item.Equals(LineEraserMenuItem))
+            {
+                main.Command(App.Controls.SelectEraserTool);
+            }
+            else if (item.Equals(RulerMenuItem))
+            {
+                main.Command(App.Controls.SelectRulerTool);
             }
             else if (item.Equals(StandardThemeButton))
             {
@@ -281,150 +287,12 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SetBlueprintTheme);
             }
-            else if (item.Equals(Exit))
-            {
-                Close();
-            }
-            else if (item.Equals(ZoomInMenuitem))
-            {
-                ZoomIn();
-            }
-            else if (item.Equals(ZoomOutMenuItem))
-            {
-                ZoomOut();
-            }
         }
-
-        private void IconSwitch()
-        {
-            if (!iconViewHasSwitched)
-            {
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-
-                    //Grid Toggle Button
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/toggle_grid.png", UriKind.Relative));
-                    ToggleGridButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    //Print Preview
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/print_preview.png", UriKind.Relative));
-
-                    PrintPreviewButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-
-                    //Clear Canvas
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/clear_canvas.png", UriKind.Relative));
-
-                    ToggleClearCanvas.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-
-                    //Undo
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/undo.png", UriKind.Relative));
-
-                    ToggleUndoButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-
-                    //Redo
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/redo.png", UriKind.Relative));
-
-                    ToggleRedoButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-
-                    //Tools
-                    //Pencil Tool
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/pencil.png", UriKind.Relative));
-
-                    ToggleDrawPencilButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    //Line
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/line.png", UriKind.Relative));
-
-                    ToggleDrawLineButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    //Line Erase
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/erase.png", UriKind.Relative));
-
-                    ToggleLineEraser.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    //Rectangle
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/rectangle.png", UriKind.Relative));
-
-                    ToggleDrawRectangleButton.Content = img;
-                }
-                {
-                    Image img = new Image();
-                    img.Height = 32;
-                    img.Width = 32;
-                    // Ruler
-                    img.Source = new BitmapImage(new Uri(@"../../imgs/menu_icons/ruler.png", UriKind.Relative));
-
-                    ToggleRulerButton.Content = img;
-                }
-
-                iconViewHasSwitched = true;
-            }
-            else
-            {
-                //Canvas Operations
-                ToggleGridButton.Content = "Toggle Grid";
-                PrintPreviewButton.Content = "Print Preview";
-                ToggleClearCanvas.Content = "Clear Canvas";
-                ToggleUndoButton.Content = "Undo";
-                ToggleRedoButton.Content = "Redo";
-
-                //Tools
-                ToggleDrawPencilButton.Content = "Pencil";
-                ToggleDrawLineButton.Content = "Line";
-                ToggleLineEraser.Content = "Line Erase";
-                ToggleDrawRectangleButton.Content = "Rectangle";
-                ToggleRulerButton.Content = "Ruler";
-
-                iconViewHasSwitched = false;
-            }
-        }
-
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            if (button.Equals(ToggleGridButton))
-            {
-                main.Command(App.Controls.ToggleGrid);
-            }
-            else if (button.Equals(PrintPreviewButton))
+
+            if (button.Equals(PrintButton))
             {
                 // Temporary fix-hack
                 double zoom = ZoomLevel;
@@ -432,41 +300,29 @@ namespace TableTopToolKit
                 main.Command(App.Controls.PrintPreview);
                 ZoomLevel = zoom;
             }
-            else if (button.Equals(ToggleUndoButton))
-            {
-                main.Command(App.Controls.Undo);
-            }
-            else if (button.Equals(ToggleRedoButton))
-            {
-                main.Command(App.Controls.Redo);
-            }
-            else if (button.Equals(ToggleDrawPencilButton))
+            else if (button.Equals(PencilButton))
             {
                 main.Command(App.Controls.SelectPencilTool);
             }
-            else if (button.Equals(ToggleDrawLineButton))
+            else if (button.Equals(LineButton))
             {
                 main.Command(App.Controls.SelectLineTool);
             }
-            else if (button.Equals(ToggleDrawRectangleButton))
+            else if (button.Equals(RectangleButton))
             {
                 main.Command(App.Controls.SelectRectangleTool);
             }
-            else if (button.Equals(ToggleClearCanvas))
+            else if (button.Equals(PencilEraserButton))
             {
-                main.Command(App.Controls.ClearCanvas);
+                main.Command( App.Controls.SelectPencilEraser );
             }
-            else if (button.Equals(ToggleLineEraser))
+            else if (button.Equals(LineEraserButton))
             {
                 main.Command(App.Controls.SelectEraserTool);
             }
-            else if (button.Equals(ToggleRulerButton))
+            else if (button.Equals(RulerButton))
             {
                 main.Command(App.Controls.SelectRulerTool);
-            }
-            else if (button.Equals(TogglePencilEraser))
-            {
-                main.Command( App.Controls.SelectPencilEraser );
             }
         }
 
@@ -498,16 +354,6 @@ namespace TableTopToolKit
 
                 DataObject target = new DataObject(typeof(Image), selectedItem);
                 DragDrop.DoDragDrop(iconList, target, DragDropEffects.Copy);
-            }
-        }
-
-        private void OnIconDragDrop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(Image)))
-            {
-                Image icon = e.Data.GetData(typeof(Image)) as Image;
-                Point dropPosition = e.GetPosition(Canvas);
-                main.PlaceIcon(dropPosition, icon);
             }
         }
 

@@ -16,7 +16,7 @@ namespace TableTopToolKit
     {
         public enum Controls
         {
-            ToggleGrid, SaveToPng, Undo, Redo, ClearCanvas,
+            ToggleGridDisplay, SaveToPng, Undo, Redo, ClearCanvas,
             SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool, SelectPencilEraser,
             Print, PrintPreview,
             AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
@@ -51,7 +51,7 @@ namespace TableTopToolKit
 
             switch (control)
             {
-                case Controls.ToggleGrid:
+                case Controls.ToggleGridDisplay:
                 grid.ToggleVisibility();
                 break;
 
@@ -85,10 +85,6 @@ namespace TableTopToolKit
 
                 case Controls.SelectRulerTool:
                 CurrentTool = new RulerTool(canvasDrawings, grid);
-                break;
-
-                case Controls.SelectIconTool:
-                CurrentTool = new SelectIconTool(canvasDrawings, grid);
                 break;
 
                 case Controls.SelectPencilEraser:
@@ -131,7 +127,6 @@ namespace TableTopToolKit
                 canvasDrawings.ChangeTheme(Theme.standard);
                 grid.ChangeTheme(Theme.standard.GridTheme);
                 EraserTool.theme = Theme.standard;
-                SelectIconTool.theme = Theme.standard;
                 RulerTool.theme = Theme.standard;
                 break;
 
@@ -139,7 +134,6 @@ namespace TableTopToolKit
                 canvasDrawings.ChangeTheme(Theme.ink);
                 grid.ChangeTheme(Theme.ink.GridTheme);
                 EraserTool.theme = Theme.ink;
-                SelectIconTool.theme = Theme.ink;
                 RulerTool.theme = Theme.ink;
                 break;
 
@@ -147,24 +141,9 @@ namespace TableTopToolKit
                 canvasDrawings.ChangeTheme(Theme.blueprint);
                 grid.ChangeTheme(Theme.blueprint.GridTheme);
                 EraserTool.theme = Theme.blueprint;
-                SelectIconTool.theme = Theme.blueprint;
                 RulerTool.theme = Theme.blueprint;
                 break;
-
-                case Controls.RotateIcon:
-                SelectIconTool iconTool = CurrentTool as SelectIconTool;
-                if (iconTool != null)
-                {
-                    iconTool.Rotate();
-                }
-                break;
             }
-        }
-
-        public void PlaceIcon(Point position, Image icon)
-        {
-            Point snapped = grid.SnapToGridCorners(position.X - grid.SquareSize / 2, position.Y - grid.SquareSize / 2);
-            canvasDrawings.PlaceIcon(snapped, icon, grid.SquareSize, grid.SquareSize);
         }
     }
 }

@@ -15,19 +15,33 @@
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open" x:Name="LoadFile" Click="MenuItemClick" />
-                <MenuItem Header="_Save As" x:Name="SaveAs" Click="MenuItemClick" InputGestureText="Ctrl + S" />
-                <MenuItem Header="_Print" x:Name="PrintMenuItemButton" Click="MenuItemClick" />
-                <MenuItem Header="_Restore Last Session" x:Name="RestoreLastSessionButton" Click="MenuItemClick" />
+                <MenuItem Header="_New" x:Name="NewMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + N" />
+                <MenuItem Header="_Open" x:Name="OpenMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + O"/>
+                <MenuItem Header="_Save" x:Name="SaveMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + S" />
+                <MenuItem Header="_Print" x:Name="PrintMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + P"/>
+                <MenuItem Header="_Restore Previous Session" x:Name="RestorePreviousSessionMenuItem" Click="MenuItemClick" />
                 <Separator />
-                <MenuItem Header="E_xit" x:Name="Exit" Click="MenuItemClick" InputGestureText="Alt + F4" />
+                <MenuItem Header="E_xit" x:Name="ExitMenuItem" Click="MenuItemClick" InputGestureText="Alt + F4" />
+            </MenuItem>
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" x:Name="UndoMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + Z"/>
+                <MenuItem Header="_Redo" x:Name="RedoMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + Y"/>
             </MenuItem>
             <MenuItem Header="_View">
-                <MenuItem Header="Zoom _In" x:Name="ZoomInMenuitem" Click="MenuItemClick" InputGestureText="Ctrl +" />
-                <MenuItem Header="Zoom _Out" x:Name="ZoomOutMenuItem" Click="MenuItemClick" InputGestureText="Ctrl -" />
-                <MenuItem Header="_Toggle Grid Type" x:Name="GridDotsToggleButton" Click="MenuItemClick" InputGestureText="Ctrl T"/>
+                <MenuItem Header="Zoom _In" x:Name="ZoomInMenuitem" Click="MenuItemClick" InputGestureText="Ctrl + +" />
+                <MenuItem Header="Zoom _Out" x:Name="ZoomOutMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + -" />
+                <MenuItem Header="_Toggle Grid Type" x:Name="ToggleGridTypeMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + T"/>
+                <MenuItem Header="_Toggle Grid Display" x:Name="ToggleGridDisplayMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + G"/>
             </MenuItem>
-            <MenuItem Header="_Theme">
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Pencil" x:Name="PencilMenuItem" Click="MenuItemClick" InputGestureText="1" />
+                <MenuItem Header="_Line" x:Name="LineMenuItem" Click="MenuItemClick" InputGestureText="2" />
+                <MenuItem Header="Re_ctangle" x:Name="RectangleMenuItem" Click="MenuItemClick" InputGestureText="3" />
+                <MenuItem Header="P_encil Eraser" x:Name="PencilEraserMenuItem" Click="MenuItemClick" InputGestureText="4" />
+                <MenuItem Header="L_ine Eraser" x:Name="LineEraserMenuItem" Click="MenuItemClick" InputGestureText="5" />
+                <MenuItem Header="_Ruler" x:Name="RulerMenuItem" Click="MenuItemClick" InputGestureText="6" />
+            </MenuItem>
+            <MenuItem Header="T_heme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Blueprint" x:Name="BlueprintThemeButton" Click="MenuItemClick" />
@@ -40,25 +54,14 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="LightGray" MinHeight="50">
-                    <Button x:Name="ToggleGridButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Toggles the grid on or off&#x0a;(Crtl + G)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/toggle_grid.png" />
-                    </Button>
-                    <Button x:Name="PrintPreviewButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Displays a window containing a preview of everything that will be printed&#x0a;(Crtl + P)">
+                    <Button x:Name="PrintButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Print</TextBlock>
+                                <TextBlock>Prints current drawing</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/print_preview.png" />
-                    </Button>
-                    <Button x:Name="ToggleClearCanvas" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Clears all items from the Canvas (this action is irreseversible)&#x0a;(Crtl + C)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/clear_canvas.png" />
-                    </Button>
-                    <Button x:Name="ToggleUndoButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Undoes the most recent operation&#x0a;(Crtl + Z)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/undo.png" />
-                    </Button>
-                    <Button x:Name="ToggleRedoButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Redoes the most recent operation&#x0a;(Crtl + Y)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/redo.png" />
                     </Button>
                     <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
@@ -70,16 +73,31 @@
                             </TransformGroup>
                         </Separator.RenderTransform>
                     </Separator>
-                    <Button x:Name="ToggleDrawPencilButton" Click="ButtonClick" Margin="5"  ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Pencil tool&#x0a;Allows you to click and drag to draw on the canvas&#x0a;(Number 1)" Padding="2000">
+                    <Button x:Name="PencilButton" Click="ButtonClick" Margin="5"  ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Pencil</TextBlock>
+                                <TextBlock>Click and drag to draw</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
                     </Button>
-                    <Button x:Name="ToggleDrawLineButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Line tool&#x0a;Allows you to click and drag to draw a line connecting any two corners of the grid&#x0a;Holding shift forces the line be vertical or horizontal&#x0a;(Number 2)">
+                    <Button x:Name="LineButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/line.png" />
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Line</TextBlock>
+                                <TextBlock>Click and drag to draw a line connecting two corners of the grid</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                     </Button>
-                    <Button x:Name="ToggleDrawRectangleButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Rectangle tool&#x0a;Allows you to click and drag to draw a rectangle on top of the grid lines&#x0a;Holding shift forces the rectangle to be a square&#x0a;(Number 3)">
+                    <Button x:Name="RectangleButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Rectangle</TextBlock>
+                                <TextBlock>Click and drag to draw a rectangle on top of the grid lines</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
                     </Button>
                     <Separator RenderTransformOrigin="0.5,0.5" Width="24">
@@ -92,13 +110,23 @@
                             </TransformGroup>
                         </Separator.RenderTransform>
                     </Separator>
-                    <Button x:Name="ToggleLineEraser" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Line Eraser tool&#x0a;Allows you to click and drag to draw an erasing line connecting any two corners of the grid&#x0a;Any lines or sides of rectangles under the erasing line will be erased&#x0a;(Number 4)">
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/line_eraser.png" />
-                    </Button>
-                    <Button x:Name="TogglePencilEraser" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Pencil Eraser tool&#x0a;Allows you to click and drag erase pencil drawings">
+                    <Button x:Name="PencilEraserButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Pencil Eraser</TextBlock>
+                                <TextBlock>Click to remove pencil drawing</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil_eraser.png" />
+                    </Button>
+                    <Button x:Name="LineEraserButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Line Eraser</TextBlock>
+                                <TextBlock>Click and drag to erase sections of any line or rectangle</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
+                        <Image Width="32" Height="32" Source="./imgs/menu_icons/line_eraser.png" />
                     </Button>
                     <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
@@ -110,8 +138,13 @@
                             </TransformGroup>
                         </Separator.RenderTransform>
                     </Separator>
-                    <Button x:Name="ToggleRulerButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000"
-                            ToolTip="Selects the Ruler tool&#x0a;Allows you to click and drag to measure two points in the grid&#x0a;(Number 5)">
+                    <Button x:Name="RulerButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
+                         <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Ruler</TextBlock>
+                                <TextBlock>Click and drag to measure two points of the grid</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/ruler.png" />
                     </Button>
                 </StackPanel>
@@ -122,8 +155,6 @@
                         PreviewMouseMove="OnCanvasMouseMove"
                         MouseDown="OnCanvasMouseDown"
                         MouseLeave="OnCanvasMouseLeave"
-                        AllowDrop="True"
-                        Drop="OnIconDragDrop"
                         MouseWheel="OnMouseWheel">
                     <Canvas.LayoutTransform>
                         <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}" />
