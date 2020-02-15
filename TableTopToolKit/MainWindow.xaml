@@ -73,15 +73,6 @@
                             </TransformGroup>
                         </Separator.RenderTransform>
                     </Separator>
-                    <Button x:Name="PencilButton" Click="ButtonClick" Margin="5"  ToolTipService.ShowDuration="60000">
-                        <Button.ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold">Pencil</TextBlock>
-                                <TextBlock>Click and drag to draw</TextBlock>
-                            </StackPanel>
-                        </Button.ToolTip>
-                        <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
-                    </Button>
                     <Button x:Name="LineButton" Click="ButtonClick" Margin="5" ToolTipService.ShowDuration="60000">
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/line.png" />
                         <Button.ToolTip>
@@ -99,6 +90,15 @@
                             </StackPanel>
                         </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/rectangle.png" />
+                    </Button>
+                    <Button x:Name="PencilButton" Click="ButtonClick" Margin="5"  ToolTipService.ShowDuration="60000">
+                        <Button.ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold">Pencil</TextBlock>
+                                <TextBlock>Click and drag to draw</TextBlock>
+                            </StackPanel>
+                        </Button.ToolTip>
+                        <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil.png" />
                     </Button>
                     <Separator RenderTransformOrigin="0.5,0.5" Width="24">
                         <Separator.RenderTransform>
