@@ -249,7 +249,7 @@ namespace TableTopToolKit
             }
             else if (item.Equals(ToggleGridDisplayMenuItem))
             {
-                main.Command( App.Controls.ToggleGridMode );
+                main.Command( App.Controls.ToggleGridDisplay );
             }
             else if (item.Equals(PencilMenuItem))
             {
