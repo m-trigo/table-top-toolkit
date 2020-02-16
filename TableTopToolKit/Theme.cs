@@ -57,8 +57,8 @@ namespace TableTopToolKit
         {
             GridTheme = new GridTheme
             {
-                GridLinesColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
-                GridDotsColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
+                GridLinesColor = new SolidColorBrush(Color.FromArgb(200, 159, 175, 200)),
+                GridDotsColor = new SolidColorBrush(Color.FromArgb(200, 159, 175, 224)),
                 GridLinesThickness = 1,
                 GridDotsThickness = 3,
             },
@@ -77,8 +77,8 @@ namespace TableTopToolKit
         {
             GridTheme = new GridTheme
             {
-                GridLinesColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
-                GridDotsColor = new SolidColorBrush(Color.FromArgb(255, 159, 175, 224)),
+                GridLinesColor = new SolidColorBrush(Color.FromArgb(100, 159, 175, 224)),
+                GridDotsColor = new SolidColorBrush(Color.FromArgb(100, 159, 175, 224)),
                 GridLinesThickness = 1,
                 GridDotsThickness = 3,
             },
