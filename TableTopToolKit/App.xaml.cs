@@ -39,7 +39,7 @@ namespace TableTopToolKit
         }
 
         public void InitializeCanvasDrawing(Canvas canvas)
-        {   
+        {
             canvasDrawings = new CanvasDrawings(canvas);
             grid = new Grid(canvasDrawings.Width, canvasDrawings.Height, 64, canvasDrawings, Theme.standard.GridTheme);
             CurrentTool = new SnapLineTool(canvasDrawings, grid);
@@ -100,7 +100,7 @@ namespace TableTopToolKit
                 break;
 
                 case Controls.ClearCanvas:
-                canvasDrawings.ClearCanvas("Are you sure you would like to clear the canvas?");
+                canvasDrawings.ClearCanvas("Starting a new file will discard any unsaved progress\nAre you sure you would like to proceed?");
                 break;
 
                 case Controls.AutoSave:
