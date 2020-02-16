@@ -16,15 +16,15 @@ namespace TableTopToolKit
     {
         public enum Controls
         {
-            ToggleGridDisplay, SaveToPng, Undo, Redo, ClearCanvas,
-            SelectPencilTool, SelectLineTool, SelectRectangleTool, SelectEraserTool, SelectRulerTool, SelectIconTool, SelectPencilEraser,
-            Print, PrintPreview,
+
+            SaveToPng, Print, PrintPreview,
+            Undo, Redo,
+            ClearCanvas,
+            SelectLineTool, SelectRectangleTool, SelectPencilTool, SelectEraserTool, SelectPencilEraser, SelectRulerTool,
             AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
-            ToggleIconView, ToggleGridMode,
+            ToggleGridMode, ToggleGridDisplay,
             SetStandardTheme, SetInkTheme, SetBlueprintTheme,
-            SelectIcon,
-            Zoom,
-            RotateIcon
+            Zoom
         };
 
         private CanvasDrawings canvasDrawings;
