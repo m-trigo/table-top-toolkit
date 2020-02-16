@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace TableTopToolKit
 {
@@ -16,6 +14,11 @@ namespace TableTopToolKit
         private const string ALT_ICON_IMAGES_DIRECTORY = @"..\..\imgs\icons\";
         private Point startDragMousePosition;
         private const double ZOOM_RATE = 0.05; // Fix this later
+
+        private Button selectedToolButton;
+        private SolidColorBrush toggledOn;
+        private SolidColorBrush background;
+
         public double ZoomLevel
         {
             get { return (double)GetValue(ZoomLevelProperty); }
@@ -41,6 +44,28 @@ namespace TableTopToolKit
             InitializeComponent();
             this.Loaded += MainWindow_Loaded;
             ZoomLevel = 1;
+
+            selectedToolButton = LineButton;
+            toggledOn = new SolidColorBrush(Color.FromRgb(199, 227, 255));
+            background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+            HighlightSelectedTool();
+        }
+
+        private void HighlightSelectedTool()
+        {
+            List<Button> buttons = new List<Button> { LineButton, RectangleButton, PencilButton, LineEraserButton, PencilEraserButton, RulerButton };
+            foreach( Button button in buttons )
+            {
+                if ( button == selectedToolButton )
+                {
+                    button.Background = toggledOn;
+                }
+                else
+                {
+                    button.Background = background;
+                }
+            }
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -264,6 +289,7 @@ namespace TableTopToolKit
                 main.Command(App.Controls.SetBlueprintTheme);
             }
         }
+
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -292,6 +318,9 @@ namespace TableTopToolKit
             {
                 main.Command(App.Controls.SelectRulerTool);
             }
+
+            selectedToolButton = button;
+            HighlightSelectedTool();
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
