@@ -6,7 +6,7 @@
 
     <Image x:Key="Grid" Source="imgs/menu alt icons/Grid.png"/>
     <SolidColorBrush x:Key="ButtonBackground">#FFF</SolidColorBrush>
-    <SolidColorBrush x:Key="ButtonBackgroundMouseOver">#92979E</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonBackgroundMouseOver">#c7e3ff</SolidColorBrush>
     <SolidColorBrush x:Key="ButtonBorder">#868A90</SolidColorBrush>
 
 
