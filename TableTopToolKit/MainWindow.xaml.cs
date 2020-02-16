@@ -292,15 +292,7 @@ namespace TableTopToolKit
         {
             Button button = sender as Button;
 
-            if (button.Equals(PrintButton))
-            {
-                // Temporary fix-hack
-                double zoom = ZoomLevel;
-                ZoomLevel = 1;
-                main.Command(App.Controls.PrintPreview);
-                ZoomLevel = zoom;
-            }
-            else if (button.Equals(PencilButton))
+            if (button.Equals(PencilButton))
             {
                 main.Command(App.Controls.SelectPencilTool);
             }
