@@ -251,30 +251,6 @@ namespace TableTopToolKit
             {
                 main.Command( App.Controls.ToggleGridDisplay );
             }
-            else if (item.Equals(PencilMenuItem))
-            {
-                main.Command(App.Controls.SelectPencilTool);
-            }
-            else if (item.Equals(LineMenuItem))
-            {
-                main.Command(App.Controls.SelectLineTool);
-            }
-            else if (item.Equals(RectangleMenuItem))
-            {
-                main.Command(App.Controls.SelectRectangleTool);
-            }
-            else if (item.Equals(PencilEraserMenuItem))
-            {
-                main.Command(App.Controls.SelectPencilEraser);
-            }
-            else if (item.Equals(LineEraserMenuItem))
-            {
-                main.Command(App.Controls.SelectEraserTool);
-            }
-            else if (item.Equals(RulerMenuItem))
-            {
-                main.Command(App.Controls.SelectRulerTool);
-            }
             else if (item.Equals(StandardThemeButton))
             {
                 main.Command(App.Controls.SetStandardTheme);

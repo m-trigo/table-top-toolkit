@@ -33,14 +33,6 @@
                 <MenuItem Header="_Toggle Grid Type" x:Name="ToggleGridTypeMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + T"/>
                 <MenuItem Header="_Toggle Grid Display" x:Name="ToggleGridDisplayMenuItem" Click="MenuItemClick" InputGestureText="Ctrl + G"/>
             </MenuItem>
-            <MenuItem Header="_Tools">
-                <MenuItem Header="_Pencil" x:Name="PencilMenuItem" Click="MenuItemClick" InputGestureText="1" />
-                <MenuItem Header="_Line" x:Name="LineMenuItem" Click="MenuItemClick" InputGestureText="2" />
-                <MenuItem Header="Re_ctangle" x:Name="RectangleMenuItem" Click="MenuItemClick" InputGestureText="3" />
-                <MenuItem Header="P_encil Eraser" x:Name="PencilEraserMenuItem" Click="MenuItemClick" InputGestureText="4" />
-                <MenuItem Header="L_ine Eraser" x:Name="LineEraserMenuItem" Click="MenuItemClick" InputGestureText="5" />
-                <MenuItem Header="_Ruler" x:Name="RulerMenuItem" Click="MenuItemClick" InputGestureText="6" />
-            </MenuItem>
             <MenuItem Header="T_heme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
