@@ -26,7 +26,7 @@ namespace TableTopToolKit
 
         public void MouseDown( Point mousePosition, MouseEventArgs mouseEvent )
         {
-            if ( mouseEvent.LeftButton == MouseButtonState.Pressed )
+            if ( mouseEvent.LeftButton == MouseButtonState.Pressed && eraserLine == null )
             {
                 eraserLine = new Polyline
                 {
@@ -34,8 +34,10 @@ namespace TableTopToolKit
                     StrokeThickness = canvasDrawings.ForegroundThickness
                 };
             }
-
-            UpdateIntersectingDrawings();
+            else
+            {
+                CleanUp();
+            }
         }
 
         public void MouseExit( Point mousePosition, MouseEventArgs mouseEvent )
@@ -56,6 +58,18 @@ namespace TableTopToolKit
                 return;
             }
 
+            if ( eraserLine.Points.Count > 0 )
+            {
+                Point lastAddedPoint = eraserLine.Points[ eraserLine.Points.Count - 1 ];
+                IEnumerable<Point> interpolated = InterpolatedPoints( lastAddedPoint, mousePosition );
+                foreach( Point point in interpolated )
+                {
+                    eraserLine.Points.Add( point );
+                }
+
+                UpdateIntersectingDrawings();
+            }
+
             eraserLine.Points.Add( mousePosition );
 
             if ( !added )
@@ -64,7 +78,10 @@ namespace TableTopToolKit
                 added = true;
             }
 
-            UpdateIntersectingDrawings();
+            while ( eraserLine.Points.Count > 100 )
+            {
+                eraserLine.Points.RemoveAt( 0 );
+            }
         }
 
         public void Close()
@@ -80,6 +97,28 @@ namespace TableTopToolKit
             added = false;
         }
 
+        private bool IsCloseEnough( Point A, Point B )
+        {
+            return Point.Subtract( A, B ).LengthSquared < ERASE_RANGE_SQR;
+        }
+
+        private IEnumerable<Point> InterpolatedPoints( Point A, Point B )
+        {
+            List<Point> interpolated = new List<Point>();
+
+            Vector vector = Point.Subtract( B, A );
+            vector.Normalize();
+
+            Point m = A;
+            while ( !IsCloseEnough( m, B ) )
+            {
+                interpolated.Add( m );
+                m = Point.Add( m, vector );
+            }
+
+            return interpolated;
+        }
+
         private void UpdateIntersectingDrawings()
         {
             foreach ( Drawing drawing in canvasDrawings.Drawings )
@@ -89,9 +128,10 @@ namespace TableTopToolKit
                     continue;
                 }
 
+                bool done = false;
                 foreach ( Shape shape in drawing.Elements )
                 {
-                    if ( !( shape is Polyline ) )
+                    if ( done || !( shape is Polyline ) )
                     {
                         break;
                     }
@@ -101,11 +141,17 @@ namespace TableTopToolKit
                     {
                         foreach ( Point erasePoint in eraserLine.Points )
                         {
-                            if ( Point.Subtract( point, erasePoint ).LengthSquared < ERASE_RANGE_SQR )
+                            if ( IsCloseEnough( point, erasePoint ) )
                             {
                                 toErase.Add( drawing );
+                                done = true;
                                 break;
                             }
+                        }
+
+                        if ( done )
+                        {
+                            break;
                         }
                     }
                 }
