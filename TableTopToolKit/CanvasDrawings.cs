@@ -211,21 +211,23 @@ namespace TableTopToolKit
             AddDrawing(new Drawing(newImage));
         }
                 
-        public void Erase(IEnumerable<Drawing> drawings)
+        public void Erase(IEnumerable<Drawing> drawingsToErase)
         {
             List<Command> eraseCommands = new List<Command>();
-            foreach (Drawing drawing in drawings)
+            foreach (Drawing drawing in drawingsToErase)
             {
                 Command eraseCommand = new Command
                 (
                    doAction: () =>
                    {
-                       UnRenderFromCanvas(drawing);
+                       RemoveDrawing(drawing);
                    },
 
                    undoAction: () =>
-                   {
-                       RenderToCanvas(drawing);
+                   {    
+                        RemoveDrawing(drawing);
+                        drawings.Add(drawing);
+                        RenderToCanvas(drawing);
                    }
                 );
                 eraseCommands.Add(eraseCommand);
