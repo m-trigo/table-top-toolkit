@@ -165,12 +165,22 @@ namespace TableTopToolKit
             }
         }
 
+        public void AddNonDrawing(UIElement element)
+        {
+            canvas.Children.Add(element);
+        }
+
         public void AddNonDrawing(IEnumerable<UIElement> elements)
         {
             foreach (UIElement element in elements)
             {
                 canvas.Children.Add(element);
             }
+        }
+        
+        public void RemoveNonDrawing(UIElement element)
+        {
+            canvas.Children.Remove(element);
         }
 
         public void RemoveNonDrawing(IEnumerable<UIElement> elements)
@@ -199,6 +209,48 @@ namespace TableTopToolKit
             Canvas.SetTop(newImage, position.Y);
 
             AddDrawing(new Drawing(newImage));
+        }
+                
+        public void Erase(IEnumerable<Drawing> drawings)
+        {
+            List<Command> eraseCommands = new List<Command>();
+            foreach (Drawing drawing in drawings)
+            {
+                Command eraseCommand = new Command
+                (
+                   doAction: () =>
+                   {
+                       UnRenderFromCanvas(drawing);
+                   },
+
+                   undoAction: () =>
+                   {
+                       RenderToCanvas(drawing);
+                   }
+                );
+                eraseCommands.Add(eraseCommand);
+            }
+
+            Command groupedErasesCommand = new Command
+            (
+                doAction: () =>
+                {
+                    foreach (Command command in eraseCommands)
+                    {
+                        command.Do();
+                    }
+                },
+
+                undoAction: () =>
+                {
+                    foreach (Command command in eraseCommands)
+                    {
+                        command.Undo();
+                    }
+                }
+            );
+
+            AddNewCommand(groupedErasesCommand);
         }
 
         public void Erase(IEnumerable<EraserTool.EraseData> eraseRequests)

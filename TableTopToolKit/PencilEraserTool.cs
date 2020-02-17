@@ -7,69 +7,109 @@ namespace TableTopToolKit
 {
     class PencilEraserTool : DrawingTool
     {
+        public static Theme theme = Theme.standard;
+
         private CanvasDrawings canvasDrawings;
-        private bool erasing = false;
+        private Polyline eraserLine;
+        private List<Drawing> toErase;
+        private bool added;
+
+        private const double ERASE_RANGE_SQR = 20;
 
         public PencilEraserTool( CanvasDrawings cd )
         {
             canvasDrawings = cd;
+            toErase = new List<Drawing>();
+            eraserLine = null;
+            added = false;
         }
 
         public void MouseDown( Point mousePosition, MouseEventArgs mouseEvent )
         {
-            erasing = mouseEvent.LeftButton == MouseButtonState.Pressed;
-            EraseAt( mousePosition );
+            if ( mouseEvent.LeftButton == MouseButtonState.Pressed )
+            {
+                eraserLine = new Polyline
+                {
+                    Stroke = theme.EraserColor,
+                    StrokeThickness = canvasDrawings.ForegroundThickness
+                };
+            }
+
+            UpdateIntersectingDrawings();
         }
 
         public void MouseExit( Point mousePosition, MouseEventArgs mouseEvent )
         {
-            erasing = false;
+            CleanUp();
         }
 
         public void MouseUp( Point mousePosition, MouseEventArgs mouseEvent )
         {
-            erasing = false;
+            canvasDrawings.Erase( toErase );
+            CleanUp();
         }
 
-        public void MouseMove( Point position, MouseEventArgs mouseEvent )
+        public void MouseMove( Point mousePosition, MouseEventArgs mouseEvent )
         {
-            if ( !erasing )
+            if ( eraserLine == null )
             {
                 return;
             }
 
-            EraseAt( position );
+            eraserLine.Points.Add( mousePosition );
+
+            if ( !added )
+            {
+                canvasDrawings.AddNonDrawing( eraserLine );
+                added = true;
+            }
+
+            UpdateIntersectingDrawings();
         }
 
         public void Close()
         {
+            CleanUp();
         }
 
-        private void EraseAt(Point mousePosition)
+        private void CleanUp()
         {
-            List<UIElement> removables = new List<UIElement>();
+            canvasDrawings.RemoveNonDrawing( eraserLine );
+            toErase.Clear();
+            eraserLine = null;
+            added = false;
+        }
 
+        private void UpdateIntersectingDrawings()
+        {
             foreach ( Drawing drawing in canvasDrawings.Drawings )
             {
+                if ( toErase.Contains( drawing ) )
+                {
+                    continue;
+                }
+
                 foreach ( Shape shape in drawing.Elements )
                 {
                     if ( !( shape is Polyline ) )
                     {
-                        continue;
+                        break;
                     }
 
                     Polyline line = shape as Polyline;
                     foreach ( Point point in line.Points )
                     {
-                        if ( Point.Subtract( point, mousePosition ).LengthSquared < 20 )
+                        foreach ( Point erasePoint in eraserLine.Points )
                         {
-                            removables.Add( line );
+                            if ( Point.Subtract( point, erasePoint ).LengthSquared < ERASE_RANGE_SQR )
+                            {
+                                toErase.Add( drawing );
+                                break;
+                            }
                         }
                     }
                 }
             }
-
-            canvasDrawings.RemoveNonDrawing( removables );
         }
     }
 }
