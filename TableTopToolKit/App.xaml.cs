@@ -23,7 +23,7 @@ namespace TableTopToolKit
             SelectLineTool, SelectRectangleTool, SelectPencilTool, SelectEraserTool, SelectPencilEraser, SelectRulerTool,
             AutoSave, LoadPreviousAutoSave, SaveAs, LoadFile,
             ToggleGridMode, ToggleGridDisplay,
-            SetStandardTheme, SetInkTheme, SetBlueprintTheme,
+            SetStandardTheme, SetInkTheme, SetNonReproTheme, SetBlueprintTheme,
             Zoom
         };
 
@@ -135,6 +135,13 @@ namespace TableTopToolKit
                 grid.ChangeTheme(Theme.ink.GridTheme);
                 EraserTool.theme = Theme.ink;
                 RulerTool.theme = Theme.ink;
+                break;
+
+                case Controls.SetNonReproTheme:
+                canvasDrawings.ChangeTheme(Theme.nonRepro);
+                grid.ChangeTheme(Theme.nonRepro.GridTheme);
+                EraserTool.theme = Theme.nonRepro;
+                RulerTool.theme = Theme.nonRepro;
                 break;
 
                 case Controls.SetBlueprintTheme:

@@ -73,6 +73,26 @@ namespace TableTopToolKit
             BackgroundColor = Brushes.White
         };
 
+        public static Theme nonRepro = new Theme()
+        {
+            GridTheme = new GridTheme
+            {
+                GridLinesColor = new SolidColorBrush(Color.FromArgb(255, 164, 221, 237)),
+                GridDotsColor = new SolidColorBrush(Color.FromArgb(255, 164, 221, 237)),
+                GridLinesThickness = 1,
+                GridDotsThickness = 3,
+            },
+
+            LinesThickness = 3,
+            DrawingsColor = new SolidColorBrush(Color.FromArgb(255, 164, 221, 237)),
+            IconsColor = Brushes.DarkBlue,
+            EraserColor = Brushes.LightPink,
+            EraserSelectionColor = Brushes.Red,
+            IconSelectionColor = new SolidColorBrush(Color.FromArgb(255, 37, 124, 203)),
+            RulerColor = Brushes.Goldenrod,
+            BackgroundColor = Brushes.White
+        };
+
         public static Theme blueprint = new Theme()
         {
             GridTheme = new GridTheme

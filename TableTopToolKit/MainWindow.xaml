@@ -35,7 +35,8 @@
             </MenuItem>
             <MenuItem Header="T_heme">
                 <MenuItem Header="_Standard" x:Name="StandardThemeButton" Click="MenuItemClick" />
-                <MenuItem Header="_Ink" x:Name="InkThemeButton" Click="MenuItemClick" />
+                <MenuItem Header="_Pen" x:Name="InkThemeButton" Click="MenuItemClick" />
+                <MenuItem Header="_Non-Repro Blue" x:Name="NonReproThemeButton" Click="MenuItemClick" />
                 <MenuItem Header="_Blueprint" x:Name="BlueprintThemeButton" Click="MenuItemClick" />
             </MenuItem>
         </Menu>
