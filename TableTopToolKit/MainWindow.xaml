@@ -78,7 +78,7 @@
                         <Button.ToolTip>
                             <StackPanel>
                                 <TextBlock FontWeight="Bold">Line Eraser</TextBlock>
-                                <TextBlock>Click and drag to erase sections of any line or rectangle</TextBlock>
+                                <TextBlock>Click and drag to erase a line connecting two corners of the grid</TextBlock>
                             </StackPanel>
                         </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/line_eraser.png" />
@@ -87,7 +87,7 @@
                         <Button.ToolTip>
                             <StackPanel>
                                 <TextBlock FontWeight="Bold">Pencil Eraser</TextBlock>
-                                <TextBlock>Click to remove pencil drawing</TextBlock>
+                                <TextBlock>Click and drag to erase pencil drawings</TextBlock>
                             </StackPanel>
                         </Button.ToolTip>
                         <Image Width="32" Height="32" Source="./imgs/menu_icons/pencil_eraser.png" />
