@@ -47,6 +47,20 @@ namespace TableTopToolKit
 
         public void MouseUp( Point mousePosition, MouseEventArgs mouseEvent )
         {
+            foreach( Drawing drawing in toErase )
+            {
+                foreach ( Shape shape in drawing.Elements )
+                {
+                    if ( !( shape is Polyline ) )
+                    {
+                        break;
+                    }
+
+                    Polyline line = shape as Polyline;
+                    line.Stroke = theme.DrawingsColor;
+                }
+            }
+
             canvasDrawings.Erase( toErase );
             CleanUp();
         }
@@ -62,7 +76,7 @@ namespace TableTopToolKit
             {
                 Point lastAddedPoint = eraserLine.Points[ eraserLine.Points.Count - 1 ];
                 IEnumerable<Point> interpolated = InterpolatedPoints( lastAddedPoint, mousePosition );
-                foreach( Point point in interpolated )
+                foreach ( Point point in interpolated )
                 {
                     eraserLine.Points.Add( point );
                 }
@@ -144,6 +158,7 @@ namespace TableTopToolKit
                             if ( IsCloseEnough( point, erasePoint ) )
                             {
                                 toErase.Add( drawing );
+                                line.Stroke = theme.EraserSelectionColor;
                                 done = true;
                                 break;
                             }
